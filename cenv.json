@@ -1,0 +1,8 @@
+{
+  "command": "turbo",
+  "actions": [
+    "dev",
+    "build",
+    "start"
+  ]
+}

@@ -1,0 +1,36 @@
+# dependencies
+node_modules/
+
+# build outputs
+.next/
+out/
+.vitepress/dist/
+.vitepress/cache/
+dist/
+
+# turbo
+.turbo/
+
+# env files
+.env
+.env.*
+!.env.example
+
+# composable.env
+env/.env.local
+
+# os
+.DS_Store
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# logs
+*.log
+
+
+# cenv:start
+.cenv.*
+env/.env.local
+# cenv:end

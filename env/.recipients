@@ -1,0 +1,8 @@
+# composable.env vault recipients
+# Each line: public key [# optional comment]
+#
+# Supported key types:
+#   age1...             (native age public key)
+#   ssh-ed25519 AAAA... (SSH ed25519 — auto-converted to age)
+#
+age1h44csenvlr3ajpqzs9c0xk7qrcygjm9rx5wpwx5kwd7jhdyc2a6sx52gyw # local SSH key (ed25519)

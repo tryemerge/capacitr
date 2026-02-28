@@ -1,0 +1,9 @@
+{
+  "name": "sim",
+  "location": "apps/sim",
+  "required": {
+    "PORT": "SIM_PORT"
+  },
+  "optional": {},
+  "defaults": {}
+}

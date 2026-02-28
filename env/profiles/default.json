@@ -1,0 +1,7 @@
+{
+  "name": "Default",
+  "description": "All available components",
+  "components": [
+    "sim"
+  ]
+}

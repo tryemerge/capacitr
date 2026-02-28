@@ -1,0 +1,23 @@
+{
+  "name": "capacitr",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "scripts": {
+    "lint": "turbo lint",
+    "cenv:build": "cenv build --profile",
+    "cenv:start:sim": "cenv run --profile -- turbo dev --filter=sim",
+    "cenv:start:docs": "cenv run --profile -- turbo dev --filter=docs",
+    "cenv:start": "cenv run --profile -- turbo dev",
+    "cenv:build:sim": "cenv build --profile",
+    "dev:sim": "cenv run --profile -- turbo dev --filter=sim",
+    "build:sim": "cenv run --profile -- turbo build --filter=sim",
+    "start:sim": "cenv run --profile -- turbo start --filter=sim",
+    "dev": "cenv run --profile default -- turbo dev",
+    "build": "cenv run --profile default -- turbo build",
+    "start": "cenv run --profile default -- turbo start"
+  },
+  "devDependencies": {
+    "composable.env": "0.4.0",
+    "turbo": "^2"
+  }
+}
