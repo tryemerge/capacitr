@@ -1,8 +1,11 @@
 # composable.env vault recipients
-# Each line: public key [# optional comment]
+# Each line: public key [optional comment]
+#
+# Add team members with: ce vault add --github <username>
+# Add keys directly with: ce vault add --key "age1..." --comment "name"
 #
 # Supported key types:
-#   age1...             (native age public key)
-#   ssh-ed25519 AAAA... (SSH ed25519 — auto-converted to age)
+#   age1...           (native age public key)
+#   ssh-ed25519 AAAA... (SSH ed25519 public key)
+#   ssh-rsa AAAA...     (SSH RSA public key)
 #
-age1h44csenvlr3ajpqzs9c0xk7qrcygjm9rx5wpwx5kwd7jhdyc2a6sx52gyw # local SSH key (ed25519)

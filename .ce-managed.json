@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "managed": [
+    {
+      "file": "turbo.json",
+      "keys": {
+        "globalDependencies": [
+          "env/**",
+          ".ce.*"
+        ]
+      }
+    },
+    {
+      "file": "package.json",
+      "keys": {
+        "scripts": [
+          "ce:env:build:docs",
+          "dev:docs",
+          "build:docs",
+          "start:docs",
+          "ce:env:build:sim",
+          "dev:sim",
+          "build:sim",
+          "start:sim",
+          "dev",
+          "build",
+          "start",
+          "env:build:docs",
+          "env:build:sim"
+        ]
+      }
+    }
+  ]
+}

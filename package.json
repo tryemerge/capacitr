@@ -4,20 +4,20 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "lint": "turbo lint",
-    "cenv:build": "cenv build --profile",
-    "cenv:start:sim": "cenv run --profile -- turbo dev --filter=sim",
-    "cenv:start:docs": "cenv run --profile -- turbo dev --filter=docs",
-    "cenv:start": "cenv run --profile -- turbo dev",
-    "cenv:build:sim": "cenv build --profile",
-    "dev:sim": "cenv run --profile -- turbo dev --filter=sim",
-    "build:sim": "cenv run --profile -- turbo build --filter=sim",
-    "start:sim": "cenv run --profile -- turbo start --filter=sim",
-    "dev": "cenv run --profile default -- turbo dev",
-    "build": "cenv run --profile default -- turbo build",
-    "start": "cenv run --profile default -- turbo start"
+    "env:build:docs": "ce build --profile",
+    "dev:docs": "ce run --profile -- turbo dev --filter=docs",
+    "build:docs": "ce run --profile -- turbo build --filter=docs",
+    "start:docs": "ce run --profile -- turbo start --filter=docs",
+    "env:build:sim": "ce build --profile",
+    "dev:sim": "ce run --profile -- turbo dev --filter=sim",
+    "build:sim": "ce run --profile -- turbo build --filter=sim",
+    "start:sim": "ce run --profile -- turbo start --filter=sim",
+    "dev": "ce run --profile default -- turbo dev",
+    "build": "ce run --profile default -- turbo build",
+    "start": "ce run --profile default -- turbo start"
   },
   "devDependencies": {
-    "composable.env": "0.4.0",
+    "composable.env": "0.5.6",
     "turbo": "^2"
   }
 }

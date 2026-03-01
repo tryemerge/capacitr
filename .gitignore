@@ -30,7 +30,7 @@ next-env.d.ts
 *.log
 
 
-# cenv:start
-.cenv.*
+# ce:start
+.ce.*
 env/.env.local
-# cenv:end
+# ce:end

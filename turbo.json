@@ -23,6 +23,7 @@
   },
   "globalDependencies": [
     "env/**",
-    ".cenv.*"
+    ".cenv.*",
+    ".ce.*"
   ]
 }

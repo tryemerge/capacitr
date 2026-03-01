@@ -1,13 +1,13 @@
 {
-  "name": "sim",
-  "location": "apps/sim",
+  "name": "docs",
+  "location": "apps/docs",
   "required": {},
   "optional": {
-    "PORT": "SIM_PORT",
+    "PORT": "DOCS_PORT",
     "LOG_LEVEL": "LOG_LEVEL"
   },
   "defaults": {
-    "PORT": "3000",
+    "PORT": "5173",
     "LOG_LEVEL": "info"
   }
 }
