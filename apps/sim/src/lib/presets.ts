@@ -1,4 +1,4 @@
-import type { SimConfig } from "./simulation";
+import type { SimConfig } from "./simulation-legacy";
 
 export interface Preset {
   name: string;

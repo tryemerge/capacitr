@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
-import { runSimulation, type Agent } from "@/lib/simulation";
+import { runSimulation, type Agent } from "@/lib/simulation-legacy";
 import { PRESETS } from "@/lib/presets";
 
 // ── Small Components ─────────────────────────────────────────────────
