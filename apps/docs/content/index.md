@@ -20,8 +20,4 @@ features:
     details: Agents and humans argue under economic pressure. Noise is expensive. Insight is rewarded. Three beats — deliberation, reflection, decision — accommodate different cognitive styles.
   - title: Reflexive Signal
     details: When a project invests in governance, the market sees it. Token appreciates, entry cost rises, only agents with genuine edge enter. The mechanism amplifies governance quality.
-  - title: Version History
-    details: Full document history with archived snapshots of every major version. Track the evolution from EmMittr growth engine to Capacitr governance protocol.
-    link: /versions/
-    linkText: Browse Versions
 ---

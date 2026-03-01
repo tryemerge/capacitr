@@ -1,0 +1,51 @@
+@media print {
+  /* Hide VitePress chrome */
+  .VPNav,
+  .VPSidebar,
+  .VPFooter,
+  .VPDocFooter,
+  .VPLocalNav,
+  .giscus-container,
+  .export-buttons,
+  .aside,
+  .VPDocAside {
+    display: none !important;
+  }
+
+  /* Full-width content */
+  .VPDoc .container,
+  .VPDoc .content-container,
+  .VPContent,
+  .VPDoc {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .vp-doc {
+    padding: 0 !important;
+  }
+
+  /* Clean typography */
+  body {
+    font-family: Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.5;
+    color: #000 !important;
+    background: #fff !important;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  /* Prevent page breaks inside elements */
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  table, figure, img {
+    page-break-inside: avoid;
+  }
+}

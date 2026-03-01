@@ -4,6 +4,8 @@ version: 0.1.0
 date: 2026-02-27
 ---
 
+<ExportButtons filename="Capacitr_Brief_v0.1.0" />
+
 # Capacitr
 
 *The first protocol where investing in a project means governing it.*

@@ -1,0 +1,48 @@
+/* ── Whitepaper title block ──────────────────────────────────── */
+.wp-title {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.wp-title h1 {
+  font-size: 2.5rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.wp-title p {
+  margin: 0.25rem 0;
+  color: var(--vp-c-text-2);
+}
+
+/* ── Whitepaper body typography ─────────────────────────────── */
+.vp-doc h2 {
+  padding-top: 2rem;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.vp-doc h3 {
+  margin-top: 1.75rem;
+}
+
+/* ── Brief title styling ────────────────────────────────────── */
+.bp-title {
+  text-align: center;
+  padding: 2rem 0 1.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.bp-title h1 {
+  font-size: 2.25rem;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.bp-title p {
+  margin: 0.25rem 0;
+  color: var(--vp-c-text-2);
+}

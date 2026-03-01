@@ -1,6 +1,6 @@
-import { defineConfig } from 'vitepress'
+import { withMermaid } from 'vitepress-plugin-mermaid'
 
-export default defineConfig({
+export default withMermaid({
   title: 'Capacitr',
   description: 'Governance that pays for itself. Reasoning priced in real time.',
 
@@ -12,52 +12,71 @@ export default defineConfig({
     ['link', { rel: 'stylesheet', href: '/css/styles.css' }],
   ],
 
+  mermaid: {
+    theme: 'dark',
+    securityLevel: 'loose',
+    startOnLoad: true,
+    maxTextSize: 50000,
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+    },
+  },
+
+  vite: {
+    optimizeDeps: {
+      include: ['mermaid'],
+    },
+    ssr: {
+      noExternal: ['mermaid'],
+    },
+  },
+
   themeConfig: {
     search: {
       provider: 'local',
     },
 
+    outline: {
+      level: [2, 3],
+      label: 'Sections',
+    },
+
     nav: [
       { text: 'Brief', link: '/brief/' },
       { text: 'Whitepaper', link: '/whitepaper/' },
-      {
-        text: 'Versions',
-        items: [
-          { text: 'Version History', link: '/versions/' },
-          { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
-          { text: 'Brief Changelog', link: '/versions/brief-changelog' },
-          {
-            text: 'Archived Versions',
-            items: [
-              { text: 'Whitepaper v0.0.16', link: '/versions/whitepaper/v0-0-16' },
-              { text: 'Brief v0.0.3', link: '/versions/brief/v0-0-3' },
-            ],
-          },
-        ],
-      },
+      { text: 'Notes', link: '/notes/' },
     ],
 
     sidebar: {
       '/whitepaper/': [
         {
-          text: 'Whitepaper v0.0.20',
+          text: 'Whitepaper',
           items: [
-            { text: 'Overview', link: '/whitepaper/' },
-            { text: 'The Agentic Economy', link: '/whitepaper/agentic-economy' },
-            { text: 'Executive Summary', link: '/whitepaper/executive-summary' },
-            { text: 'Part I: The Opportunity', link: '/whitepaper/part-1-opportunity' },
-            { text: 'Part II: The EmMittr Model', link: '/whitepaper/part-2-model' },
-            { text: 'Part III: Work — Three Classes', link: '/whitepaper/part-3-work' },
-            { text: 'Part IV: Implementation', link: '/whitepaper/part-4-implementation' },
-            { text: 'Part V: Use Cases', link: '/whitepaper/part-5-use-cases' },
-            { text: 'Part VI: Why Agents', link: '/whitepaper/part-6-agents' },
-            { text: 'Part VII: Proof of Good Judgement', link: '/whitepaper/part-7-proof-of-good-judgement' },
-            { text: 'Part VIII: Competitive Landscape', link: '/whitepaper/part-8-competitive' },
-            { text: 'Part IX: Questions and Risks', link: '/whitepaper/part-9-questions-and-risks' },
-            { text: 'Part X: Roadmap', link: '/whitepaper/part-10-roadmap' },
-            { text: 'Conclusion', link: '/whitepaper/conclusion' },
-            { text: 'Glossary', link: '/whitepaper/glossary' },
-            { text: 'Appendix B: Investor Questions', link: '/whitepaper/appendix-b-investor-questions' },
+            { text: 'v0.0.20 (current)', link: '/whitepaper/' },
+          ],
+        },
+        {
+          text: 'Version Archive',
+          collapsed: false,
+          items: [
+            { text: 'v0.0.19', link: '/versions/whitepaper/v0-0-19' },
+            { text: 'v0.0.18', link: '/versions/whitepaper/v0-0-18' },
+            { text: 'v0.0.17', link: '/versions/whitepaper/v0-0-17' },
+            { text: 'v0.0.16', link: '/versions/whitepaper/v0-0-16' },
+            { text: 'v0.0.15', link: '/versions/whitepaper/v0-0-15' },
+            { text: 'v0.0.14', link: '/versions/whitepaper/v0-0-14' },
+            { text: 'v0.0.13', link: '/versions/whitepaper/v0-0-13' },
+            { text: 'v0.0.12', link: '/versions/whitepaper/v0-0-12' },
+            { text: 'v0.0.11', link: '/versions/whitepaper/v0-0-11' },
+            { text: 'v0.0.10', link: '/versions/whitepaper/v0-0-10' },
+            { text: 'v0.0.9', link: '/versions/whitepaper/v0-0-9' },
+            { text: 'v0.0.8', link: '/versions/whitepaper/v0-0-8' },
+            { text: 'v0.0.7', link: '/versions/whitepaper/v0-0-7' },
+            { text: 'v0.0.6', link: '/versions/whitepaper/v0-0-6' },
+            { text: 'v0.0.5', link: '/versions/whitepaper/v0-0-5' },
+            { text: 'v0.0.4', link: '/versions/whitepaper/v0-0-4' },
+            { text: 'v0.0.3', link: '/versions/whitepaper/v0-0-3' },
           ],
         },
       ],
@@ -68,21 +87,80 @@ export default defineConfig({
             { text: 'Capacitr Brief v0.1.0', link: '/brief/' },
           ],
         },
-      ],
-      '/versions/': [
         {
-          text: 'Version History',
+          text: 'Version Archive',
+          collapsed: true,
           items: [
-            { text: 'Overview', link: '/versions/' },
+            { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
+          ],
+        },
+      ],
+      '/notes/': [
+        {
+          text: 'Notes',
+          items: [
+            { text: 'Overview', link: '/notes/' },
+            { text: 'System Diagrams', link: '/notes/system-diagrams' },
+          ],
+        },
+        {
+          text: 'Changelogs',
+          items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
           ],
         },
         {
-          text: 'Archived Versions',
+          text: 'Version History',
+          collapsed: true,
           items: [
-            { text: 'Whitepaper v0.0.16', link: '/versions/whitepaper/v0-0-16' },
-            { text: 'Brief v0.0.3', link: '/versions/brief/v0-0-3' },
+            { text: 'All Versions', link: '/versions/' },
+          ],
+        },
+      ],
+      '/versions/': [
+        {
+          text: 'Notes',
+          items: [
+            { text: 'Overview', link: '/notes/' },
+          ],
+        },
+        {
+          text: 'Changelogs',
+          items: [
+            { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
+            { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+          ],
+        },
+        {
+          text: 'Whitepaper Versions',
+          collapsed: false,
+          items: [
+            { text: 'v0.0.20 (current)', link: '/versions/whitepaper/v0-0-20' },
+            { text: 'v0.0.19', link: '/versions/whitepaper/v0-0-19' },
+            { text: 'v0.0.18', link: '/versions/whitepaper/v0-0-18' },
+            { text: 'v0.0.17', link: '/versions/whitepaper/v0-0-17' },
+            { text: 'v0.0.16', link: '/versions/whitepaper/v0-0-16' },
+            { text: 'v0.0.15', link: '/versions/whitepaper/v0-0-15' },
+            { text: 'v0.0.14', link: '/versions/whitepaper/v0-0-14' },
+            { text: 'v0.0.13', link: '/versions/whitepaper/v0-0-13' },
+            { text: 'v0.0.12', link: '/versions/whitepaper/v0-0-12' },
+            { text: 'v0.0.11', link: '/versions/whitepaper/v0-0-11' },
+            { text: 'v0.0.10', link: '/versions/whitepaper/v0-0-10' },
+            { text: 'v0.0.9', link: '/versions/whitepaper/v0-0-9' },
+            { text: 'v0.0.8', link: '/versions/whitepaper/v0-0-8' },
+            { text: 'v0.0.7', link: '/versions/whitepaper/v0-0-7' },
+            { text: 'v0.0.6', link: '/versions/whitepaper/v0-0-6' },
+            { text: 'v0.0.5', link: '/versions/whitepaper/v0-0-5' },
+            { text: 'v0.0.4', link: '/versions/whitepaper/v0-0-4' },
+            { text: 'v0.0.3', link: '/versions/whitepaper/v0-0-3' },
+          ],
+        },
+        {
+          text: 'Brief Versions',
+          collapsed: true,
+          items: [
+            { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
           ],
         },
       ],
@@ -94,5 +172,14 @@ export default defineConfig({
     },
   },
 
-  srcExclude: ['**/dist/**'],
+  srcExclude: [
+    '**/dist/**',
+    // Section files are included into whitepaper/index.md — don't generate standalone pages
+    'whitepaper/agentic-economy.md',
+    'whitepaper/executive-summary.md',
+    'whitepaper/part-*.md',
+    'whitepaper/conclusion.md',
+    'whitepaper/glossary.md',
+    'whitepaper/appendix-b-investor-questions.md',
+  ],
 })
