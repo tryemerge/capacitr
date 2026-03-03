@@ -1,0 +1,14 @@
+layout {
+    tab name="Development" {
+        pane split_direction="horizontal" {
+            pane name="Docs" {
+                command "bash"
+                args "-c" "cd /Users/the_dusky/code/sandbox/capacitr/apps/docs && pnpm dev"
+            }
+            pane name="Sim" {
+                command "bash"
+                args "-c" "cd /Users/the_dusky/code/sandbox/capacitr/apps/sim && pnpm dev"
+            }
+        }
+    }
+}

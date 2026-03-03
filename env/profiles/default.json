@@ -1,8 +1,5 @@
 {
   "name": "Default",
-  "description": "All available components",
-  "components": [
-    "database",
-    "redis"
-  ]
+  "description": "Local development",
+  "components": []
 }

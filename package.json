@@ -17,7 +17,7 @@
     "start": "ce run --profile default -- turbo start"
   },
   "devDependencies": {
-    "composable.env": "0.5.6",
+    "composable.env": "0.6.0",
     "turbo": "^2"
   }
 }

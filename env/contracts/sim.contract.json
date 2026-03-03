@@ -1,6 +1,10 @@
 {
   "name": "sim",
   "location": "apps/sim",
+  "dev": {
+    "command": "pnpm dev",
+    "label": "Sim"
+  },
   "required": {},
   "optional": {
     "PORT": "SIM_PORT",
