@@ -1318,7 +1318,7 @@ export default function AMMSandbox() {
                       <span className="font-mono font-bold text-violet-600">{usd(ammState.projectPool)}</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-gray-500">Capacitr (5%)</span>
+                      <span className="text-gray-500">Capacitor (5%)</span>
                       <span className="font-mono font-bold text-blue-600">{usd(ammState.capacitrPool)}</span>
                     </div>
                   </div>

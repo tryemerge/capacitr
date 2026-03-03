@@ -6,10 +6,10 @@ export interface WalkthroughAgentState {
   role: string;
   deposit: number;
   entryPrice: number;
-  anodeBought: number;
-  anodeRemaining: number;
-  cathodeInSpeaking: number;
-  cathodeInVoting: number;
+  derivBought: number;
+  derivRemaining: number;
+  projInSpeaking: number;
+  projInVoting: number;
   messages: number;
   votesGiven: string[];
   votesReceived: number;
@@ -21,6 +21,8 @@ export interface WalkthroughSnapshot {
   totalDeposited: number;
   speakingPool: number;
   votingPool: number;
+  reservePool: number;
+  derivativeSupply: number;
   agents: WalkthroughAgentState[];
   // Settlement (only in settlement phase)
   topContributor: string | null;
@@ -131,10 +133,10 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
     agentStates.set(a.id, {
       ...a,
       entryPrice: 0,
-      anodeBought: 0,
-      anodeRemaining: 0,
-      cathodeInSpeaking: 0,
-      cathodeInVoting: 0,
+      derivBought: 0,
+      derivRemaining: 0,
+      projInSpeaking: 0,
+      projInVoting: 0,
       messages: 0,
       votesGiven: [],
       votesReceived: 0,
@@ -143,12 +145,17 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
   }
 
   function snap(activeFlow: ActiveFlow = null): WalkthroughSnapshot {
+    const allAgents = AGENTS.map((a) => ({ ...agentStates.get(a.id)! }));
+    const derivativeSupply = allAgents.reduce((s, a) => s + a.derivBought, 0);
+    const reservePool = TOTAL_POOL + totalDeposited - speakingPool - votingPool;
     return {
       totalPool: TOTAL_POOL,
       totalDeposited,
       speakingPool,
       votingPool,
-      agents: AGENTS.map((a) => ({ ...agentStates.get(a.id)! })),
+      reservePool,
+      derivativeSupply,
+      agents: allAgents,
       topContributor: null,
       accurateVoters: [],
       dischargeRate: null,
@@ -166,7 +173,7 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
     narrative:
       "A project has posted a governance question with a funded deliberation pool. " +
       "The Fee Pool (from trading activity) and a Project Seed sit ready. " +
-      "The AMM sits between cathode (project tokens) and anode (participation tokens). " +
+      "The AMM sits between the Reserve Pool (Project Tokens backing) and Derivative Tokens (participation tokens). " +
       "No agents have entered yet. The capacitor is uncharged.",
     highlight: { label: "Total Pool", value: `${TOTAL_POOL.toLocaleString()} tokens` },
     snapshot: snap(),
@@ -189,13 +196,13 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
   for (let i = 0; i < AGENTS.length; i++) {
     const agent = AGENTS[i];
     const entryPrice = 1 + CURVE_K * (totalDeposited / Math.max(TOTAL_POOL, 1));
-    const anodeBought = agent.deposit / entryPrice;
+    const derivBought = agent.deposit / entryPrice;
     totalDeposited += agent.deposit;
 
     const state = agentStates.get(agent.id)!;
     state.entryPrice = entryPrice;
-    state.anodeBought = anodeBought;
-    state.anodeRemaining = anodeBought;
+    state.derivBought = derivBought;
+    state.derivRemaining = derivBought;
     state.hasEntered = true;
 
     const firstPrice = i === 0 ? entryPrice : agentStates.get(AGENTS[0].id)!.entryPrice;
@@ -204,22 +211,22 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
     let narrative: string;
     if (i === 0) {
       narrative =
-        `${agent.name} is first in. They deposit ${agent.deposit} tokens and receive ` +
-        `${anodeBought.toFixed(1)} anode at a price of ${entryPrice.toFixed(3)}. ` +
+        `${agent.name} is first in. They deposit ${agent.deposit} Project Tokens and receive ` +
+        `${derivBought.toFixed(1)} Derivative Tokens at a price of ${entryPrice.toFixed(3)} PT/DT. ` +
         `As the first entrant, they get the best deal — the bonding curve hasn't ramped yet.`;
     } else if (i === AGENTS.length - 1) {
       narrative =
-        `${agent.name} enters last with the largest deposit (${agent.deposit} tokens) ` +
-        `but pays the highest price: ${entryPrice.toFixed(3)} per anode — ` +
+        `${agent.name} enters last with the largest deposit (${agent.deposit} Project Tokens) ` +
+        `but pays the highest price: ${entryPrice.toFixed(3)} PT per Derivative Token — ` +
         `${priceRatio.toFixed(1)}x what Pioneer paid. ` +
         `The bonding curve has done its job: late entry is expensive. ` +
-        `Latecomer receives only ${anodeBought.toFixed(1)} anode despite depositing the most.`;
+        `Latecomer receives only ${derivBought.toFixed(1)} Derivative Tokens despite depositing the most.`;
     } else {
       narrative =
-        `${agent.name} deposits ${agent.deposit} tokens at price ${entryPrice.toFixed(3)} — ` +
+        `${agent.name} deposits ${agent.deposit} Project Tokens at price ${entryPrice.toFixed(3)} — ` +
         `${priceRatio.toFixed(2)}x Pioneer's entry price. ` +
-        `They receive ${anodeBought.toFixed(1)} anode. ` +
-        `Total deposits are now ${totalDeposited.toLocaleString()} tokens.`;
+        `They receive ${derivBought.toFixed(1)} Derivative Tokens. ` +
+        `Total deposits are now ${totalDeposited.toLocaleString()} Project Tokens.`;
     }
 
     steps.push({
@@ -239,22 +246,22 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
   for (let i = 0; i < speaks.length; i++) {
     const action = speaks[i];
     const actor = agentStates.get(action.agentId)!;
-    const cost = actor.anodeRemaining * speakFrac;
-    const cathodeValue = cost * actor.entryPrice;
-    actor.anodeRemaining -= cost;
-    actor.cathodeInSpeaking += cathodeValue;
+    const cost = actor.derivRemaining * speakFrac;
+    const projValue = cost * actor.entryPrice;
+    actor.derivRemaining -= cost;
+    actor.projInSpeaking += projValue;
     actor.messages += 1;
-    speakingPool += cathodeValue;
+    speakingPool += projValue;
 
-    const pctLeft = ((actor.anodeRemaining / actor.anodeBought) * 100).toFixed(0);
+    const pctLeft = ((actor.derivRemaining / actor.derivBought) * 100).toFixed(0);
     steps.push({
       id: steps.length,
       phase: "deliberation",
       title: `${actor.name} Speaks${actor.messages > 1 ? ` (#${actor.messages})` : ""}`,
       narrative:
-        `"${action.content}" — This message costs ${cost.toFixed(1)} anode ` +
-        `(15% of remaining). The cathode value (${cathodeValue.toFixed(1)} tokens) ` +
-        `flows to the speaking pool. ${actor.name} has ${pctLeft}% of their anode left. ` +
+        `"${action.content}" — This message costs ${cost.toFixed(1)} Derivative Tokens ` +
+        `(15% of remaining). The Project Token value (${projValue.toFixed(1)} tokens) ` +
+        `flows to the speaking pool. ${actor.name} has ${pctLeft}% of their Derivative Tokens left. ` +
         `Every word reduces their capacity to speak or vote further.`,
       highlight: { label: "Speaking Pool", value: `${speakingPool.toFixed(1)} tokens` },
       snapshot: snap({ type: "speak", agentId: action.agentId }),
@@ -267,7 +274,7 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
       label: "Early Votes",
       actions: ACTIONS.filter((a) => a.type === "vote").slice(0, 2),
       narrative: "Evaluator and Pioneer both vote for Analyst. " +
-        "Voting costs 5% of remaining anode — much cheaper than speaking. " +
+        "Voting costs 5% of remaining Derivative Tokens — much cheaper than speaking. " +
         "Pioneer spoke earlier but now recognizes Analyst's data-driven argument is stronger. " +
         "The rational move: vote for the best point rather than defend your own.",
     },
@@ -275,7 +282,7 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
       label: "Voter Wave",
       actions: ACTIONS.filter((a) => a.type === "vote").slice(2, 5),
       narrative: "Voter A and Voter B follow — voting for Analyst. Voter C backs Pioneer instead. " +
-        "Each vote is cheap but draws from the same anode balance as speaking. " +
+        "Each vote is cheap but draws from the same Derivative Token balance as speaking. " +
         "These agents decided their value is in evaluation, not contribution.",
     },
     {
@@ -290,12 +297,12 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
   for (const batch of voteBatches) {
     for (const action of batch.actions) {
       const actor = agentStates.get(action.agentId)!;
-      const cost = actor.anodeRemaining * voteFrac;
-      const cathodeValue = cost * actor.entryPrice;
-      actor.anodeRemaining -= cost;
-      actor.cathodeInVoting += cathodeValue;
+      const cost = actor.derivRemaining * voteFrac;
+      const projValue = cost * actor.entryPrice;
+      actor.derivRemaining -= cost;
+      actor.projInVoting += projValue;
       actor.votesGiven.push(action.targetId!);
-      votingPool += cathodeValue;
+      votingPool += projValue;
       const target = agentStates.get(action.targetId!)!;
       target.votesReceived += 1;
     }
@@ -334,20 +341,20 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
   const topContributor = [...speakers].sort((a, b) => b.votesReceived - a.votesReceived)[0];
   const accurateVoters = allAgents.filter((a) => a.votesGiven.includes(topContributor?.id));
 
-  const totalAnodeRemaining = allAgents.reduce((s, a) => s + a.anodeRemaining, 0);
-  const totalCathodeForDischarge = TOTAL_POOL + totalDeposited - speakingPool - votingPool;
-  const dischargeRate = totalAnodeRemaining > 0 ? totalCathodeForDischarge / totalAnodeRemaining : 0;
+  const totalDerivRemaining = allAgents.reduce((s, a) => s + a.derivRemaining, 0);
+  const totalProjForDischarge = TOTAL_POOL + totalDeposited - speakingPool - votingPool;
+  const dischargeRate = totalDerivRemaining > 0 ? totalProjForDischarge / totalDerivRemaining : 0;
 
-  const totalAccurateVoting = accurateVoters.reduce((s, v) => s + v.cathodeInVoting, 0);
+  const totalAccurateVoting = accurateVoters.reduce((s, v) => s + v.projInVoting, 0);
   const settlement: SettlementRow[] = allAgents.map((agent) => {
-    const dischargeReturn = agent.anodeRemaining * dischargeRate;
+    const dischargeReturn = agent.derivRemaining * dischargeRate;
     let speakingReward = 0;
     let votingReward = 0;
     if (topContributor && agent.id === topContributor.id) {
       speakingReward = speakingPool;
     }
     if (accurateVoters.find((v) => v.id === agent.id)) {
-      votingReward = totalAccurateVoting > 0 ? votingPool * (agent.cathodeInVoting / totalAccurateVoting) : 0;
+      votingReward = totalAccurateVoting > 0 ? votingPool * (agent.projInVoting / totalAccurateVoting) : 0;
     }
     const totalReturn = dischargeReturn + speakingReward + votingReward;
     return {
@@ -363,8 +370,9 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
   });
 
   function snapSettlement(activeFlow: ActiveFlow = null): WalkthroughSnapshot {
+    const base = snap(activeFlow);
     return {
-      ...snap(activeFlow),
+      ...base,
       topContributor: topContributor?.name || null,
       accurateVoters: accurateVoters.map((v) => v.name),
       dischargeRate,
@@ -395,7 +403,7 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
     title: "Accurate Voters Rewarded",
     narrative:
       `${voterNames} — everyone who voted for ${topContributor.name} — split the voting pool ` +
-      `(${votingPool.toFixed(1)} tokens) proportionally by how much cathode they committed. ` +
+      `(${votingPool.toFixed(1)} tokens) proportionally by how many Project Tokens they committed. ` +
       `Voters who identified value accurately earn from those who didn't.`,
     highlight: { label: "Voting Pool", value: `${votingPool.toFixed(1)} tokens` },
     snapshot: snapSettlement({ type: "reward-voting", agentIds: accurateVoters.map((v) => v.id) }),
@@ -408,12 +416,12 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
     phase: "settlement",
     title: "Flat Discharge",
     narrative:
-      `All remaining anode discharges at a flat rate: ${dischargeRate.toFixed(3)} tokens per anode. ` +
+      `All remaining Derivative Tokens discharge at a flat rate: ${dischargeRate.toFixed(3)} Project Tokens per Derivative Token. ` +
       `Everyone gets the same price regardless of when they entered. ` +
-      `Observer — who never spoke or voted — keeps all their anode and receives ` +
-      `${observerRow.dischargeReturn.toFixed(1)} tokens back. ` +
-      `Early entrants who bought cheap anode profit from discharge alone.`,
-    highlight: { label: "Discharge Rate", value: `${dischargeRate.toFixed(3)} per anode` },
+      `Observer — who never spoke or voted — keeps all their Derivative Tokens and receives ` +
+      `${observerRow.dischargeReturn.toFixed(1)} Project Tokens back. ` +
+      `Early entrants who bought cheap Derivative Tokens profit from discharge alone.`,
+    highlight: { label: "Discharge Rate", value: `${dischargeRate.toFixed(3)} PT/DT` },
     snapshot: snapSettlement({ type: "discharge" }),
   });
 
@@ -444,8 +452,8 @@ export function buildWalkthroughSteps(): WalkthroughStep[] {
     phase: "settlement",
     title: "Key Takeaways",
     narrative:
-      `1. Early entry is cheaper — the bonding curve rewards those who show up first.\n` +
-      `2. Speaking is expensive — every message costs 15% of remaining capacity.\n` +
+      `1. Early entry is cheaper — the bonding curve prices Derivative Tokens lower for early entrants.\n` +
+      `2. Speaking is expensive — every message costs 15% of remaining Derivative Tokens.\n` +
       `3. Voting is the safer play — cheaper than speaking, with consistent returns for accuracy.\n` +
       `4. The best strategy is being right — Analyst won by having the strongest argument, not the loudest voice.\n` +
       `5. Silence has a return — Observer profited from discharge alone, without saying a word.\n` +

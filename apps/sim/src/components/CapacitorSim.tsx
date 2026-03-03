@@ -313,7 +313,7 @@ export default function CapacitorSim() {
         </div>
 
         <div className="mt-6 text-center text-[10px] text-slate-300">
-          Capacitr Deliberation Simulator v0.1
+          Capacitor Deliberation Simulator v0.1
         </div>
       </div>
     </div>

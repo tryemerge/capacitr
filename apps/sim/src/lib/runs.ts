@@ -67,6 +67,10 @@ export interface DelibOutcome {
   openedAtRound: number;
   settledAtRound: number;
   duration: number;
+  // Adversarial analysis fields
+  speakerCount: number;          // unique speakers in this deliberation
+  winnerVoteCount: number;       // votes received by the winner
+  speakerVoteCounts: number[];   // all speaker vote counts (for median calculation)
 }
 
 export interface RunSummary {
@@ -111,7 +115,12 @@ export const DEFAULT_RUN_CONFIG: RunConfig = {
   name: "",
   targetRounds: 200,
   ammConfig: { ...DEFAULT_CONFIG },
-  botDistribution: BOT_DISTRIBUTION.map((b) => ({ ...b })),
+  // Adversarial profiles included at count=0 so they appear in the editor but don't run by default
+  botDistribution: [
+    ...BOT_DISTRIBUTION.map((b) => ({ ...b })),
+    { profileType: "FreeRider", count: 0, usdc: 500 },
+    { profileType: "SybilOperator", count: 0, usdc: 500 },
+  ],
 };
 
 // ── Snapshot Capture ────────────────────────────────────────────────
@@ -201,6 +210,8 @@ export function computeSummary(
         ...Object.keys(d.speakerActivity),
         ...Object.values(d.speakerVotes).flat(),
       ]).size;
+      const speakerVoteCounts = Object.values(d.speakerVotes).map((v) => v.length);
+      const winnerVoteCount = d.speakerVotes[s.winnerId]?.length ?? 0;
       return {
         id: d.id,
         title: d.title,
@@ -217,6 +228,9 @@ export function computeSummary(
         openedAtRound: d.openedAtRound,
         settledAtRound: d.settledAtRound ?? 0,
         duration: (d.settledAtRound ?? 0) - d.openedAtRound,
+        speakerCount: Object.keys(d.speakerActivity).length,
+        winnerVoteCount,
+        speakerVoteCounts,
       };
     });
 

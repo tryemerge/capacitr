@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import {
   type RunConfig,
   type RoundSnapshot,
@@ -26,6 +26,13 @@ import {
   saveRun,
   deleteRun,
 } from "@/lib/runs";
+import {
+  analyzeFreeRider,
+  analyzeSybil,
+  analyzeSpeakingEquilibrium,
+  analyzeDeathSpiral,
+  type AdversarialResult,
+} from "@/lib/adversarial";
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
@@ -567,6 +574,55 @@ function ActivityFeed({ state }: { state: SimulationState }) {
   );
 }
 
+// ── Adversarial Card ────────────────────────────────────────────────
+
+function AdversarialCard({ result }: { result: AdversarialResult }) {
+  const riskBg: Record<string, string> = {
+    low: "border-emerald-200 bg-emerald-50",
+    medium: "border-amber-200 bg-amber-50",
+    high: "border-orange-200 bg-orange-50",
+    critical: "border-red-200 bg-red-50",
+  };
+  const riskBadge: Record<string, string> = {
+    low: "bg-emerald-100 text-emerald-700",
+    medium: "bg-amber-100 text-amber-700",
+    high: "bg-orange-100 text-orange-700",
+    critical: "bg-red-100 text-red-700",
+  };
+
+  // Contextual metric label
+  let metricLabel = "";
+  if (result.scenarioName === "Speaking Equilibrium") {
+    metricLabel = `${fmt(result.roi, 1)} avg speakers`;
+  } else if (result.scenarioName === "Death Spiral") {
+    metricLabel = `${fmt(result.roi * 100, 0)}% spiral rate`;
+  } else {
+    metricLabel = `${fmt(result.roi, 2)}× ROI`;
+  }
+
+  return (
+    <div className={`rounded-lg border p-3 ${riskBg[result.riskLevel]}`}>
+      <div className="flex items-start justify-between mb-2">
+        <span className="text-[11px] font-bold text-gray-800">{result.scenarioName}</span>
+        <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded shrink-0 ml-2 uppercase ${riskBadge[result.riskLevel]}`}>
+          {result.riskLevel}
+        </span>
+      </div>
+      <div className="flex items-center gap-2 mb-1.5">
+        {result.profitable && (
+          <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-600 text-white">
+            THREAT
+          </span>
+        )}
+        <span className="font-mono text-[10px] font-medium text-gray-700">
+          {metricLabel}
+        </span>
+      </div>
+      <p className="text-[9px] text-gray-500 leading-relaxed">{result.details}</p>
+    </div>
+  );
+}
+
 // ── Analysis Dashboard ──────────────────────────────────────────────
 
 function AnalysisDashboard({
@@ -578,6 +634,16 @@ function AnalysisDashboard({
   snapshots: RoundSnapshot[];
   config: RunConfig;
 }) {
+  const adversarial = useMemo(() => {
+    if (summary.deliberationOutcomes.length === 0) return null;
+    return {
+      freeRider: analyzeFreeRider(snapshots, summary),
+      sybil: analyzeSybil(snapshots, summary),
+      equilibrium: analyzeSpeakingEquilibrium(summary.deliberationOutcomes),
+      deathSpiral: analyzeDeathSpiral(snapshots, summary.deliberationOutcomes),
+    };
+  }, [summary, snapshots]);
+
   return (
     <div className="space-y-4">
       <h2 className="text-sm font-bold text-gray-800">Run Analysis</h2>
@@ -815,6 +881,21 @@ function AnalysisDashboard({
           />
         </div>
       </div>
+
+      {/* Adversarial Analysis */}
+      {adversarial && (
+        <div className="bg-white rounded-xl border border-gray-200 p-4">
+          <div className="text-[10px] text-gray-400 uppercase tracking-wider mb-3">
+            Adversarial Analysis
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <AdversarialCard result={adversarial.freeRider} />
+            <AdversarialCard result={adversarial.sybil} />
+            <AdversarialCard result={adversarial.equilibrium} />
+            <AdversarialCard result={adversarial.deathSpiral} />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

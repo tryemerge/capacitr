@@ -3,8 +3,8 @@ import "./globals.css";
 import { SideNav } from "@/components/SideNav";
 
 export const metadata: Metadata = {
-  title: "Capacitor Deliberation Simulator",
-  description: "Model token flows through governance deliberation",
+  title: "Capacitor Simulator",
+  description: "Model token flows through launchpad economics and governance deliberation",
 };
 
 export default function RootLayout({

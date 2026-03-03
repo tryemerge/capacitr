@@ -132,6 +132,31 @@ export const PROFILES: Record<string, Omit<AgentProfile, "type">> = {
     minRound: 10,
     buySizePct: [0.1, 0.35],
   },
+  // ── Adversarial profiles (not in default BOT_DISTRIBUTION) ──────────
+  FreeRider: {
+    buyProb: 0.3,
+    buyAnodeProb: 0.2,
+    discussProb: 0.0,
+    proposeProb: 0.0,
+    voteProposalProb: 0.0,
+    speakProb: 0.0,
+    voteDelibProb: 0.0,
+    exitProb: 0.0,
+    minRound: 0,
+    buySizePct: [0.1, 0.25],
+  },
+  SybilOperator: {
+    buyProb: 0.4,
+    buyAnodeProb: 0.35,
+    discussProb: 0.05,
+    proposeProb: 0.0,
+    voteProposalProb: 0.1,
+    speakProb: 0.5,
+    voteDelibProb: 0.8,
+    exitProb: 0.0,
+    minRound: 0,
+    buySizePct: [0.1, 0.3],
+  },
 };
 
 // ── Canned Data ─────────────────────────────────────────────────────

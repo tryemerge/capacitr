@@ -129,7 +129,7 @@ function AgentCard({
     );
   }
 
-  const anodePct = agent.anodeBought > 0 ? (agent.anodeRemaining / agent.anodeBought) * 100 : 0;
+  const derivPct = agent.derivBought > 0 ? (agent.derivRemaining / agent.derivBought) * 100 : 0;
   const borderColor = isActive
     ? "border-indigo-400 bg-indigo-50 shadow-sm"
     : isWinner
@@ -150,10 +150,10 @@ function AgentCard({
         <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden">
           <div
             className="h-full bg-indigo-400 rounded-full transition-all duration-500"
-            style={{ width: `${anodePct}%` }}
+            style={{ width: `${derivPct}%` }}
           />
         </div>
-        <span className="text-[9px] font-mono text-gray-500">{anodePct.toFixed(0)}%</span>
+        <span className="text-[9px] font-mono text-gray-500">{derivPct.toFixed(0)}%</span>
       </div>
       <div className="mt-0.5 flex gap-1.5 text-[9px] text-gray-400">
         {agent.messages > 0 && <span>💬{agent.messages}</span>}
@@ -201,8 +201,14 @@ function FlowDiagram({ snapshot, phase }: { snapshot: WalkthroughSnapshot; phase
 
         <FlowArrow active={phase === "intro" || isEntry} />
 
-        {/* AMM (center) */}
+        {/* Reserve + AMM + Derivative */}
         <div className="flex flex-col items-center gap-1">
+          <FlowNode
+            label="Reserve Pool"
+            value={snapshot.reservePool > 0 ? snapshot.reservePool.toFixed(0) : "—"}
+            color="blue"
+            active={isEntry || isDischarge}
+          />
           <FlowNode
             label="AMM"
             value={depositsValue}
@@ -210,7 +216,12 @@ function FlowDiagram({ snapshot, phase }: { snapshot: WalkthroughSnapshot; phase
             active={isEntry || isSpeak || isVote}
             size="large"
           />
-          <div className="text-[9px] text-gray-400 italic">dielectric</div>
+          <FlowNode
+            label="Deriv. Supply"
+            value={snapshot.derivativeSupply > 0 ? snapshot.derivativeSupply.toFixed(0) : "—"}
+            color="indigo"
+            active={isEntry}
+          />
         </div>
 
         <FlowArrow active={isSpeak || isVote || isRewardSpeaking || isRewardVoting} />
@@ -256,7 +267,7 @@ function FlowDiagram({ snapshot, phase }: { snapshot: WalkthroughSnapshot; phase
       {/* Agent Flow Arrow */}
       {enteredAgents.length > 0 && (
         <div className="flex justify-center">
-          <FlowArrow active={isEntry} direction="up" label="cathode → anode" />
+          <FlowArrow active={isEntry} direction="up" label="Project Token → Derivative" />
         </div>
       )}
 

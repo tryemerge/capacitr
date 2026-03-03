@@ -241,7 +241,7 @@ export function createDualAMM(config: {
   };
 }
 
-/** Buy cathode: USDC → 1% fee (5% Capacitr USDC, 45% Project USDC, 50% Derivative → Cathode via AMM1) → AMM1 → Cathode */
+/** Buy cathode: USDC → 1% fee (5% Capacitor USDC, 45% Project USDC, 50% Derivative → Cathode via AMM1) → AMM1 → Cathode */
 export function buyCathode(
   state: DualAMMState,
   usdcAmount: number,
@@ -250,7 +250,7 @@ export function buyCathode(
   const fee = usdcAmount * marketFeeRate;
   const effectiveUsdc = usdcAmount - fee;
 
-  // Split fee: 5% Capacitr (USDC), 45% Project (USDC), 50% Derivative (→ Cathode via AMM1)
+  // Split fee: 5% Capacitor (USDC), 45% Project (USDC), 50% Derivative (→ Cathode via AMM1)
   const capacitrFee = fee * 0.05;
   const projectFee = fee * 0.45;
   const derivativeFeeUsdc = fee * 0.50;
@@ -492,7 +492,7 @@ export const DEFAULT_CONFIG = {
   marketReserveUSDC: 50_000,
   marketReserveCathode: 50_000, // locked in AMM1
   marketFeeRate: 0, // internal AMM fee (0 — fee handled externally)
-  marketExternalFeeRate: 0.01, // 1% fee split: 50% Incentive (→Cathode), 45% Project (USDC), 5% Capacitr (USDC)
+  marketExternalFeeRate: 0.01, // 1% fee split: 50% Incentive (→Cathode), 45% Project (USDC), 5% Capacitor (USDC)
   delibReserveCathode: 20_000, // locked in AMM2 (total locked: 50k + 20k = 70k = 70%)
   delibReserveAnode: 1_000,
   delibFeeRate: 0, // internal AMM fee (0 — fee handled externally)
