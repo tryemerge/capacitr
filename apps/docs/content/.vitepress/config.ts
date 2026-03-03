@@ -96,7 +96,7 @@ export default withMermaid({
         {
           text: 'Canonical Tracks',
           items: [
-            { text: 'X — v0.3.2 (Launchpad-First Baseline)', link: '/brief/' },
+            { text: 'X — v0.3.3a (Activity-Market-Making Marketplace)', link: '/brief/' },
             { text: 'V — v0.3.2 (Context-First Coordination Variant)', link: '/versions/brief/v0-3-2' },
           ],
         },
@@ -104,6 +104,8 @@ export default withMermaid({
           text: 'Explorations & Archive',
           collapsed: true,
           items: [
+            { text: 'v0.3.3x (archived prior default)', link: '/versions/brief/v0-3-3x' },
+            { text: 'v0.3.2x (archived prior default)', link: '/versions/brief/v0-3-2x' },
             { text: 'v0.3.1x (archived prior default)', link: '/versions/brief/v0-3-1x' },
             { text: 'v0.3.1d (archived)', link: '/versions/brief/v0-3-1d' },
             { text: 'v0.3.1c (archived)', link: '/versions/brief/v0-3-1c' },
@@ -241,8 +243,10 @@ export default withMermaid({
           text: 'Brief Versions',
           collapsed: true,
           items: [
-            { text: 'v0.3.2-X (current default)', link: '/brief/' },
+            { text: 'v0.3.3a-X (current default)', link: '/brief/' },
             { text: 'v0.3.2-V (alternate canonical)', link: '/versions/brief/v0-3-2' },
+            { text: 'v0.3.3-X (archived prior default)', link: '/versions/brief/v0-3-3x' },
+            { text: 'v0.3.2-X (archived prior default)', link: '/versions/brief/v0-3-2x' },
             { text: 'v0.3.1-X (archived prior default)', link: '/versions/brief/v0-3-1x' },
             { text: 'v0.3.1d (archived)', link: '/versions/brief/v0-3-1d' },
             { text: 'v0.3.1c', link: '/versions/brief/v0-3-1c' },

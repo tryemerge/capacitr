@@ -1,119 +1,150 @@
 ---
 title: Capacitor Brief
-version: 0.3.2
+version: "0.3.3a"
 date: 2026-03-03
 track: X
-subtitle: "Launchpad-First Baseline (Canonical)"
-lineage: "v0.3.1-X -> v0.3.2-X"
+subtitle: "Activity-Market-Making Marketplace (Canonical)"
+lineage: "v0.3.3-X -> v0.3.3a-X"
 ---
 
-<ExportButtons filename="Capacitor_Brief_v0.3.2" />
+<ExportButtons filename="Capacitor_Brief_v0.3.3a" />
 
 # Capacitor
 
-*The people who build a project should own more of it over time.*
-*Track X (canonical): Launchpad-First Baseline*
-*Lineage: v0.3.1-X -> v0.3.2-X*
+*Useful activity should earn fee-linked market exposure over time.*
+*Track X (canonical): Activity-Market-Making Marketplace*
+*Lineage: v0.3.3-X -> v0.3.3a-X*
 
-## The Problem
+## The Gap in Launchpads
 
-Token launches are liquidity events. Value goes in, insiders extract it, the token dies. Platforms like Clanker and pump.fun improved this by sharing trading fees with creators — but the people who actually grow a project still get nothing. The creator earns. The community spends. The relationship is extractive.
+Current launchpads are excellent at starting markets, but weak at rewarding useful post-launch activity.
 
-This is backwards. The people who use a product, promote it, build on top of it, and bring in new users are the ones creating value. They should be accumulating ownership — not just paying for it. And increasingly, the ones doing this work aren't people at all — AI agents build, promote, and serve users around the clock with no way to own what they grow.
+- **pump.fun:** launch velocity and speculation loops
+- **Clanker:** better creator monetization, but limited direct tie between verified app activity and contributor upside
 
-## Capacitor
+What is still missing is a system where:
 
-**Capacitor** is a token launch platform where participation compounds into ownership.
-Within the broader Capacitor stack, this is the **Emitter** (capital-formation) layer.
+1. useful activity earns economic exposure
+2. that exposure improves when the project market is healthy
+3. investors can see activity quality, not just price charts
 
-Projects launch on a bonding curve with zero upfront capital. Every trade generates a 2% fee, split three ways:
+## The Core Mechanic (Explicit)
 
-| Emissions Pool — 40% | Creator — 50% | Protocol — 10% |
-|---|---|---|
-| Auto-compounds into LP position. Never withdrawn. Grows every time someone trades. | Liquid revenue. Undiluted by emissions. 1% of all volume, immediately. | Funds Capacitor operations. |
+Capacitor is a **marketplace for app activity backed by derivative exposure to AMM liquidity**.
 
-Participants who do Work — use the product, create content, complete bounties, bring in users — earn **emissions**. Not airdrops. Not points. Staking derivatives backed by a fee-earning liquidity pool that compounds every time someone trades the token.
+Contributors are not receiving equity-style ownership claims.
+They are earning derivative tokens that map to a fee-producing liquidity position.
 
-Your emission grows in value whether you do anything or not. The pool compounds automatically. The people who helped build the project gradually own more of it.
+### What is being earned
 
-## How It Works
+Contributors earn a derivative reward token tied to the project's AMM liquidity engine:
 
-**Launch.** A creator deploys a token on Capacitor. Single-sided liquidity, bonding curve, 1 ETH market cap. 5% of supply is reserved for the emissions pool. Trading begins immediately.
+- it has exposure to project token performance
+- it has exposure to trading-fee accrual in the pool
+- it uses lock mechanics to align contribution and market depth
 
-**Context.** Before scaled task execution, the project publishes a versioned Context Pack to a Context Repository. The pack defines goals, task rules, verification criteria, and constraints. Tasks reference a specific context version so agents and evaluators are aligned on the same operating contract.
+In plain terms: useful contributors become **partners in market making**, not just bounty claimants.
 
-**Work.** Participants do things that create value. The creator defines what counts — product usage, content creation, referrals, development, community contributions. Every qualifying action earns emissions, priced on a decay curve: early contributors earn more, but late participation is never worthless.
+### What this is not
 
-**Compound.** 40% of every trading fee flows to the emissions pool. The pool auto-compounds — swap half into the other side of the LP pair, mint new LP tokens, add them back. On low-cost chains like Base, compounding happens multiple times per day. The pool earns from two sources: the 40% protocol allocation AND its own LP trading fees.
+- not equity in the legal/company sense
+- not guaranteed governance control by default
+- not a fixed payout disconnected from market performance
 
-**Own.** The creator gets 50% as liquid revenue. They spend it. It doesn't compound. The emissions pool compounds. It never withdraws. Over time, the pool's share of total liquidity grows relative to everyone — including the creator. Time favors the participants.
+Project creators are also not magical owners. They hold token positions and fee rights by mechanism design, while anyone else can buy market exposure.
 
-## The Decay Curve
+## Product Definition
 
-Each emission produces fewer tokens than the last:
+Within the broader Capacitor stack, this brief covers the **Emitter** (capital-formation) layer.
 
-```
-Tokens(n) = Base / (1 + K × n)
-```
+### What a project gets
 
-At K = 0.002, the first Work earns roughly 3x what later Work earns. This creates early-adopter advantage without making late participation worthless. Projects tune K to control how aggressively they reward early contributors.
+1. Token launch rails
+2. Derivative reward rails for contributors
+3. Task marketplace distribution
+4. Public activity telemetry that attracts workers and capital
 
-## Work Is Not One Category
+### What a contributor gets
 
-Not all work has the same marginal value as volume increases:
+1. A directory of live opportunities across projects
+2. Clear task economics (reward, lock, verification, fill rate)
+3. Exposure to both token upside and fee-bearing liquidity growth
 
-| Work Class | Marginal-Value Shape | Example |
-|---|---|---|
-| **Abundant Work** | More is usually better | verified purchases, completed API actions |
-| **Saturating Work** | More helps until it becomes noise | promotion, content, referrals |
-| **Fragile Work** | Too much participation can make outcomes worse | design choice, strategy, governance decisions |
+### What an investor gets
 
-This framing matters because incentive systems should follow the value curve of the work, not a one-size-fits-all model.
+1. Real-time project activity visibility
+2. Spend-to-outcome signals (task spend vs verified completions)
+3. Better read on whether participation is compounding or stalling
 
-For MVP, Capacitor focuses on Abundant + Saturating work using measurable outcomes, reputation, and entry-friction controls. Fragile work remains staged R&D.
+## Marketplace Surface (Yellow Pages for Agentic Work)
 
-## Why Not Clanker / pump.fun
+Capacitor should expose a public market index where agents and humans route effort to the best expected-value opportunities.
 
-**Clanker** shares fees with creators. The creator earns. The community doesn't.
+Each **project card** should include:
 
-**pump.fun** doesn't share fees at all. Pure liquidity extraction.
+- market cap
+- volume
+- fee generation
+- task spend
+- verified completions
+- active contributors
 
-**Capacitor** shares compounding ownership with the community. The creator gets 50% of fees as liquid revenue — better than Clanker. The community gets 40% of fees auto-compounding into an LP position they own through emissions — better than anything.
+Each **task card** should include:
 
-| | Creator revenue | Community ownership | Compounding |
-|---|---|---|---|
-| pump.fun | No | No | No |
-| Clanker | Yes (fees) | No | No |
-| **Capacitor** | **Yes (50% of fees)** | **Yes (emissions)** | **Yes (auto-compound LP)** |
+- reward terms
+- lock terms
+- verification method
+- completion count
+- success/rejection rate
 
-The creator earns more. The community owns more. Both benefit from growth. The incentives are aligned for the first time.
+This is not just a jobs board. It is a live economic map of who is converting capital into real activity.
 
-## The Opportunity
+## The Flywheel
 
-Every token launch platform proves the demand exists. Clanker did $600M+ in volume. pump.fun did billions. The behavior is there — people want to launch tokens and communities want to participate. What's missing is economics that reward the participants, not just the creators.
+1. Project launches token
+2. Trading generates fees in the AMM
+3. Contributor-linked pool share compounds with market activity
+4. Project posts measurable tasks
+5. Agents/humans complete tasks and earn derivative exposure
+6. Public telemetry updates continuously (activity + fee signals)
+7. Better signal attracts more contributors and more capital
+8. Increased volume feeds the fee engine again
 
-Capacitor is that upgrade. Same launch mechanics. Better economics. The people who build a project end up owning more of it.
+Activity informs investment. Investment informs activity.
 
-The fastest-growing segment of builders won't be human. Agents that serve users, create content, and grow communities are the natural customers for economics that reward participation. Capacitor is built for them.
+## Why This Is Different
 
-The best platforms do more than ship features — they let other teams bring their edge. Plugins are not just extensibility; they are distribution. Every integration partner that builds on Capacitor brings its own users, data, and credibility into the network.
+**pump.fun** optimizes launch speed.
+**Clanker** improves creator economics.
+**Capacitor** ties verified activity to fee-bearing market exposure and makes that loop observable.
 
-### Integration-First, Not Winner-Picking
+No other launchpad currently offers a native system where:
 
-Capacitor should not rely on one exclusive quality or reputation provider. It should be the execution rail where many signal systems compete:
+- contribution rewards are linked to AMM fee-bearing exposure
+- task activity is visible as market intelligence
+- investors can evaluate participation quality, not only price momentum
 
-- signal providers output scores and confidence
-- projects choose which signals to use
-- rewards and access settle through the same on-platform economics
+## MVP Focus
 
-If one provider gets gamed, another can replace it without replacing the platform.
+MVP should prove one thing first:
 
-### Capability-Curve Realism
+Can we run a credible market where measurable activity, derivative exposure, and investment signal reinforce each other?
 
-We are not claiming the fragile-work problem is solved. A small team should ship robust, measurable primitives first and earn the right to add deeper mechanism complexity over time.
+To answer that, focus on:
+
+1. launchpad + derivative reward plumbing
+2. quantitative task settlement with proof
+3. public project/task cards with economic telemetry
+4. simple quality routing (entry friction + baseline reputation/signal)
+
+Fragile qualitative governance remains staged R&D.
+
+## Positioning Line
+
+Capacitor is the first launchpad where doing useful work earns fee-linked exposure to the same market engine investors are pricing.
 
 ---
 
-*The people who build a project should own more of it over time.*
+*Useful activity should earn fee-linked market exposure over time.*
 
-*v0.3.2 — March 2026 — DRAFT*
+*v0.3.3a — March 2026 — DRAFT*

@@ -4,7 +4,7 @@ title: "Brief Version History"
 
 # Brief Version History
 
-Full changelog from v0.0.0 (original EmMittr brief) through v0.3.2 (current alternate canonical variant).
+Full changelog from v0.0.0 (original EmMittr brief) through v0.3.3a (current default canonical variant).
 
 Branching convention: [Brief Versioning Model](/versions/brief-versioning)
 
@@ -14,13 +14,43 @@ Versions with full content snapshots are linked. Other versions are documented b
 
 ## Canonical Tracks (as of 2026-03-03)
 
-- **Track X (default):** [v0.3.2-X](/brief/) — launchpad-first baseline
+- **Track X (default):** [v0.3.3a-X](/brief/) — activity-market-making marketplace
 - **Track V (alternate canonical):** [v0.3.2-V](/versions/brief/v0-3-2) — context-first coordination variant
 
 ---
 
+## v0.3.3a-X — 2026-03-03
+**Capacitor — Activity-market-making marketplace (new default)** — [Read current version](/brief/)
+
+Lineage: `v0.3.3-X -> v0.3.3a-X`
+
+Clarified the core economic mechanic to remove ambiguity around "ownership":
+
+- replaced generic ownership framing with explicit derivative exposure framing
+- stated directly that contributors earn AMM-linked exposure to token performance plus fee accrual
+- clarified that contributors are partners in market making, not equity holders
+- clarified that creator advantage comes from mechanism design and positions, not exclusive ownership status
+- updated positioning and MVP language to center measurable activity + fee-linked market exposure
+
+---
+
+## v0.3.3-X — 2026-03-03
+**Capacitor — Activity-investment marketplace (archived prior default)** — [Read archived snapshot](/versions/brief/v0-3-3x)
+
+Lineage: `v0.3.2-X -> v0.3.3-X`
+
+Reframed the default brief around the market loop between contribution and capital:
+
+- positioned Capacitor as a marketplace for app activity backed by ownership
+- introduced the explicit activity-investment flywheel (activity informs investment, and investment informs activity)
+- added public market-intelligence surface design (`project cards` and `task cards`)
+- sharpened differentiation vs Clanker/pump.fun around tying measurable activity to investable signal
+- tightened MVP focus around launch rails + quantitative settlement + telemetry surface
+
+---
+
 ## v0.3.2-X — 2026-03-03
-**Capacitor — Launchpad-first baseline (updated)** — [Read current version](/brief/)
+**Capacitor — Launchpad-first baseline (archived prior default)** — [Read archived snapshot](/versions/brief/v0-3-2x)
 
 Lineage: `v0.3.1-X -> v0.3.2-X`
 
