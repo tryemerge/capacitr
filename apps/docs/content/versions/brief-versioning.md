@@ -22,10 +22,10 @@ Use a two-part identifier:
 
 Examples:
 
-- `v0.3.1-X` (default canonical track)
-- `v0.3.1-V` (alternate canonical track)
-- `v0.3.1.1-V` (child branch under `v0.3.1-V`)
-- `v0.3.1.1.4-V` (deeper branch path)
+- `v0.3.2-X` (default canonical track)
+- `v0.3.2-V` (alternate canonical track)
+- `v0.3.2.1-V` (child branch under `v0.3.2-V`)
+- `v0.3.2.1.4-V` (deeper branch path)
 
 ## Breadcrumb Lineage
 
@@ -35,9 +35,9 @@ Every canonical or branch brief should declare lineage in the document header or
 
 Examples:
 
-- `Lineage: v0.3.0 -> v0.3.1-X`
-- `Lineage: v0.3.0 -> v0.3.1-V`
-- `Lineage: v0.3.1-V -> v0.3.1.1-V`
+- `Lineage: v0.3.1-X -> v0.3.2-X`
+- `Lineage: v0.3.1d -> v0.3.2-V`
+- `Lineage: v0.3.2-V -> v0.3.2.1-V`
 
 ## Canonical Tracks
 
@@ -46,7 +46,7 @@ Multiple canonical briefs may exist at once.
 Current convention:
 
 - **Track X**: default launchpad-first baseline
-- **Track V**: alternate canonical with stronger coordination-layer bridge
+- **Track V**: alternate canonical with stronger context-first coordination bridge
 
 Canonical tracks are listed in:
 
@@ -65,3 +65,5 @@ Each canonical brief should include:
 
 Historical versions remain untouched in `/versions/brief/`.
 Rebranding or terminology updates apply to current/canonical surfaces, not archived snapshots.
+
+Letter suffixes (`a`, `b`, `c`, `d`) represent revisions of the same base version line (for example `v0.3.1a` through `v0.3.1d`), not a separate track system.

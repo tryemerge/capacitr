@@ -96,14 +96,16 @@ export default withMermaid({
         {
           text: 'Canonical Tracks',
           items: [
-            { text: 'X — v0.3.1 (Launchpad-First Baseline)', link: '/brief/' },
-            { text: 'V — v0.3.1d (Coordination Bridge)', link: '/versions/brief/v0-3-1d' },
+            { text: 'X — v0.3.2 (Launchpad-First Baseline)', link: '/brief/' },
+            { text: 'V — v0.3.2 (Context-First Coordination Variant)', link: '/versions/brief/v0-3-2' },
           ],
         },
         {
           text: 'Explorations & Archive',
           collapsed: true,
           items: [
+            { text: 'v0.3.1x (archived prior default)', link: '/versions/brief/v0-3-1x' },
+            { text: 'v0.3.1d (archived)', link: '/versions/brief/v0-3-1d' },
             { text: 'v0.3.1c (archived)', link: '/versions/brief/v0-3-1c' },
             { text: 'v0.3.1b (archived)', link: '/versions/brief/v0-3-1b' },
             { text: 'v0.3.1a (archived)', link: '/versions/brief/v0-3-1a' },
@@ -120,6 +122,8 @@ export default withMermaid({
           items: [
             { text: 'Overview', link: '/hackathon/' },
             { text: 'MVP Build Brief', link: '/hackathon/mvp-build-brief' },
+            { text: 'MVP Brief Changelog', link: '/hackathon/mvp-build-brief-changelog' },
+            { text: 'Archive', link: '/hackathon/versions/' },
           ],
         },
       ],
@@ -157,6 +161,8 @@ export default withMermaid({
             { text: 'Overview', link: '/planning/impl/' },
             { text: 'v1 2026-03-01 Adversarial Analysis', link: '/planning/impl/v1-2026-03-01-2-adversarial-analysis-impl' },
             { text: 'v1 2026-03-01 Cross-System Integration', link: '/planning/impl/v1-2026-03-01-4-cross-system-integration-impl' },
+            { text: 'v1 2026-03-03 Persistence, Auth, and API Layer', link: '/planning/impl/v1-2026-03-03-1-persistence-auth-api-impl' },
+            { text: 'v1 2026-03-03 OAuth Login and Access Control', link: '/planning/impl/v1-2026-03-03-2-oauth-login-access-control-impl' },
           ],
         },
         {
@@ -235,8 +241,10 @@ export default withMermaid({
           text: 'Brief Versions',
           collapsed: true,
           items: [
-            { text: 'v0.3.1-X (current default)', link: '/brief/' },
-            { text: 'v0.3.1-V (alternate canonical)', link: '/versions/brief/v0-3-1d' },
+            { text: 'v0.3.2-X (current default)', link: '/brief/' },
+            { text: 'v0.3.2-V (alternate canonical)', link: '/versions/brief/v0-3-2' },
+            { text: 'v0.3.1-X (archived prior default)', link: '/versions/brief/v0-3-1x' },
+            { text: 'v0.3.1d (archived)', link: '/versions/brief/v0-3-1d' },
             { text: 'v0.3.1c', link: '/versions/brief/v0-3-1c' },
             { text: 'v0.3.1b', link: '/versions/brief/v0-3-1b' },
             { text: 'v0.3.1a', link: '/versions/brief/v0-3-1a' },

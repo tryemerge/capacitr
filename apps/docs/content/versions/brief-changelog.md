@@ -4,7 +4,7 @@ title: "Brief Version History"
 
 # Brief Version History
 
-Full changelog from v0.0.0 (original EmMittr brief) through v0.3.1 (current Capacitor brief).
+Full changelog from v0.0.0 (original EmMittr brief) through v0.3.2 (current alternate canonical variant).
 
 Branching convention: [Brief Versioning Model](/versions/brief-versioning)
 
@@ -12,17 +12,31 @@ Branching convention: [Brief Versioning Model](/versions/brief-versioning)
 Versions with full content snapshots are linked. Other versions are documented by their changes below.
 :::
 
-## Canonical Tracks (as of 2026-03-02)
+## Canonical Tracks (as of 2026-03-03)
 
-- **Track X (default):** [v0.3.1-X](/brief/) — launchpad-first baseline
-- **Track V (alternate canonical):** [v0.3.1-V](/versions/brief/v0-3-1d) — stronger coordination-layer bridge
+- **Track X (default):** [v0.3.2-X](/brief/) — launchpad-first baseline
+- **Track V (alternate canonical):** [v0.3.2-V](/versions/brief/v0-3-2) — context-first coordination variant
 
 ---
 
-## v0.3.1-X — 2026-03-01
-**Capacitor — Launchpad-first refinements** — [Read current version](/brief/)
+## v0.3.2-X — 2026-03-03
+**Capacitor — Launchpad-first baseline (updated)** — [Read current version](/brief/)
 
-v0.3.1 keeps the v0.3.0 launchpad-first strategy but tightens the bridge to the long-term agent coordination vision.
+Lineage: `v0.3.1-X -> v0.3.2-X`
+
+Updated to align with today's strategy discussion while preserving launchpad-first positioning:
+
+- replaced tier framing with work-value classes (`Abundant`, `Saturating`, `Fragile`)
+- added explicit integration-first stance for external quality/reputation providers
+- added capability-curve realism (ship primitives first, stage fragile-work R&D)
+- retained context-first launch step in the core flow
+
+---
+
+## v0.3.1-X — 2026-03-01 (archived prior default)
+**Capacitor — Launchpad-first refinements** — [Read archived snapshot](/versions/brief/v0-3-1x)
+
+v0.3.1 keeps the v0.3.0 launchpad-first strategy.
 
 **What's new vs v0.3.0:**
 - Added explicit AI-agent framing in Problem and Opportunity sections
@@ -31,12 +45,26 @@ v0.3.1 keeps the v0.3.0 launchpad-first strategy but tightens the bridge to the 
 
 ---
 
-## v0.3.1-V (file: v0.3.1d) — 2026-03-02
-**Capacitor — Coordination bridge canonical variant** — [Read variant](/versions/brief/v0-3-1d)
+## v0.3.2-V (file: v0.3.2) — 2026-03-03
+**Capacitor — Context-first coordination canonical variant** — [Read variant](/versions/brief/v0-3-2)
+
+Lineage: `v0.3.1d -> v0.3.2-V`
+
+Promoted context-first launch flow and reframed the strategy around:
+
+- quality-selection as the core unsolved problem
+- work classes (`Abundant`, `Saturating`, `Fragile`)
+- non-exclusive integration rails for third-party signal providers
+- capability-curve realism (ship primitives now, stage fragile-work R&D)
+
+---
+
+## v0.3.1d — 2026-03-02 (archived)
+**Capacitor — Coordination bridge canonical variant (previous)** — [Read archived variant](/versions/brief/v0-3-1d)
 
 Lineage: `v0.3.0 -> v0.3.1-V`
 
-Generalized hard numeric claims while preserving the capital-formation and "what comes next" bridge.
+Historical canonical before the v0.3.2-V update.
 
 ---
 

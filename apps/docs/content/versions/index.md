@@ -10,15 +10,15 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Document | Version | Date | Status |
 |----------|---------|------|--------|
-| [Capacitor Brief](/brief/) | v0.3.1 | 2026-03-01 | Current |
+| [Capacitor Brief](/brief/) | v0.3.2 | 2026-03-03 | Current |
 | [Capacitor Whitepaper (Emitter Phase)](/whitepaper/) | v0.0.20 | 2026-02-25 | Current |
 
 ## Canonical Brief Tracks
 
 | Track | Canonical Brief | Subtitle | Breadcrumb |
 |-------|------------------|----------|------------|
-| `X` | [v0.3.1-X](/brief/) | Launchpad-First Baseline | `v0.3.0 -> v0.3.1-X` |
-| `V` | [v0.3.1-V](/versions/brief/v0-3-1d) | Coordination Bridge Canonical Variant | `v0.3.0 -> v0.3.1-V` |
+| `X` | [v0.3.2-X](/brief/) | Launchpad-First Baseline | `v0.3.1-X -> v0.3.2-X` |
+| `V` | [v0.3.2-V](/versions/brief/v0-3-2) | Context-First Coordination Variant | `v0.3.1d -> v0.3.2-V` |
 
 ## Whitepaper Versions
 
@@ -47,8 +47,10 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Version | Date | Summary | Content |
 |---------|------|---------|---------|
-| [v0.3.1-X](/brief/) | 2026-03-01 | Capacitor Brief — launchpad-first baseline track | Current |
-| [v0.3.1-V](/versions/brief/v0-3-1d) | 2026-03-02 | Capacitor Brief — coordination bridge canonical variant | Full |
+| [v0.3.2-X](/brief/) | 2026-03-03 | Capacitor Brief — launchpad-first baseline track (updated framing) | Current |
+| [v0.3.2-V](/versions/brief/v0-3-2) | 2026-03-03 | Capacitor Brief — context-first coordination canonical variant | Full |
+| [v0.3.1-X](/versions/brief/v0-3-1x) | 2026-03-01 | Capacitor Brief — prior launchpad-first canonical snapshot (archived) | Full |
+| [v0.3.1d](/versions/brief/v0-3-1d) | 2026-03-02 | Capacitor Brief — prior coordination-bridge canonical variant (archived) | Full |
 | [v0.3.1c](/versions/brief/v0-3-1c) | 2026-03-02 | "What Comes Next" restructure + Work-tier bridge | Full |
 | [v0.3.1b](/versions/brief/v0-3-1b) | 2026-03-02 | Added capital-formation framing and PoGJ transition | Full |
 | [v0.3.1a](/versions/brief/v0-3-1a) | 2026-03-01 | Coordination-layer deep-dive variant | Full |

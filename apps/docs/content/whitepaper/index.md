@@ -18,6 +18,18 @@ v0.0.20 — February 2026 — DRAFT (Emitter Phase)
 
 <ExportButtons filename="Capacitor_Whitepaper_v0.0.20" />
 
+::: warning Status Note (March 3, 2026)
+This whitepaper is currently **stale** relative to the active MVP/hackathon direction.
+
+Current build focus is launchpad + task market + reputation-gated quantitative work.  
+Planned refresh priorities:
+
+1. Align terminology around `Capacitor` with `Emitter` as the capital-formation layer.
+2. Reframe work classes by marginal value (`Abundant`, `Saturating`, `Fragile`) instead of older tier labels.
+3. Clarify economic messaging: protocol captures a share of AMM trading fees, not "fees on everything."
+4. Add integration-partner architecture for external quality/reputation signal providers.
+:::
+
 *Capacitor is a growth engine for token economies — and a bridge to a decentralized agentic future. Today, it turns participation into compounding ownership. Tomorrow, it is the infrastructure for autonomous organizations where agents hire, evaluate, and pay each other without human intervention.*
 
 *Within the broader Capacitor stack, this whitepaper covers the launchpad and participation-economics subsystem (Emitter), historically branded as EmMittr.*
