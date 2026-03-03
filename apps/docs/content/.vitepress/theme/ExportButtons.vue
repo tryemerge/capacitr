@@ -151,18 +151,25 @@ function parseTable(tableEl) {
   const borders = { top: border, bottom: border, left: border, right: border }
   const rows = []
 
+  // Determine column count from first row for even width distribution
+  const firstRow = tableEl.querySelector('tr')
+  const colCount = firstRow ? firstRow.querySelectorAll('th, td').length : 1
+  const colWidthPct = Math.floor(100 / colCount)
+
   for (const tr of tableEl.querySelectorAll('tr')) {
     const cells = []
     for (const td of tr.querySelectorAll('th, td')) {
       const isHeader = td.tagName.toLowerCase() === 'th'
       cells.push(new TableCell({
         borders,
-        margins: { top: 80, bottom: 80, left: 120, right: 120 },
+        width: { size: colWidthPct, type: WidthType.PERCENTAGE },
+        margins: { top: 60, bottom: 60, left: 100, right: 100 },
         children: [new Paragraph({
+          spacing: { after: 0, line: 240 },
           children: [new TextRun({
             text: td.textContent.trim(),
             font: 'Arial',
-            size: 20,
+            size: 18,
             bold: isHeader,
           })],
         })],

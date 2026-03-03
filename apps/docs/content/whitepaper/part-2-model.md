@@ -1,15 +1,15 @@
 ---
-title: "Part II: The EmMittr Model"
+title: "Part II: The Capacitor Model"
 ---
 
-## Part II: The EmMittr Model
-EmMittr provides economic infrastructure that makes participation-based
+## Part II: The Capacitor Model
+Capacitor provides economic infrastructure that makes participation-based
 token launches work. It solves three fundamental problems: how to lock
 liquidity permanently, how to distribute value to participants fairly,
 and how to create liquid markets for earned positions.
 
 ### The Flywheel: Meet Aviary
-To illustrate how EmMittr works, imagine a company called **Aviary**
+To illustrate how Capacitor works, imagine a company called **Aviary**
 launching their token **BIRD**. Users who participate in growing
 Aviary's ecosystem earn **emBIRD**—the emmission. Here's the flywheel:
 
@@ -28,7 +28,7 @@ Aviary's ecosystem earn **emBIRD**—the emmission. Here's the flywheel:
 5.  **Trading generates fees:** Every BIRD trade has 2% fees
 
 6.  **40/50/10 split:** 40% of fees compound in the emBIRD pool, 50%
-    goes to Aviary, 10% to EmMittr
+    goes to Aviary, 10% to Capacitor
 
 7.  **emBIRD appreciates:** As trading fees compound, emBIRD becomes
     worth more BIRD. Early participants earn more emBIRD per action
@@ -78,7 +78,7 @@ without making late participation worthless.
 
   Creator               50%           Liquid revenue (1% of volume)
 
-  EmMittr Protocol      10%           Protocol sustainability
+  Capacitor Protocol      10%           Protocol sustainability
   ——————— ————- ————————————
 
 **Key insight:** Creator fees are undiluted. No matter how many people

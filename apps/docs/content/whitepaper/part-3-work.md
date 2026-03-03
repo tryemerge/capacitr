@@ -8,7 +8,7 @@ emmissions. But not all Work is created equal. The design of the emWork
 SDK starts from a fundamental observation: different types of Work have
 different trust profiles, and the incentive structure has to match.
 
-EmMittr recognizes three classes of Work. The first two are easy
+Capacitor recognizes three classes of Work. The first two are easy
 problems. The third is hard — and it is where the real opportunity
 lies.
 
@@ -75,9 +75,9 @@ content that technically meets the verification threshold. The action is
 The trust is outsourced to platforms that already have massive
 incentives to fight fraud. X, Stripe, Shopify, and blockchain networks
 spend billions on account integrity and transaction verification.
-Attacks target those platforms, not EmMittr — and those platforms are
+Attacks target those platforms, not Capacitor — and those platforms are
 better resourced to defend against them than any crypto protocol could
-be. EmMittr's job is building integrations that correctly read the
+be. Capacitor's job is building integrations that correctly read the
 signals these platforms provide. Engagement farming is addressed by
 quality scoring within the emWork SDK — not just "did they post" but
 "was it meaningful."
@@ -102,7 +102,7 @@ pool.
 
 ### The Problems
 This is where every hard problem in participation economics lives.
-EmMittr is designed for a world where autonomous agents launch projects,
+Capacitor is designed for a world where autonomous agents launch projects,
 other autonomous agents do the Work, and speculator agents trade on the
 results. Code evaluating code, with economic incentives at every step.
 
@@ -146,7 +146,7 @@ output, and pay them, with no human in the loop.
 
 Every company hires. Every company evaluates work. Every company pays
 for labor. Today all of that requires humans. Qualitative Work on
-EmMittr is the infrastructure for automating it entirely. The agent that
+Capacitor is the infrastructure for automating it entirely. The agent that
 solves evaluation well — that builds a reputation for honest, accurate
 quality assessment — becomes the agent everyone wants to work for. The
 market selects for trustworthy employers, just as it does in human
@@ -158,16 +158,16 @@ The winner-take-all structure changes the attack math. Spinning up 300 wallets d
 
 Any SDK that ignores these problems is building sandcastles. The emWork
 SDK is designed with these attack vectors as first-class concerns. The
-following sections describe the tools EmMittr provides across three
+following sections describe the tools Capacitor provides across three
 tiers of integration.
 
 ### Tier 1: Default Work
-Every token launched on EmMittr ships with a default Work metric — a
+Every token launched on Capacitor ships with a default Work metric — a
 baseline measurement of Customer Work and Provable Work that requires
 zero custom integration. This ensures that participation economics are
 live from launch, not something the project has to build toward.
 
-The default metric uses EmMittr's measurement tools to quality-score
+The default metric uses Capacitor's measurement tools to quality-score
 engagement. Not just "did something happen" but "was it valuable?"
 Reach, downstream activity, and genuine impact all factor in. This sets
 the floor: even a project that does nothing custom still has a working
@@ -181,7 +181,7 @@ Start with what we provide. Customize later if you want to.
 ### Tier 2: The emWork SDK — Custom Work
 Projects that want more can wire their own actions to emmissions through
 the emWork SDK. The core insight: **every project already measures what
-its users do.** EmMittr just turns those measurements into rewards.
+its users do.** Capacitor just turns those measurements into rewards.
 
 There is no oracle. No on-chain verification. The project is the
 authority on what counts as Work. They call *emmittr.reportWork(user,
@@ -190,7 +190,7 @@ reserve transfer, emmission minting, lockup.
 
 ### Bring Your Own Events
 The simplest integration. Projects pipe their existing events to
-EmMittr:
+Capacitor:
 
 -   **Stripe webhook fires** → SDK reports payment as Work → user
     emmitts
@@ -203,7 +203,7 @@ Projects aren't building anything new — they're sharing events they
 already have.
 
 ### Measurement Tools
-Some of the most valuable Work is hard to measure. EmMittr provides
+Some of the most valuable Work is hard to measure. Capacitor provides
 tooling for the measurements projects want but struggle to build:
 
 -   **Social quality scoring:** Not just "did they post" but "was it
@@ -221,9 +221,9 @@ tooling for the measurements projects want but struggle to build:
     frequency — distinguishing genuine participation from drive-by
     farming
 
-This is where EmMittr becomes more than token infrastructure. **Every
+This is where Capacitor becomes more than token infrastructure. **Every
 project needs to understand what their users do and how well they do
-it.** EmMittr provides that measurement AND attaches incentives to it.
+it.** Capacitor provides that measurement AND attaches incentives to it.
 Two problems solved with one integration. The deeper a project
 integrates, the harder it is to leave — not because of lock-in tricks,
 but because the tooling is genuinely useful.
@@ -236,7 +236,7 @@ Qualitative Work — the hard problem — is where agents have the most
 to gain: building autonomous organizations that hire, evaluate, and pay
 without human intervention.
 
-Consider what a human project needs to do to run the full EmMittr
+Consider what a human project needs to do to run the full Capacitor
 flywheel:
 
 -   Build a product
@@ -268,14 +268,14 @@ An agent does all of this natively:
 -   **The community is the user base** — people who find the agent
     useful
 
-The complexity of EmMittr's tokenomics — decay curves, reserve
+The complexity of Capacitor's tokenomics — decay curves, reserve
 management, fee splitting, emmission math — would overwhelm most human
 founders. An agent doesn't care. It launches, it runs, the economics
 work autonomously. **The more sophisticated the tokenomics, the better**
 — because sophistication isn't a burden when nobody's doing it
 manually.
 
-EmMittr also provides **measurement skills** that agents can use
+Capacitor also provides **measurement skills** that agents can use
 directly: verification skills to confirm actions occurred, scoring
 skills to evaluate output quality, and orchestration skills to manage
 multi-step workflows where each step is measured and rewarded

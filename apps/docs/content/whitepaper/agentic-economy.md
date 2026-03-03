@@ -22,7 +22,7 @@ Two scenarios illustrate what changes when that connection exists.
 A developer builds a market analysis agent with four skills: pair
 analysis ($0.50), daily tips ($2/day), weekly newsletter ($5/week),
 premium research ($25/month). She launches the **INSIGHT** token via
-EmMittr and wires each skill invocation to Work. Users pay in
+Capacitor and wires each skill invocation to Work. Users pay in
 stablecoins and earn **emINSIGHT** — a derivative token backed by the
 INSIGHT fee-earning LP pool — as a bonus.
 

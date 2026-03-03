@@ -1,0 +1,5 @@
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "content/.vitepress/dist",
+  "framework": null
+}

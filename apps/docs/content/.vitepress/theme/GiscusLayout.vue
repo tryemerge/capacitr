@@ -6,18 +6,25 @@ import { useData, useRoute } from 'vitepress'
 const { Layout } = DefaultTheme
 const { frontmatter } = useData()
 const route = useRoute()
+
+const giscusRepo = import.meta.env.VITE_GISCUS_REPO || ''
+const giscusRepoId = import.meta.env.VITE_GISCUS_REPO_ID || ''
+const giscusCategory = import.meta.env.VITE_GISCUS_CATEGORY || 'Comments'
+const giscusCategoryId = import.meta.env.VITE_GISCUS_CATEGORY_ID || ''
+
+const commentsEnabled = Boolean(giscusRepo && giscusRepoId && giscusCategoryId)
 </script>
 
 <template>
   <Layout>
     <template #doc-after>
-      <div v-if="frontmatter.comments !== false" class="giscus-container">
+      <div v-if="frontmatter.comments !== false && commentsEnabled" class="giscus-container">
         <Giscus
           :key="route.path"
-          repo="[OWNER]/[REPO]"
-          repo-id="[REPO_ID]"
-          category="Comments"
-          category-id="[CATEGORY_ID]"
+          :repo="giscusRepo"
+          :repo-id="giscusRepoId"
+          :category="giscusCategory"
+          :category-id="giscusCategoryId"
           mapping="pathname"
           strict="1"
           reactions-enabled="1"

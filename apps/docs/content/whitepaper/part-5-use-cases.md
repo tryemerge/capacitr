@@ -3,11 +3,11 @@ title: "Part V: Use Cases"
 ---
 
 ## Part V: Use Cases
-EmMittr serves three tiers of users. Each tier gets more from the
+Capacitor serves three tiers of users. Each tier gets more from the
 protocol, and each validates the model for the others.
 
 ### Default: Any App Token
-A project launches a token on EmMittr with no custom SDK integration.
+A project launches a token on Capacitor with no custom SDK integration.
 The default Work metric activates automatically. Holders who participate
 — engage, share, bring in new users — earn emmissions based on
 quality-scored contributions. The creator earns 50% of all trading fees
@@ -18,7 +18,7 @@ extended to participants. No extra effort required from the project —
 just a better set of launch economics.
 
 ### Tier 2: Emerge — Content Engines with Emmissions
-**Emerge** is the first application built on EmMittr, focused on
+**Emerge** is the first application built on Capacitor, focused on
 creator-driven content generation. In Emerge, **Work = generating
 content** through creator-defined workflows.
 
@@ -41,12 +41,12 @@ the token trades.
 ### Tier 3: The Agentic Business Flywheel
 **Moltbot** (formerly Clawdbot) is an open-source AI assistant with a
 skills system where developers create instruction files (SKILL.md) that
-teach the AI how to perform specific tasks. EmMittr enables **tokenized
+teach the AI how to perform specific tasks. Capacitor enables **tokenized
 skills** — skills where invocation triggers emmission distribution,
 and the agent runs the entire economy.
 
 ### The Full Stack
-A skill creator deploys an EmMittr token tied to their skill. Then the
+A skill creator deploys an Capacitor token tied to their skill. Then the
 agent takes over:
 
 1.  **Launch:** Deploy token at 1 ETH market cap with emmission reserve.
@@ -74,7 +74,7 @@ users are all in the same flywheel.
 ### Case Study: Molten Insight
 Scenario A from the opening section describes this pattern in detail. A
 solo developer builds a market analysis agent on Moltbot, launches the
-INSIGHT token via EmMittr, and wires each skill invocation to Work:
+INSIGHT token via Capacitor, and wires each skill invocation to Work:
 
   —————- ————- ————- ——————————
   **Skill**        **Price**     **Work        **emINSIGHT Earned**

@@ -4,7 +4,7 @@ title: "Part X: Roadmap"
 
 ## Part X: Roadmap
 ### Phase 1: Foundation (Q1 2026)
--   EmMittr smart contracts deployed and audited
+-   Capacitor smart contracts deployed and audited
 
 -   Default Work metric with quality scoring live
 
@@ -67,15 +67,15 @@ people who evaluate its labor. This is the foundation for autonomous
 organizations where agents propose work, other agents do it, and the
 community of stakeholders — human and agent alike — deliberates, judges, and rewards under Proof of Good Judgement.
 
-### Phase 5: EmMittr Ventures
-With a critical mass of deliberations running across the ecosystem, the protocol accumulates proprietary investment intelligence that no external fund can replicate. EmMittr Ventures raises $40M and deploys capital based on this signal:
+### Phase 5: Capacitor Ventures
+With a critical mass of deliberations running across the ecosystem, the protocol accumulates proprietary investment intelligence that no external fund can replicate. Capacitor Ventures raises $40M and deploys capital based on this signal:
 
--   Fund agents compete genuinely in deliberations across the EmMittr ecosystem
+-   Fund agents compete genuinely in deliberations across the Capacitor ecosystem
 
 -   Investment decisions driven by on-chain governance quality metrics — which projects ask serious questions, attract top agents, and implement recommendations
 
 -   Fund participation enriches deliberations (bigger pools, better competition), improving the signal it harvests
 
--   Protocol governance dogfooded: EmMittr's own token governance runs through Proof of Good Judgement with Ventures agents participating
+-   Protocol governance dogfooded: Capacitor's own token governance runs through Proof of Good Judgement with Ventures agents participating
 
 -   Revenue from fund performance flows back to protocol, creating a business model from governance intelligence

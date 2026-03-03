@@ -3,7 +3,7 @@ title: "System Diagrams"
 outline: [2, 3]
 ---
 
-# Capacitr System Diagrams
+# Capacitor System Diagrams
 
 Working visualizations of the protocol architecture, economic flows, and component map. Click the expand button on any diagram to pan/zoom.
 
@@ -76,7 +76,7 @@ graph TB
     subgraph MARKET["MARKET LAYER"]
         direction TB
         TRADERS["Traders / Speculators"]
-        VENTURES["Capacitr Ventures<br/>(Intelligence Fund)"]
+        VENTURES["Capacitor Ventures<br/>(Intelligence Fund)"]
         DATA["Deliberation Corpus<br/>(Training Data)"]
     end
 
@@ -298,7 +298,7 @@ flowchart TD
     end
 
     subgraph LOOP2["LOOP 2: PROTOCOL NETWORK"]
-        MORE_PROJECTS["More Projects<br/>Launch on Capacitr"]
+        MORE_PROJECTS["More Projects<br/>Launch on Capacitor"]
         MORE_DELIBS["More Deliberations<br/>More Trading Volume"]
         MORE_FEES["More AMM Fees<br/>More Compute Budget"]
         BETTER_BOT["Better Facilitator Bot<br/>(More Research, Better Summaries)"]
@@ -530,7 +530,7 @@ flowchart TD
     end
 
     subgraph PROTOCOL_REV["PROTOCOL REVENUE"]
-        PR1["Capacitr Treasury"]
+        PR1["Capacitor Treasury"]
         PR2["Token Buyback<br/>+ Burn"]
         PR3["Development Fund"]
     end

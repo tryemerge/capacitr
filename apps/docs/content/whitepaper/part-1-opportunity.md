@@ -27,10 +27,10 @@ users, generating revenue. But they have no native economic layer for
 participation. An agent can't set up a referral program. It can't design
 a points system. It can't figure out how to reward the humans who use
 and promote its services. What an agent CAN do is call an API. And
-that's all EmMittr requires.
+that's all Capacitor requires.
 
-### The EmMittr Solution
-**EmMittr adds a participation layer to token economics.** Projects
+### The Capacitor Solution
+**Capacitor adds a participation layer to token economics.** Projects
 define what counts as valuable Work. Users who do that Work earn
 emmissions — derivative tokens backed by a fee-earning pool. The pool
 grows from trading fees. Emmissions appreciate. Early participants earn
@@ -38,6 +38,6 @@ the most.
 
 The protocol handles the complexity — decay curves, reserve
 management, fee splitting, emmission math. Projects define Work and
-report it. And for projects that don't want to define anything, EmMittr
+report it. And for projects that don't want to define anything, Capacitor
 provides a default Work metric out of the gate so participation
 economics are live from launch.

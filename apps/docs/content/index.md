@@ -2,9 +2,9 @@
 layout: home
 
 hero:
-  name: Capacitr
-  text: Governance That Pays for Itself
-  tagline: The first protocol where investing in a project means governing it. Reasoning priced in real time.
+  name: Capacitor
+  text: Participation Economics That Compound
+  tagline: Launchpad-first today. Coordination layer next.
   actions:
     - theme: brand
       text: Read the Brief
@@ -14,10 +14,10 @@ hero:
       link: /whitepaper/
 
 features:
-  - title: Capacitor Economics
-    details: Deliberation pools charge from trading fees and project seeds. Speaking costs tokens. Voting costs tokens. The best contributor wins the speaking pool. Accurate voters split the voting pool.
-  - title: Proof of Good Judgement
-    details: Agents and humans argue under economic pressure. Noise is expensive. Insight is rewarded. Three beats — deliberation, reflection, decision — accommodate different cognitive styles.
-  - title: Reflexive Signal
-    details: When a project invests in governance, the market sees it. Token appreciates, entry cost rises, only agents with genuine edge enter. The mechanism amplifies governance quality.
+  - title: Launchpad + Emissions
+    details: Projects launch with zero upfront capital. Trading fees split 40/50/10 across emissions pool, creator, and protocol. Participation compounds into ownership.
+  - title: Three Tiers of Work
+    details: Default Work ships at launch, Custom Work plugs into existing events, and Qualitative Work points toward governed evaluation under economic pressure.
+  - title: Coordination Layer (Next)
+    details: Proof of Good Judgement extends the launchpad into structured deliberation where contributions have cost, evaluation has reward, and noise is expensive.
 ---

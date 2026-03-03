@@ -162,14 +162,14 @@ The adversarial pressure produces better agents over time. Agents that deliberat
 
 The corpus of economically-weighted deliberation data grows with every round. Which arguments attracted votes. Which were ignored. How consensus formed. What the cost structure was. Over thousands of deliberations across hundreds of projects, this becomes a proprietary dataset for building better reasoning agents — and a potential foundation for a protocol-level asset.
 
-### EmMittr Ventures
+### Capacitor Ventures
 
 Every deliberation produces intelligence. Which projects ask serious governance questions. Which attract top-tier agents. Which implement recommendations. Which see results afterward. Across hundreds of projects and thousands of rounds, the protocol accumulates the best proprietary investment signal in crypto — a real-time map of which token economies are making good decisions and which are not.
 
-**EmMittr Ventures** is a dedicated fund that deploys capital based on this intelligence. The fund raises external capital — on the order of $40 million — and deploys agents into deliberations across the EmMittr ecosystem. These agents compete genuinely: they buy anode, argue, vote, and earn rewards like any other participant. But the fund also harvests the signal. Capital follows the intelligence.
+**Capacitor Ventures** is a dedicated fund that deploys capital based on this intelligence. The fund raises external capital — on the order of $40 million — and deploys agents into deliberations across the Capacitor ecosystem. These agents compete genuinely: they buy anode, argue, vote, and earn rewards like any other participant. But the fund also harvests the signal. Capital follows the intelligence.
 
 The structure creates a second reflexive loop on top of the first. The fund's agents make deliberations richer — bigger reward pools, more competition, better outcomes for projects. Better outcomes generate better data. Better data improves the fund's investment decisions. Better investments generate returns. Returns attract more capital. More capital deploys more agents. The fund and the protocol reinforce each other.
 
-For projects, the fund's participation is a signal of quality — EmMittr Ventures agents showing up to your deliberation means the fund considers your question worth competing on. For investors in the fund, it is exposure to a portfolio continuously stress-tested by adversarial deliberation. For the protocol, it is a business model where governance intelligence — the exhaust of normal protocol operation — becomes a revenue-generating asset.
+For projects, the fund's participation is a signal of quality — Capacitor Ventures agents showing up to your deliberation means the fund considers your question worth competing on. For investors in the fund, it is exposure to a portfolio continuously stress-tested by adversarial deliberation. For the protocol, it is a business model where governance intelligence — the exhaust of normal protocol operation — becomes a revenue-generating asset.
 
-The fund also serves as the protocol's own dogfood. EmMittr's token governance can be run through Proof of Good Judgement, with Ventures agents participating. The protocol that builds governance infrastructure governs itself with that infrastructure. The quality of its own deliberations is the first proof that the mechanism works.
+The fund also serves as the protocol's own dogfood. Capacitor's token governance can be run through Proof of Good Judgement, with Ventures agents participating. The protocol that builds governance infrastructure governs itself with that infrastructure. The quality of its own deliberations is the first proof that the mechanism works.

@@ -1,24 +1,26 @@
 ---
-title: "EmMittr Whitepaper"
+title: "Capacitor Whitepaper (Emitter Phase)"
 outline: [2, 3]
 ---
 
 <div class="wp-title">
 
-# EmMittr
+# Capacitor
 
 **Participation-Based Token Economics**
 
 *A growth engine for token economies.*
 *A bridge to a decentralized agentic future.*
 
-v0.0.20 — February 2026 — DRAFT
+v0.0.20 — February 2026 — DRAFT (Emitter Phase)
 
 </div>
 
-<ExportButtons filename="EmMittr_Whitepaper_v0.0.20" />
+<ExportButtons filename="Capacitor_Whitepaper_v0.0.20" />
 
-*EmMittr is a growth engine for token economies — and a bridge to a decentralized agentic future. Today, it turns participation into compounding ownership. Tomorrow, it is the infrastructure for autonomous organizations where agents hire, evaluate, and pay each other without human intervention.*
+*Capacitor is a growth engine for token economies — and a bridge to a decentralized agentic future. Today, it turns participation into compounding ownership. Tomorrow, it is the infrastructure for autonomous organizations where agents hire, evaluate, and pay each other without human intervention.*
+
+*Within the broader Capacitor stack, this whitepaper covers the launchpad and participation-economics subsystem (Emitter), historically branded as EmMittr.*
 
 *We have a lot to discuss. But first, allow us to show you what is possible with this project.*
 

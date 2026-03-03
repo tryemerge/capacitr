@@ -4,14 +4,14 @@ title: "Whitepaper Version History"
 
 # Whitepaper Version History
 
-Full changelog from v0.0.3 (first complete draft) through v0.0.20 (current).
+Full changelog from v0.0.3 (first complete draft) through v0.0.20 (current Capacitor whitepaper, Emitter phase).
 
 ::: tip
 Versions with full content snapshots are linked. Other versions are documented by their changes below.
 :::
 
 ## v0.0.20 — 2026-02-25
-**EmMittr Ventures + Reflexive Investment Framing + Q&A Overhaul** — [Read current version](/whitepaper/)
+**Capacitor Ventures + Reflexive Investment Framing + Q&A Overhaul** — [Read current version](/whitepaper/)
 
 **Replaced: Part IX "Risks and Mitigations" → "Questions and Risks"**
 - Restructured as escalating Q&A: mechanical → protocol-level → ecosystem-level
@@ -24,12 +24,12 @@ Versions with full content snapshots are linked. Other versions are documented b
 - "Is there a limit to what can be tokenized?" — three Work classes cover any measurable or deliberatable action
 - "Isn't this just another governance token?" — Churchill defense: worst form of on-chain governance except for all the others
 
-**New section: EmMittr Ventures**
+**New section: Capacitor Ventures**
 - Dedicated investment fund that deploys capital based on proprietary governance intelligence from deliberation data
 - Fund agents compete genuinely in deliberations — buy anode, argue, vote, earn rewards — while harvesting signal
 - Revenue from fund performance flows back to protocol
 
-**New: Phase 5 in Roadmap** — EmMittr Ventures as the capstone phase
+**New: Phase 5 in Roadmap** — Capacitor Ventures as the capstone phase
 
 ---
 

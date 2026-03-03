@@ -1,8 +1,8 @@
 import { withMermaid } from 'vitepress-plugin-mermaid'
 
 export default withMermaid({
-  title: 'Capacitr',
-  description: 'Governance that pays for itself. Reasoning priced in real time.',
+  title: 'Capacitor',
+  description: 'Participation economics that compound. Launchpad-first today, coordination layer next.',
 
   lastUpdated: true,
   cleanUrls: true,
@@ -44,11 +44,23 @@ export default withMermaid({
 
     nav: [
       { text: 'Brief', link: '/brief/' },
+      { text: 'Hackathon', link: '/hackathon/' },
       { text: 'Whitepaper', link: '/whitepaper/' },
+      { text: 'Map', link: '/map/' },
+      { text: 'Stack', link: '/stack/' },
+      { text: 'Planning', link: '/planning/' },
       { text: 'Notes', link: '/notes/' },
     ],
 
     sidebar: {
+      '/map/': [
+        {
+          text: 'System Map',
+          items: [
+            { text: 'What We\'re Building', link: '/map/' },
+          ],
+        },
+      ],
       '/whitepaper/': [
         {
           text: 'Whitepaper',
@@ -82,16 +94,76 @@ export default withMermaid({
       ],
       '/brief/': [
         {
-          text: 'Brief',
+          text: 'Canonical Tracks',
           items: [
-            { text: 'Capacitr Brief v0.1.0', link: '/brief/' },
+            { text: 'X — v0.3.1 (Launchpad-First Baseline)', link: '/brief/' },
+            { text: 'V — v0.3.1d (Coordination Bridge)', link: '/versions/brief/v0-3-1d' },
           ],
         },
         {
-          text: 'Version Archive',
+          text: 'Explorations & Archive',
           collapsed: true,
           items: [
+            { text: 'v0.3.1c (archived)', link: '/versions/brief/v0-3-1c' },
+            { text: 'v0.3.1b (archived)', link: '/versions/brief/v0-3-1b' },
+            { text: 'v0.3.1a (archived)', link: '/versions/brief/v0-3-1a' },
+            { text: 'v0.3.0', link: '/versions/brief/v0-3-0' },
+            { text: 'v0.2.0', link: '/versions/brief/v0-2-0' },
+            { text: 'v0.1.0', link: '/versions/brief/v0-1-0' },
             { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
+          ],
+        },
+      ],
+      '/hackathon/': [
+        {
+          text: 'Hackathon',
+          items: [
+            { text: 'Overview', link: '/hackathon/' },
+            { text: 'MVP Build Brief', link: '/hackathon/mvp-build-brief' },
+          ],
+        },
+      ],
+      '/stack/': [
+        {
+          text: 'The Capacitor Stack',
+          items: [
+            { text: 'Overview', link: '/stack/' },
+            { text: 'Emitter', link: '/stack/emitter' },
+            { text: 'Capacitor', link: '/stack/capacitor' },
+            { text: 'Facilitator', link: '/stack/facilitator' },
+            { text: 'Executor', link: '/stack/executor' },
+          ],
+        },
+      ],
+      '/planning/': [
+        {
+          text: 'Planning',
+          items: [
+            { text: 'Overview', link: '/planning/' },
+          ],
+        },
+        {
+          text: 'ADRs',
+          items: [
+            { text: 'Overview', link: '/planning/adr/' },
+            { text: 'v1 2026-03-01 Adversarial Analysis', link: '/planning/adr/v1-2026-03-01-1-adversarial-analysis-adr' },
+            { text: 'v1 2026-03-01 Cross-System Integration', link: '/planning/adr/v1-2026-03-01-3-cross-system-integration-adr' },
+            { text: 'v1 2026-03-02 Persistence and Auth (Vercel-First)', link: '/planning/adr/v1-2026-03-02-1-persistence-and-auth-minimal-vercel-adr' },
+          ],
+        },
+        {
+          text: 'Implementation Plans',
+          items: [
+            { text: 'Overview', link: '/planning/impl/' },
+            { text: 'v1 2026-03-01 Adversarial Analysis', link: '/planning/impl/v1-2026-03-01-2-adversarial-analysis-impl' },
+            { text: 'v1 2026-03-01 Cross-System Integration', link: '/planning/impl/v1-2026-03-01-4-cross-system-integration-impl' },
+          ],
+        },
+        {
+          text: 'Archive',
+          collapsed: true,
+          items: [
+            { text: 'Overview', link: '/planning/archive/' },
           ],
         },
       ],
@@ -101,6 +173,7 @@ export default withMermaid({
           items: [
             { text: 'Overview', link: '/notes/' },
             { text: 'System Diagrams', link: '/notes/system-diagrams' },
+            { text: 'Adversarial Analysis', link: '/notes/adversarial-analysis' },
           ],
         },
         {
@@ -108,6 +181,7 @@ export default withMermaid({
           items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+            { text: 'Brief Versioning Model', link: '/versions/brief-versioning' },
           ],
         },
         {
@@ -130,6 +204,7 @@ export default withMermaid({
           items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+            { text: 'Brief Versioning Model', link: '/versions/brief-versioning' },
           ],
         },
         {
@@ -160,6 +235,14 @@ export default withMermaid({
           text: 'Brief Versions',
           collapsed: true,
           items: [
+            { text: 'v0.3.1-X (current default)', link: '/brief/' },
+            { text: 'v0.3.1-V (alternate canonical)', link: '/versions/brief/v0-3-1d' },
+            { text: 'v0.3.1c', link: '/versions/brief/v0-3-1c' },
+            { text: 'v0.3.1b', link: '/versions/brief/v0-3-1b' },
+            { text: 'v0.3.1a', link: '/versions/brief/v0-3-1a' },
+            { text: 'v0.3.0', link: '/versions/brief/v0-3-0' },
+            { text: 'v0.2.0', link: '/versions/brief/v0-2-0' },
+            { text: 'v0.1.0', link: '/versions/brief/v0-1-0' },
             { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
           ],
         },
@@ -167,8 +250,8 @@ export default withMermaid({
     },
 
     footer: {
-      message: 'Capacitr Documentation',
-      copyright: 'Copyright © 2026 Capacitr',
+      message: 'Capacitor Documentation',
+      copyright: 'Copyright © 2026 Capacitor',
     },
   },
 

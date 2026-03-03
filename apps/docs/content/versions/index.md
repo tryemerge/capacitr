@@ -4,12 +4,21 @@ title: "Version History"
 
 # Version History
 
+Brief branching/track convention: [Brief Versioning Model](/versions/brief-versioning)
+
 ## Current Versions
 
 | Document | Version | Date | Status |
 |----------|---------|------|--------|
-| [Capacitr Brief](/brief/) | v0.1.0 | February 2026 | Current |
-| [EmMittr Whitepaper](/whitepaper/) | v0.0.20 | February 2026 | Current |
+| [Capacitor Brief](/brief/) | v0.3.1 | 2026-03-01 | Current |
+| [Capacitor Whitepaper (Emitter Phase)](/whitepaper/) | v0.0.20 | 2026-02-25 | Current |
+
+## Canonical Brief Tracks
+
+| Track | Canonical Brief | Subtitle | Breadcrumb |
+|-------|------------------|----------|------------|
+| `X` | [v0.3.1-X](/brief/) | Launchpad-First Baseline | `v0.3.0 -> v0.3.1-X` |
+| `V` | [v0.3.1-V](/versions/brief/v0-3-1d) | Coordination Bridge Canonical Variant | `v0.3.0 -> v0.3.1-V` |
 
 ## Whitepaper Versions
 
@@ -38,7 +47,14 @@ title: "Version History"
 
 | Version | Date | Summary | Content |
 |---------|------|---------|---------|
-| [v0.1.0](/brief/) | February 2026 | Capacitr Brief — governance-first positioning | Current |
+| [v0.3.1-X](/brief/) | 2026-03-01 | Capacitor Brief — launchpad-first baseline track | Current |
+| [v0.3.1-V](/versions/brief/v0-3-1d) | 2026-03-02 | Capacitor Brief — coordination bridge canonical variant | Full |
+| [v0.3.1c](/versions/brief/v0-3-1c) | 2026-03-02 | "What Comes Next" restructure + Work-tier bridge | Full |
+| [v0.3.1b](/versions/brief/v0-3-1b) | 2026-03-02 | Added capital-formation framing and PoGJ transition | Full |
+| [v0.3.1a](/versions/brief/v0-3-1a) | 2026-03-01 | Coordination-layer deep-dive variant | Full |
+| [v0.3.0](/versions/brief/v0-3-0) | 2026-03-01 | Capacitor — launchpad-first positioning | Full |
+| [v0.2.0](/versions/brief/v0-2-0) | 2026-03-01 | Capacitor Stack — full system brief | Full |
+| [v0.1.0](/versions/brief/v0-1-0) | 2026-02-27 | Capacitr pivot — governance-first positioning | Full |
 | [v0.0.3](/versions/brief/v0-0-3) | 2026-02-23 | Final EmMittr-branded brief | Full |
 
 ## Snapshot Convention
@@ -48,7 +64,7 @@ When creating a new version:
 ```bash
 # Snapshot current content before modifying
 npm run snapshot -- whitepaper 0.0.20
-npm run snapshot -- brief 0.1.0
+npm run snapshot -- brief 0.3.1
 ```
 
 This concatenates all markdown files for the document into a single-page archive at `content/versions/<document>/v<version>.md`.

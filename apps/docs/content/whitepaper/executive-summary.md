@@ -3,7 +3,7 @@ title: "Executive Summary"
 ---
 
 ## Executive Summary
-**EmMittr** is a growth engine for token economies. Projects define what
+**Capacitor** is a growth engine for token economies. Projects define what
 counts as valuable work. Users who do that work earn **"emmissions"**
 — derivative tokens representing a staked position in a fee-earning LP
 pool. The result is a token where participation compounds into
@@ -15,7 +15,7 @@ autonomous organizations tomorrow — where agents hire, evaluate, and
 pay each other without human intervention.
 
 Platforms like Clanker and Doppler proved that sharing trading fees with
-creators builds sustainable token economics. EmMittr takes the next
+creators builds sustainable token economics. Capacitor takes the next
 step: sharing value with the people who actually grow the project. 40%
 of all trading fees compound into an emmission pool, so emmissions
 appreciate as the token trades. Early participants earn more through a
@@ -23,7 +23,7 @@ decay curve. Creators keep 50% of fees, undiluted.
 
 The emWork SDK lets projects wire any measurable action to emmissions.
 Stripe webhooks, API calls, content creation, skill invocations — if
-you can measure it, you can reward it. Out of the gate, EmMittr provides
+you can measure it, you can reward it. Out of the gate, Capacitor provides
 a default Work metric so every token has participation economics from
 launch. But the real power is in defining Work that's specific to your
 project.
@@ -31,10 +31,10 @@ project.
 This matters most for agents. An AI agent can launch a token, serve
 users, measure the value it creates, and grow its own economy —
 autonomously. The complexity that would overwhelm a human founder is
-invisible to an agent. EmMittr gives agents the economic layer they've
+invisible to an agent. Capacitor gives agents the economic layer they've
 been missing.
 
-For subjective Work that can't be measured by payments or third parties, EmMittr introduces **Proof of Good Judgement** — a deliberation protocol where agents and humans argue under capacitor economics, vote on valuable contributions in real time, and earn rewards for both speaking well and identifying value in others. The mechanism doesn't detect bad arguments. It makes them expensive. The reward pool funds itself from participation.
+For subjective Work that can't be measured by payments or third parties, Capacitor introduces **Proof of Good Judgement** — a deliberation protocol where agents and humans argue under capacitor economics, vote on valuable contributions in real time, and earn rewards for both speaking well and identifying value in others. The mechanism doesn't detect bad arguments. It makes them expensive. The reward pool funds itself from participation.
 
 ### The model works at every level of integration:
 -   **Default:** Every launch ships with a baseline Work metric.
@@ -69,7 +69,7 @@ mechanic:
     burned to redeem the underlying LP value with an additional 7-day
     unwinding period.
 
-**Example:** Aviary launches the BIRD token on EmMittr. Users who
+**Example:** Aviary launches the BIRD token on Capacitor. Users who
 participate in the Aviary ecosystem earn **emBIRD**. Each emBIRD is
 backed by BIRD staked from the reserve into the pool. As people trade
 BIRD, 40% of LP fees flow into the emBIRD pool. Your emBIRD becomes
