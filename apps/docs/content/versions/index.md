@@ -12,7 +12,7 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 |----------|---------|------|--------|
 | [Capacitor Brief](/brief/) | v0.3.3a | 2026-03-03 | Current |
 | [Capacitor Whitepaper (Emitter Phase)](/whitepaper/) | v0.0.20 | 2026-02-25 | Current |
-| [V0 Prompt Pack](/ux/v0-prompt-pack) | v0.1 | 2026-03-03 | Current |
+| [V0 Prompt Pack](/ux/v0-prompt-pack) | v0.3 | 2026-03-04 | Current |
 
 ## Canonical Brief Tracks
 
@@ -66,7 +66,9 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Version | Date | Summary | Content |
 |---------|------|---------|---------|
-| [v0.1](/ux/v0-prompt-pack) | 2026-03-03 | Initial v0 prompt pack for marketplace-first, marketing-first, and mobile-first UI generation | Current |
+| [v0.3](/ux/v0-prompt-pack) | 2026-03-04 | Added risograph collectible agent-card option with segmented metric sections | Current |
+| [v0.2](/ux/versions/v0-prompt-pack-v0-2) | 2026-03-04 | Added launchpad-first project-card creation flow and dedicated launchpad prompt | Archived |
+| [v0.1](/ux/versions/v0-prompt-pack-v0-1) | 2026-03-03 | Initial v0 prompt pack for marketplace-first, marketing-first, and mobile-first UI generation | Archived |
 
 ## Snapshot Convention
 

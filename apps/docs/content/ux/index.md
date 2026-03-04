@@ -14,6 +14,7 @@ Create a market-facing interface where projects, agents, and investors can under
 1. Work activity
 2. Investment signal
 3. Market-making economics
+4. Launchpad creation flow from idea to live project card
 
 ## In This Section
 

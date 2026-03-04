@@ -1,17 +1,18 @@
 ---
 title: "V0 Prompt Pack"
-version: 0.3
+version: 0.2
 date: 2026-03-04
-status: active
-supersedes: /ux/versions/v0-prompt-pack-v0-2
+status: archived
+superseded_by: /ux/v0-prompt-pack
+supersedes: /ux/versions/v0-prompt-pack-v0-1
 outline: [2, 3]
 ---
 
 # Capacitor UX Prompt Pack
 
-**Version:** v0.3  
+**Version:** v0.2  
 **Date:** 2026-03-04  
-**Status:** Active
+**Status:** Archived snapshot
 
 ## 1) Purpose
 
@@ -21,7 +22,6 @@ Provide copy-paste prompts to generate first-vision UI concepts in v0 for:
 2. Marketing-first narrative surface
 3. Mobile-first discovery and command surface
 4. Launchpad-first project creation flow
-5. Collectible risograph card system for agents
 
 These prompts are for direction-setting and promotion, not final production UX.
 
@@ -212,61 +212,7 @@ Output requirements:
 - Realistic placeholder copy and metrics
 ```
 
-## 9) Prompt E — Risograph Collectible Agent Cards (New Card Option)
-
-```md
-Create a card-system design direction for Capacitor where each agent is represented as a collectible-style card with a risograph-inspired visual language.
-
-Core intent:
-- Retro and cool, but still highly legible for real product decisions
-- Feels collectible without becoming skeuomorphic fantasy
-- Preserves market utility and metric clarity
-
-Style direction:
-- Risograph influence: limited ink palette, subtle halftone texture, slight print-register offsets
-- Keep edges crisp and modern; avoid distressed grunge overload
-- Combine retro print feel with clean data sections and modern spacing
-
-Agent card anatomy (required):
-1. Header band
-   - agent name
-   - role/class tag
-   - trust tier marker
-2. Portrait/icon zone
-   - abstract avatar or symbol
-   - optional circuit motif frame
-3. Metric strips (clear segmented sections)
-   - reliability score
-   - recent success rate
-   - payout efficiency
-   - specialization tags
-4. Market utility footer
-   - active tasks
-   - average lock profile
-   - recent volume influenced
-5. Back side (or expanded state)
-   - provenance/history
-   - project participation list
-   - verification notes
-
-Usability constraints:
-- Metrics must be instantly scannable
-- Color contrast must pass accessibility checks
-- Halftone/texture must never reduce readability
-- Mobile version must keep segmented metric sections intact
-
-System output needed:
-- Card component library (small/medium/large)
-- Grid view with filters/sort and compare
-- Detail modal/drawer for expanded card state
-- Example set of 12 mock agent cards showing different archetypes
-
-Brand tie-in:
-- Integrate CAPACITR identity and circuit motifs subtly
-- Keep the overall product looking like a serious market system, not a game UI
-```
-
-## 10) Component Evaluation Checklist (For Reviewing v0 Outputs)
+## 9) Component Evaluation Checklist (For Reviewing v0 Outputs)
 
 Use this checklist to compare generated variants quickly.
 
@@ -280,8 +226,6 @@ Use this checklist to compare generated variants quickly.
 | Marketplace utility | Filtering/sorting/compare actions are clear | |
 | Investor readability | Fee/volume/liquidity signal is visible | |
 | Agent usability | Reward/lock/verification data is obvious | |
-| Card option quality | Risograph card style is distinctive and still clear | |
-| Card option quality | Segmented metric sections are legible at a glance | |
 | Visual identity | CAPACITR/circuit language is present but subtle | |
 | Visual identity | Not skeuomorphic; not generic SaaS template | |
 | Motion quality | Animation improves comprehension, not noise | |
@@ -289,12 +233,11 @@ Use this checklist to compare generated variants quickly.
 | Accessibility | Keyboard focus + contrast + readable type | |
 | Reusability | Components can transition from marketing to product | |
 
-## 11) Recommended Workflow
+## 10) Recommended Workflow
 
 1. Generate Prompt D first to lock launchpad structure.
 2. Generate Prompt A to lock marketplace density and card behavior.
-3. Generate Prompt E to explore collectible risograph card style.
-4. Generate Prompt B for investor-facing narrative polish.
-5. Generate Prompt C for mobile adaptation.
-6. Score all outputs with the checklist.
-7. Merge best patterns into one direction and export to Figma.
+3. Generate Prompt B for investor-facing narrative polish.
+4. Generate Prompt C for mobile adaptation.
+5. Score all outputs with the checklist.
+6. Merge best patterns into one direction and export to Figma.
