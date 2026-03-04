@@ -12,6 +12,7 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 |----------|---------|------|--------|
 | [Capacitor Brief](/brief/) | v0.3.3a | 2026-03-03 | Current |
 | [Capacitor Whitepaper (Emitter Phase)](/whitepaper/) | v0.0.20 | 2026-02-25 | Current |
+| [V0 Prompt Pack](/ux/v0-prompt-pack) | v0.1 | 2026-03-03 | Current |
 
 ## Canonical Brief Tracks
 
@@ -60,6 +61,12 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 | [v0.2.0](/versions/brief/v0-2-0) | 2026-03-01 | Capacitor Stack — full system brief | Full |
 | [v0.1.0](/versions/brief/v0-1-0) | 2026-02-27 | Capacitr pivot — governance-first positioning | Full |
 | [v0.0.3](/versions/brief/v0-0-3) | 2026-02-23 | Final EmMittr-branded brief | Full |
+
+## UX Brief Versions
+
+| Version | Date | Summary | Content |
+|---------|------|---------|---------|
+| [v0.1](/ux/v0-prompt-pack) | 2026-03-03 | Initial v0 prompt pack for marketplace-first, marketing-first, and mobile-first UI generation | Current |
 
 ## Snapshot Convention
 

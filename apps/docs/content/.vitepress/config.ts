@@ -45,6 +45,7 @@ export default withMermaid({
     nav: [
       { text: 'Brief', link: '/brief/' },
       { text: 'Hackathon', link: '/hackathon/' },
+      { text: 'UX', link: '/ux/' },
       { text: 'Whitepaper', link: '/whitepaper/' },
       { text: 'Map', link: '/map/' },
       { text: 'Stack', link: '/stack/' },
@@ -126,6 +127,17 @@ export default withMermaid({
             { text: 'MVP Build Brief', link: '/hackathon/mvp-build-brief' },
             { text: 'MVP Brief Changelog', link: '/hackathon/mvp-build-brief-changelog' },
             { text: 'Archive', link: '/hackathon/versions/' },
+          ],
+        },
+      ],
+      '/ux/': [
+        {
+          text: 'UX Briefs',
+          items: [
+            { text: 'Overview', link: '/ux/' },
+            { text: 'V0 Prompt Pack', link: '/ux/v0-prompt-pack' },
+            { text: 'Prompt Pack Version History', link: '/ux/v0-prompt-pack-changelog' },
+            { text: 'Archive', link: '/ux/versions/' },
           ],
         },
       ],
@@ -256,6 +268,14 @@ export default withMermaid({
             { text: 'v0.2.0', link: '/versions/brief/v0-2-0' },
             { text: 'v0.1.0', link: '/versions/brief/v0-1-0' },
             { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
+          ],
+        },
+        {
+          text: 'UX Versions',
+          collapsed: true,
+          items: [
+            { text: 'v0.1 Prompt Pack (current)', link: '/ux/v0-prompt-pack' },
+            { text: 'UX Archive', link: '/ux/versions/' },
           ],
         },
       ],
