@@ -1,0 +1,26 @@
+{
+  "name": "@capacitr/auth",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./server": "./src/server.ts",
+    "./middleware": "./src/middleware.ts"
+  },
+  "dependencies": {
+    "@capacitr/database": "workspace:^",
+    "@privy-io/react-auth": "^2",
+    "@privy-io/server-auth": "^1",
+    "drizzle-orm": "^0.41.0"
+  },
+  "peerDependencies": {
+    "next": ">=14",
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "typescript": "^5.9.3"
+  }
+}
