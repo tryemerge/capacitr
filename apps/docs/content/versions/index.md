@@ -10,16 +10,22 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Document | Version | Date | Status |
 |----------|---------|------|--------|
-| [Capacitor Brief](/brief/) | v0.3.3a | 2026-03-03 | Current |
+| [Capacitor Brief](/brief/) | v0.5 | 2026-03-04 | Current |
 | [Capacitor Whitepaper (Emitter Phase)](/whitepaper/) | v0.0.20 | 2026-02-25 | Current |
-| [V0 Prompt Pack](/ux/v0-prompt-pack) | v0.3 | 2026-03-04 | Current |
+| [V0 Prompt Pack](/ux/v0-prompt-pack) | v0.4 | 2026-03-04 | Current |
 
-## Canonical Brief Tracks
+## Canonical Brief
 
-| Track | Canonical Brief | Subtitle | Breadcrumb |
-|-------|------------------|----------|------------|
-| `X` | [v0.3.3a-X](/brief/) | Activity-Market-Making Marketplace | `v0.3.3-X -> v0.3.3a-X` |
-| `V` | [v0.3.2-V](/versions/brief/v0-3-2) | Context-First Coordination Variant | `v0.3.1d -> v0.3.2-V` |
+| Version | Subtitle | Lineage |
+|---------|----------|---------|
+| [v0.5](/brief/) | The Idea Launchpad | `v0.3.3a-X -> v0.5` |
+
+### Prior Tracks (archived)
+
+| Track | Final Brief | Subtitle |
+|-------|-------------|----------|
+| `X` | [v0.3.3a-X](/versions/brief/v0-3-3a) | Activity-Market-Making Marketplace |
+| `V` | [v0.3.2-V](/versions/brief/v0-3-2) | Context-First Coordination Variant |
 
 ## Whitepaper Versions
 
@@ -48,7 +54,8 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Version | Date | Summary | Content |
 |---------|------|---------|---------|
-| [v0.3.3a-X](/brief/) | 2026-03-03 | Capacitor Brief — AMM-linked activity market-making track (derivative exposure + fee accrual clarity) | Current |
+| [v0.5](/brief/) | 2026-03-04 | Capacitor Brief — The Idea Launchpad (co-founder rewrite: supply/demand marketplace, orchestration agents, three participant types) | Current |
+| [v0.3.3a-X](/versions/brief/v0-3-3a) | 2026-03-03 | Capacitor Brief — AMM-linked activity market-making track (derivative exposure + fee accrual clarity) | Archived |
 | [v0.3.2-V](/versions/brief/v0-3-2) | 2026-03-03 | Capacitor Brief — context-first coordination canonical variant | Full |
 | [v0.3.3-X](/versions/brief/v0-3-3x) | 2026-03-03 | Capacitor Brief — prior activity-investment canonical snapshot (archived) | Full |
 | [v0.3.2-X](/versions/brief/v0-3-2x) | 2026-03-03 | Capacitor Brief — prior launchpad-first canonical snapshot (archived) | Full |
@@ -66,7 +73,8 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Version | Date | Summary | Content |
 |---------|------|---------|---------|
-| [v0.3](/ux/v0-prompt-pack) | 2026-03-04 | Added risograph collectible agent-card option with segmented metric sections | Current |
+| [v0.4](/ux/v0-prompt-pack) | 2026-03-04 | Added boardgame-style project pages with selectable style packs and Board/Data modes | Current |
+| [v0.3](/ux/versions/v0-prompt-pack-v0-3) | 2026-03-04 | Added risograph collectible agent-card option with segmented metric sections | Archived |
 | [v0.2](/ux/versions/v0-prompt-pack-v0-2) | 2026-03-04 | Added launchpad-first project-card creation flow and dedicated launchpad prompt | Archived |
 | [v0.1](/ux/versions/v0-prompt-pack-v0-1) | 2026-03-03 | Initial v0 prompt pack for marketplace-first, marketing-first, and mobile-first UI generation | Archived |
 

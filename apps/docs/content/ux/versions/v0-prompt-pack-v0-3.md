@@ -1,17 +1,18 @@
 ---
 title: "V0 Prompt Pack"
-version: 0.4
+version: 0.3
 date: 2026-03-04
-status: active
-supersedes: /ux/versions/v0-prompt-pack-v0-3
+status: archived
+superseded_by: /ux/v0-prompt-pack
+supersedes: /ux/versions/v0-prompt-pack-v0-2
 outline: [2, 3]
 ---
 
 # Capacitor UX Prompt Pack
 
-**Version:** v0.4  
+**Version:** v0.3  
 **Date:** 2026-03-04  
-**Status:** Active
+**Status:** Archived snapshot
 
 ## 1) Purpose
 
@@ -22,7 +23,6 @@ Provide copy-paste prompts to generate first-vision UI concepts in v0 for:
 3. Mobile-first discovery and command surface
 4. Launchpad-first project creation flow
 5. Collectible risograph card system for agents
-6. Boardgame-style project pages with style-pack selection
 
 These prompts are for direction-setting and promotion, not final production UX.
 
@@ -267,62 +267,7 @@ Brand tie-in:
 - Keep the overall product looking like a serious market system, not a game UI
 ```
 
-## 10) Prompt F — Project Boardgame Pages (Style Packs + Cards + Meeples)
-
-```md
-Design a project detail experience for Capacitor where each project can be viewed as a boardgame-like strategic table while preserving real product usability.
-
-Core concept:
-- Every project has a dedicated board page.
-- The project selects one visual style pack at launch.
-- Agents appear as collectible cards plus meeple markers on the board.
-- Users can switch between Board Mode and Data Mode.
-
-Required style-pack system:
-- Provide curated selectable packs (not unlimited custom themes).
-- Example packs:
-  1) Neon Isometric Arcade
-  2) Retro Cyber RPG
-  3) Desk/Tabletop Tournament
-  4) Analog Suburb Sci-Fi (Tales from the Loop-inspired)
-- Each pack changes visual tokens (frame, palette, iconography, texture) without changing core data model.
-
-Tales from the Loop-inspired pack guidance:
-- late-20th-century suburban atmosphere with grounded sci-fi anomalies
-- muted natural palette + retro industrial accents
-- cinematic, melancholic calm rather than high-saturation arcade energy
-- still preserve metric clarity and action hierarchy
-
-Board page requirements:
-1. Board header
-   - project name, selected style pack, status, quick KPIs
-2. Board map zone
-   - tasks represented as board nodes/regions
-   - meeples indicate active agent participation
-3. Agent card rail
-   - collectible-style cards with core metrics
-4. Investment rail
-   - market cap, volume, fee generation, liquidity depth
-5. Action rail
-   - post task, assign, watch, compare, share
-
-Mode toggle (mandatory):
-- Board Mode: thematic strategic view
-- Data Mode: dense tables/cards for operators and investors
-
-Usability constraints:
-- No style pack can reduce metric readability
-- Every board element must map to a clear product action
-- Keep keyboard accessibility and responsive behavior
-- Maintain AMM-linked exposure terminology (not equity language)
-
-Output requirements:
-- Desktop project board page
-- Mobile adaptation with simplified board + card stack
-- 3 style-pack variants using same component structure
-```
-
-## 11) Component Evaluation Checklist (For Reviewing v0 Outputs)
+## 10) Component Evaluation Checklist (For Reviewing v0 Outputs)
 
 Use this checklist to compare generated variants quickly.
 
@@ -338,8 +283,6 @@ Use this checklist to compare generated variants quickly.
 | Agent usability | Reward/lock/verification data is obvious | |
 | Card option quality | Risograph card style is distinctive and still clear | |
 | Card option quality | Segmented metric sections are legible at a glance | |
-| Board-mode quality | Project board page is strategic and still usable | |
-| Board-mode quality | Style packs are distinct but share one data model | |
 | Visual identity | CAPACITR/circuit language is present but subtle | |
 | Visual identity | Not skeuomorphic; not generic SaaS template | |
 | Motion quality | Animation improves comprehension, not noise | |
@@ -347,13 +290,12 @@ Use this checklist to compare generated variants quickly.
 | Accessibility | Keyboard focus + contrast + readable type | |
 | Reusability | Components can transition from marketing to product | |
 
-## 12) Recommended Workflow
+## 11) Recommended Workflow
 
 1. Generate Prompt D first to lock launchpad structure.
 2. Generate Prompt A to lock marketplace density and card behavior.
 3. Generate Prompt E to explore collectible risograph card style.
-4. Generate Prompt F to test boardgame project-page mode and style packs.
-5. Generate Prompt B for investor-facing narrative polish.
-6. Generate Prompt C for mobile adaptation.
-7. Score all outputs with the checklist.
-8. Merge best patterns into one direction and export to Figma.
+4. Generate Prompt B for investor-facing narrative polish.
+5. Generate Prompt C for mobile adaptation.
+6. Score all outputs with the checklist.
+7. Merge best patterns into one direction and export to Figma.

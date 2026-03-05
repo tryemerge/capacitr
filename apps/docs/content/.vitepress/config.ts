@@ -274,7 +274,8 @@ export default withMermaid({
           text: 'UX Versions',
           collapsed: true,
           items: [
-            { text: 'v0.3 Prompt Pack (current)', link: '/ux/v0-prompt-pack' },
+            { text: 'v0.4 Prompt Pack (current)', link: '/ux/v0-prompt-pack' },
+            { text: 'v0.3 Prompt Pack (archived)', link: '/ux/versions/v0-prompt-pack-v0-3' },
             { text: 'v0.2 Prompt Pack (archived)', link: '/ux/versions/v0-prompt-pack-v0-2' },
             { text: 'v0.1 Prompt Pack (archived)', link: '/ux/versions/v0-prompt-pack-v0-1' },
             { text: 'UX Archive', link: '/ux/versions/' },

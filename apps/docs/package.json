@@ -23,7 +23,12 @@
     "vue": "^3.4.15"
   },
   "devDependencies": {
+    "@braintree/sanitize-url": "^7.1.2",
     "@types/node": "^22.10.7",
+    "cytoscape": "^3.33.1",
+    "cytoscape-cose-bilkent": "^4.1.0",
+    "dayjs": "^1.11.19",
+    "debug": "^4.4.3",
     "mermaid": "^11.12.3",
     "typescript": "^5.3.3",
     "vitepress": "^1.6.3",
