@@ -63,7 +63,144 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at"),
 });
 
-// ── Launchpad Setups ─────────────────────────────────────────────────
+// ── Launchpad: Projects ──────────────────────────────────────────────
+
+export const projects = pgTable("projects", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  symbol: text("symbol").notNull(),
+  description: text("description"),
+  systemPrompt: text("system_prompt").notNull(),
+  decayK: real("decay_k").notNull().default(0.002),
+  graduationThreshold: real("graduation_threshold").notNull().default(69000),
+  status: text("status").notNull().default("active"),
+  chainId: integer("chain_id"),
+  tokenAddress: text("token_address"),
+  wTokenAddress: text("w_token_address"),
+  bondingCurveAddress: text("bonding_curve_address"),
+  tokenPrice: real("token_price").default(0),
+  marketCap: real("market_cap").default(0),
+  totalVolume: real("total_volume").default(0),
+  workPoolValue: real("work_pool_value").default(0),
+  contributorCount: integer("contributor_count").default(0),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  config: jsonb("config"),
+});
+
+// ── Launchpad: Agents (Builder/Worker Registration) ──────────────────
+
+export const agents = pgTable("agents", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  type: text("type").notNull().default("human"),
+  walletAddress: text("wallet_address"),
+  builderCode: text("builder_code").notNull().unique(),
+  referredBy: text("referred_by"),
+  bio: text("bio"),
+  avatarUrl: text("avatar_url"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  totalEarnings: real("total_earnings").default(0),
+  projectsContributed: integer("projects_contributed").default(0),
+});
+
+// ── Launchpad: Work Submissions ──────────────────────────────────────
+
+export const workSubmissions = pgTable("work_submissions", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" }),
+  agentId: text("agent_id")
+    .notNull()
+    .references(() => agents.id, { onDelete: "cascade" }),
+  proofContent: text("proof_content").notNull(),
+  proofHash: text("proof_hash"),
+  tokenAsk: real("token_ask").notNull(),
+  status: text("status").notNull().default("pending"),
+  reviewedBy: text("reviewed_by"),
+  reviewNotes: text("review_notes"),
+  txHash: text("tx_hash"),
+  mintTxHash: text("mint_tx_hash"),
+  assets: jsonb("assets"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// ── Launchpad: Snap Polls ────────────────────────────────────────────
+
+export const snapPolls = pgTable("snap_polls", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" }),
+  submissionId: text("submission_id")
+    .notNull()
+    .references(() => workSubmissions.id, { onDelete: "cascade" }),
+  question: text("question").notNull(),
+  status: text("status").notNull().default("active"),
+  startAt: timestamp("start_at").notNull().defaultNow(),
+  endAt: timestamp("end_at").notNull(),
+  yesWeight: real("yes_weight").notNull().default(0),
+  noWeight: real("no_weight").notNull().default(0),
+  outcome: text("outcome"),
+  onChainPollId: text("on_chain_poll_id"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// ── Launchpad: Snap Poll Votes ───────────────────────────────────────
+
+export const snapPollVotes = pgTable("snap_poll_votes", {
+  id: text("id").primaryKey(),
+  pollId: text("poll_id")
+    .notNull()
+    .references(() => snapPolls.id, { onDelete: "cascade" }),
+  voterAddress: text("voter_address").notNull(),
+  vote: text("vote").notNull(),
+  weight: real("weight").notNull(),
+  txHash: text("tx_hash"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// ── Launchpad: Agent Configurations ──────────────────────────────────
+
+export const agentConfigs = pgTable("agent_configs", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" })
+    .unique(),
+  systemPrompt: text("system_prompt").notNull(),
+  autoApproveThreshold: real("auto_approve_threshold").default(0.8),
+  autoRejectThreshold: real("auto_reject_threshold").default(0.2),
+  snapPollDurationMinutes: integer("snap_poll_duration_minutes").default(5),
+  maxTokenAsk: real("max_token_ask"),
+  contextPacks: jsonb("context_packs"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
+// ── Launchpad: Referrals ─────────────────────────────────────────────
+
+export const referrals = pgTable("referrals", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" }),
+  referrerCode: text("referrer_code").notNull(),
+  refereeAddress: text("referee_address").notNull(),
+  purchaseTxHash: text("purchase_tx_hash"),
+  wTokensMinted: real("w_tokens_minted"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// ── Simulator: Launchpad Setups ──────────────────────────────────────
 // Named setup snapshots saved from /emitter (LaunchpadSetupValues).
 
 export const launchpadSetups = pgTable("launchpad_setups", {
