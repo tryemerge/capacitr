@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { authClient } from "@/lib/auth-client";
+import { usePathname } from "next/navigation";
+import { useAuth, AccountSettingsModal } from "@capacitr/auth";
 
 interface NavItem {
   href: string;
@@ -31,12 +31,7 @@ const NAV_SECTIONS: NavSection[] = [
 
 export function SideNav() {
   const pathname = usePathname();
-  const router = useRouter();
-
-  async function handleLogout() {
-    await authClient.signOut();
-    router.push("/login");
-  }
+  const { logout } = useAuth();
 
   return (
     <nav className="fixed left-0 top-0 bottom-0 w-48 bg-zinc-900 border-r border-zinc-800 flex flex-col z-20">
@@ -85,9 +80,12 @@ export function SideNav() {
 
       {/* Footer */}
       <div className="px-4 py-3 border-t border-zinc-800 space-y-2">
-        <div className="text-[10px] text-zinc-600">capacitr.io</div>
+        <div className="flex items-center justify-between">
+          <div className="text-[10px] text-zinc-600">capacitr.io</div>
+          <AccountSettingsModal />
+        </div>
         <button
-          onClick={handleLogout}
+          onClick={logout}
           className="w-full text-left text-[11px] text-zinc-500 hover:text-zinc-300 transition-colors"
         >
           Sign out

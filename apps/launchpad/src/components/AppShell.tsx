@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { SideNav } from "./SideNav";
+import { TestToolbar } from "./TestToolbar";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -11,6 +12,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <>
       {showNav && <SideNav />}
       <div className={showNav ? "flex-1 ml-48" : "flex-1"}>{children}</div>
+      {showNav && <TestToolbar />}
     </>
   );
 }

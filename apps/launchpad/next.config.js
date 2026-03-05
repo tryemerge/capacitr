@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ['@capacitr/database'],
+  transpilePackages: ['@capacitr/auth', '@capacitr/database'],
   experimental: {
     serverComponentsExternalPackages: ['postgres'],
   },
