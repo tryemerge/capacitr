@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { SideNav } from "@/components/SideNav";
+import { AppShell } from "@/components/AppShell";
 
 export const metadata: Metadata = {
   title: "Capacitor Simulator",
@@ -15,8 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="flex min-h-screen">
-        <SideNav />
-        <div className="flex-1 ml-48">{children}</div>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );

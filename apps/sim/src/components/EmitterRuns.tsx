@@ -21,14 +21,15 @@ import {
 import {
   captureEmitterSnapshot,
   computeEmitterSummary,
-  loadEmitterRuns,
-  saveEmitterRun,
-  deleteEmitterRun,
   type EmitterRoundSnapshot,
   type EmitterRunSummary,
   type SavedEmitterRun,
 } from "@/lib/emitter-runs";
 import { EMITTER_PRESETS, PRESET_KEYS } from "@/lib/emitter-presets";
+import {
+  loadLaunchpadSetupValues,
+  launchpadSetupToEmitterConfig,
+} from "@/lib/emitter-setup";
 
 // ── Helpers ─────────────────────────────────────────────────────────
 
@@ -229,7 +230,67 @@ export default function EmitterRuns() {
 
   // Saved runs
   const [savedRuns, setSavedRuns] = useState<SavedEmitterRun[]>([]);
-  useEffect(() => setSavedRuns(loadEmitterRuns()), []);
+  const [runsLoading, setRunsLoading] = useState(true);
+
+  const fetchRuns = useCallback(async () => {
+    try {
+      const res = await fetch("/api/runs");
+      if (!res.ok) return;
+      const rows = await res.json() as Array<{
+        id: string; name: string; createdAt: string;
+        summary: EmitterRunSummary; configUsed: Record<string, unknown> | null;
+      }>;
+      setSavedRuns(rows.map((r) => ({
+        id: r.id,
+        name: r.name,
+        timestamp: new Date(r.createdAt).getTime(),
+        snapshots: [],
+        summary: r.summary,
+        configUsed: r.configUsed ?? {},
+      })));
+    } finally {
+      setRunsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRuns();
+  }, [fetchRuns]);
+
+  // Cross-run comparison
+  const [selectedForCompare, setSelectedForCompare] = useState<Set<string>>(new Set());
+  const [compareRuns, setCompareRuns] = useState<SavedEmitterRun[]>([]);
+  const [compareLoading, setCompareLoading] = useState(false);
+
+  const toggleCompareSelect = useCallback((id: string) => {
+    setSelectedForCompare((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else if (next.size < 3) next.add(id);
+      return next;
+    });
+  }, []);
+
+  const loadCompareRuns = useCallback(async () => {
+    setCompareLoading(true);
+    try {
+      const results = await Promise.all(
+        Array.from(selectedForCompare).map((id) =>
+          fetch(`/api/runs/${id}`).then((r) => r.json()),
+        ),
+      );
+      setCompareRuns(results.map((r) => ({
+        id: r.id,
+        name: r.name,
+        timestamp: new Date(r.createdAt).getTime(),
+        snapshots: r.snapshots as EmitterRoundSnapshot[],
+        summary: r.summary as EmitterRunSummary,
+        configUsed: r.configUsed ?? {},
+      })));
+    } finally {
+      setCompareLoading(false);
+    }
+  }, [selectedForCompare]);
 
   // Running control
   const runningRef = useRef(false);
@@ -237,7 +298,11 @@ export default function EmitterRuns() {
 
   // ── Start Simulation ──
   const startSim = useCallback(() => {
-    const preset = EMITTER_PRESETS[selectedPreset];
+    const basePreset = EMITTER_PRESETS["standard"];
+    const setupValues = selectedPreset === "from-setup" ? loadLaunchpadSetupValues() : null;
+    let preset = setupValues
+      ? { ...basePreset, config: launchpadSetupToEmitterConfig(setupValues) }
+      : EMITTER_PRESETS[selectedPreset];
     const { state, profiles } = initEmitterSim(preset.config, preset.botDistribution);
     simRef.current = state;
     profilesRef.current = profiles;
@@ -276,17 +341,21 @@ export default function EmitterRuns() {
         setSummary(finalSummary);
         setPhase("completed");
 
-        // Auto-save
-        const run: SavedEmitterRun = {
+        // Auto-save to API
+        const run = {
           id: `run-${Date.now()}`,
-          name: `${EMITTER_PRESETS[selectedPreset]?.name || "Custom"} — ${maxRounds} rounds`,
-          timestamp: Date.now(),
-          snapshots: allSnapshots,
-          summary: finalSummary,
+          name: `${selectedPreset === "from-setup" ? "From Setup" : EMITTER_PRESETS[selectedPreset]?.name || "Custom"} — ${maxRounds} rounds`,
+          rounds: maxRounds,
+          preset: selectedPreset,
           configUsed: { preset: selectedPreset },
+          summary: finalSummary,
+          snapshots: allSnapshots,
         };
-        saveEmitterRun(run);
-        setSavedRuns(loadEmitterRuns());
+        fetch("/api/runs", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(run),
+        }).then(() => fetchRuns());
         return;
       }
 
@@ -325,10 +394,10 @@ export default function EmitterRuns() {
   }, []);
 
   // ── Delete saved run ──
-  const handleDeleteRun = useCallback((id: string) => {
-    deleteEmitterRun(id);
-    setSavedRuns(loadEmitterRuns());
-  }, []);
+  const handleDeleteRun = useCallback(async (id: string) => {
+    await fetch(`/api/runs/${id}`, { method: "DELETE" });
+    fetchRuns();
+  }, [fetchRuns]);
 
   // ── Load saved run ──
   const handleLoadRun = useCallback((run: SavedEmitterRun) => {
@@ -365,6 +434,17 @@ export default function EmitterRuns() {
             <div className="bg-white rounded-xl border border-slate-200 p-4">
               <div className="text-sm font-semibold text-gray-700 mb-3">Presets</div>
               <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedPreset("from-setup")}
+                  className={`px-3 py-2 rounded-lg text-xs transition-colors ${
+                    selectedPreset === "from-setup"
+                      ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                      : "bg-gray-50 text-gray-600 border border-gray-100 hover:bg-gray-100"
+                  }`}
+                >
+                  <div className="font-medium">From Setup</div>
+                  <div className="text-[10px] mt-0.5 opacity-70">Use your saved Launchpad Setup config</div>
+                </button>
                 {PRESET_KEYS.map((key) => {
                   const preset = EMITTER_PRESETS[key];
                   const active = key === selectedPreset;
@@ -411,27 +491,157 @@ export default function EmitterRuns() {
             </div>
 
             {/* Saved runs */}
-            {savedRuns.length > 0 && (
+            {(runsLoading || savedRuns.length > 0) && (
               <div className="bg-white rounded-xl border border-slate-200 p-4">
-                <div className="text-sm font-semibold text-gray-700 mb-3">Saved Runs</div>
-                <div className="space-y-2">
-                  {savedRuns.map((run) => (
-                    <div key={run.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
-                      <button onClick={() => handleLoadRun(run)} className="text-left flex-1">
-                        <div className="text-xs font-medium text-gray-700">{run.name}</div>
-                        <div className="text-[10px] text-gray-400">
-                          {new Date(run.timestamp).toLocaleDateString()} — Creator: {fmtUsd(run.summary.creatorTotalUSDC)}, Pool: {fmtUsd(run.summary.poolTotalUSDC)}, 1 emToken: {fmtTokens(run.summary.finalEmTokenPriceInToken)} TKN
-                        </div>
-                      </button>
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm font-semibold text-gray-700">Saved Runs</div>
+                  {selectedForCompare.size >= 2 && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] text-gray-400">{selectedForCompare.size} selected</span>
                       <button
-                        onClick={() => handleDeleteRun(run.id)}
-                        className="text-[10px] text-red-400 hover:text-red-600 px-2"
-                      >
-                        delete
-                      </button>
+                        onClick={loadCompareRuns}
+                        className="text-xs px-3 py-1 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                      >Compare</button>
+                      <button
+                        onClick={() => { setSelectedForCompare(new Set()); setCompareRuns([]); }}
+                        className="text-[10px] text-gray-400 hover:text-gray-600"
+                      >Clear</button>
                     </div>
-                  ))}
+                  )}
                 </div>
+                {runsLoading ? (
+                  <div className="space-y-2">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="h-10 bg-gray-100 rounded-lg animate-pulse" />
+                    ))}
+                  </div>
+                ) : (
+                <div className="space-y-2">
+                  {savedRuns.map((run) => {
+                    const checked = selectedForCompare.has(run.id);
+                    return (
+                      <div key={run.id} className={`flex items-center p-2 rounded-lg ${checked ? "bg-indigo-50 border border-indigo-100" : "bg-gray-50"}`}>
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() => toggleCompareSelect(run.id)}
+                          className="mr-2 accent-indigo-600"
+                          title="Select for comparison"
+                        />
+                        <button onClick={() => handleLoadRun(run)} className="text-left flex-1">
+                          <div className="text-xs font-medium text-gray-700">{run.name}</div>
+                          <div className="text-[10px] text-gray-400">
+                            {new Date(run.timestamp).toLocaleDateString()} — Creator: {fmtUsd(run.summary.creatorTotalUSDC)}, Pool: {fmtUsd(run.summary.poolTotalUSDC)}, 1 emToken: {fmtTokens(run.summary.finalEmTokenPriceInToken)} TKN
+                          </div>
+                        </button>
+                        <button
+                          onClick={() => handleDeleteRun(run.id)}
+                          className="text-[10px] text-red-400 hover:text-red-600 px-2"
+                        >delete</button>
+                      </div>
+                    );
+                  })}
+                </div>
+                )}
+              </div>
+            )}
+
+            {/* Cross-run comparison panel */}
+            {compareRuns.length >= 2 && (
+              <div className="bg-white rounded-xl border border-slate-200 p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-sm font-semibold text-gray-700">Run Comparison</div>
+                  <button
+                    onClick={() => { setCompareRuns([]); setSelectedForCompare(new Set()); }}
+                    className="text-[10px] text-gray-400 hover:text-gray-600"
+                  >✕ Close</button>
+                </div>
+                {compareLoading ? (
+                  <div className="h-20 bg-gray-100 rounded-lg animate-pulse" />
+                ) : (
+                  <div>
+                    {/* Stat comparison table */}
+                    <div className="overflow-x-auto mb-4">
+                      <table className="w-full text-xs">
+                        <thead>
+                          <tr>
+                            <th className="text-left text-gray-400 font-normal py-1 pr-4">Metric</th>
+                            {compareRuns.map((r) => (
+                              <th key={r.id} className="text-left text-gray-700 font-semibold py-1 pr-4">
+                                {r.name}
+                                <div className="text-[10px] text-gray-400 font-normal">{new Date(r.timestamp).toLocaleDateString()}</div>
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(
+                            [
+                              { label: "Token Price", vals: compareRuns.map((r) => r.summary.finalTokenPrice), fmt: fmtUsd, hi: "max" },
+                              { label: "emToken Price", vals: compareRuns.map((r) => r.summary.finalEmTokenPrice), fmt: fmtUsd, hi: "max" },
+                              { label: "1 emToken (TKN)", vals: compareRuns.map((r) => r.summary.finalEmTokenPriceInToken), fmt: (v: number) => `${fmtTokens(v)} TKN`, hi: "max" },
+                              { label: "Total Volume", vals: compareRuns.map((r) => r.summary.totalVolumeUSDC), fmt: fmtUsd, hi: "max" },
+                              { label: "Creator USDC", vals: compareRuns.map((r) => r.summary.creatorTotalUSDC), fmt: fmtUsd, hi: "max" },
+                              { label: "Pool Value", vals: compareRuns.map((r) => r.summary.poolTotalUSDC), fmt: fmtUsd, hi: "max" },
+                              { label: "Work Events", vals: compareRuns.map((r) => r.summary.totalEmissionEvents), fmt: (v: number) => String(Math.round(v)), hi: "max" },
+                              { label: "Reserve Depleted", vals: compareRuns.map((r) => r.summary.reserveDepletedPct), fmt: (v: number) => `${fmt(v, 1)}%`, hi: "min" },
+                            ] as { label: string; vals: number[]; fmt: (v: number) => string; hi: "max" | "min" }[]
+                          ).map(({ label, vals, fmt: fmtFn, hi }) => {
+                            const best = hi === "max" ? Math.max(...vals) : Math.min(...vals);
+                            return (
+                              <tr key={label} className="border-t border-gray-50">
+                                <td className="text-gray-400 py-1.5 pr-4">{label}</td>
+                                {vals.map((v, i) => (
+                                  <td key={i} className={`py-1.5 pr-4 font-mono ${v === best ? "text-emerald-600 font-semibold" : "text-gray-700"}`}>
+                                    {fmtFn(v)}
+                                  </td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Token price overlay chart */}
+                    {compareRuns.every((r) => r.snapshots.length > 0) && (
+                      <div>
+                        <div className="text-[10px] text-gray-400 uppercase tracking-wider mb-1">Token Price Overlay</div>
+                        <div className="relative h-24">
+                          {compareRuns.map((run, ri) => {
+                            const colors = ["bg-indigo-400", "bg-amber-400", "bg-emerald-400"];
+                            const data = run.snapshots.map((s) => s.tokenPrice);
+                            const max = Math.max(...compareRuns.flatMap((r) => r.snapshots.map((s) => s.tokenPrice)), 0.001);
+                            const step = Math.max(1, Math.ceil(data.length / 80));
+                            const sampled = data.filter((_, i) => i % step === 0);
+                            return (
+                              <div key={run.id} className="absolute inset-0 flex items-end gap-px">
+                                {sampled.map((v, i) => (
+                                  <div
+                                    key={i}
+                                    className={`flex-1 ${colors[ri]} rounded-t-sm min-w-[2px] opacity-60`}
+                                    style={{ height: `${Math.max(1, (v / max) * 100)}%` }}
+                                    title={`${run.name}: ${fmtUsd(v)}`}
+                                  />
+                                ))}
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className="flex gap-3 text-[9px] mt-1">
+                          {compareRuns.map((r, i) => {
+                            const colors = ["bg-indigo-400", "bg-amber-400", "bg-emerald-400"];
+                            return (
+                              <span key={r.id} className="flex items-center gap-1">
+                                <span className={`w-2 h-2 rounded-sm ${colors[i]}`} /> {r.name}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>

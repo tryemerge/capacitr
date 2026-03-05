@@ -23,7 +23,6 @@ import {
   saveLaunchpadSetupValues,
   type LaunchpadSetupValues,
 } from "@/lib/emitter-setup";
-
 // ── Helpers ─────────────────────────────────────────────────────────
 
 function fmt(n: number, decimals = 2): string {
@@ -196,6 +195,57 @@ export default function EmitterSandbox() {
   const [marketCapInput, setMarketCapInput] = useState(DEFAULT_LAUNCHPAD_SETUP_VALUES.marketCapInput);
   const hydratedRef = useRef(false);
 
+  // API-backed named setups
+  const [apiSetups, setApiSetups] = useState<{ id: string; name: string; config: LaunchpadSetupValues }[]>([]);
+  const [saveSetupName, setSaveSetupName] = useState("");
+  const [showSaveInput, setShowSaveInput] = useState(false);
+
+  const fetchApiSetups = async () => {
+    try {
+      const res = await fetch("/api/setups");
+      if (!res.ok) return;
+      const rows = await res.json() as { id: string; name: string; config: LaunchpadSetupValues }[];
+      setApiSetups(rows);
+    } catch { /* ignore */ }
+  };
+
+  const handleSaveToCloud = async () => {
+    if (!saveSetupName.trim()) return;
+    const values: LaunchpadSetupValues = {
+      decayK, creatorPct, protocolPct, reservePct, projectPct,
+      bountyPct, tradeFeeRate, lpFeeRate, marketCapInput,
+    };
+    await fetch("/api/setups", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: saveSetupName.trim(), config: values }),
+    });
+    setSaveSetupName("");
+    setShowSaveInput(false);
+    fetchApiSetups();
+  };
+
+  const handleLoadApiSetup = (config: LaunchpadSetupValues) => {
+    setDecayK(config.decayK);
+    setCreatorPct(config.creatorPct);
+    setProtocolPct(config.protocolPct);
+    setReservePct(config.reservePct);
+    setProjectPct(config.projectPct);
+    setBountyPct(config.bountyPct);
+    setTradeFeeRate(config.tradeFeeRate);
+    setLpFeeRate(config.lpFeeRate);
+    setMarketCapInput(config.marketCapInput);
+  };
+
+  const handleDeleteApiSetup = async (id: string) => {
+    await fetch(`/api/setups/${id}`, { method: "DELETE" });
+    fetchApiSetups();
+  };
+
+  useEffect(() => {
+    fetchApiSetups();
+  }, []);
+
   useEffect(() => {
     const saved = loadLaunchpadSetupValues();
     if (saved) {
@@ -344,12 +394,81 @@ export default function EmitterSandbox() {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-4">
-          <h1 className="text-xl font-bold text-gray-900">Launchpad Setup</h1>
-          <p className="text-sm text-gray-500 mt-1">
-            Configure how decay curves, fee splits, and compounding will run in simulations.
-          </p>
+        <div className="mb-4 flex items-start justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900">Launchpad Setup</h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Configure how decay curves, fee splits, and compounding will run in simulations.
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            {/* Load saved setup */}
+            {apiSetups.length > 0 && (
+              <select
+                className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 bg-white text-gray-600"
+                defaultValue=""
+                onChange={(e) => {
+                  const setup = apiSetups.find((s) => s.id === e.target.value);
+                  if (setup) handleLoadApiSetup(setup.config);
+                  e.target.value = "";
+                }}
+              >
+                <option value="" disabled>Load saved…</option>
+                {apiSetups.map((s) => (
+                  <option key={s.id} value={s.id}>{s.name}</option>
+                ))}
+              </select>
+            )}
+            {/* Save to cloud */}
+            {showSaveInput ? (
+              <div className="flex items-center gap-1">
+                <input
+                  type="text"
+                  placeholder="Setup name…"
+                  value={saveSetupName}
+                  onChange={(e) => setSaveSetupName(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSaveToCloud()}
+                  className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 w-32"
+                  autoFocus
+                />
+                <button
+                  onClick={handleSaveToCloud}
+                  className="text-xs px-2 py-1.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                >Save</button>
+                <button
+                  onClick={() => { setShowSaveInput(false); setSaveSetupName(""); }}
+                  className="text-xs px-2 py-1.5 bg-gray-100 text-gray-500 rounded-lg hover:bg-gray-200"
+                >✕</button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setShowSaveInput(true)}
+                className="text-xs px-3 py-1.5 bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-lg hover:bg-indigo-100"
+              >Save Setup</button>
+            )}
+          </div>
         </div>
+
+        {/* Saved setups manager */}
+        {apiSetups.length > 0 && (
+          <div className="mb-4 bg-white rounded-xl border border-slate-200 p-3">
+            <div className="text-xs font-semibold text-gray-700 mb-2">Saved Setups</div>
+            <div className="flex flex-wrap gap-2">
+              {apiSetups.map((s) => (
+                <div key={s.id} className="flex items-center gap-1 bg-gray-50 border border-gray-100 rounded-lg px-2 py-1">
+                  <button
+                    onClick={() => handleLoadApiSetup(s.config)}
+                    className="text-xs text-gray-700 hover:text-indigo-600"
+                  >{s.name}</button>
+                  <button
+                    onClick={() => handleDeleteApiSetup(s.id)}
+                    className="text-[10px] text-gray-300 hover:text-red-500 ml-1"
+                  >✕</button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-12 gap-4">
           {/* ── Left: Controls ────────────────────────────── */}

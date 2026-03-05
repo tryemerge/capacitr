@@ -342,7 +342,7 @@ export function simulateRound(
   let nextEventId = eventLog.length + 1;
   let nextDiscId = discussions.length + 1;
   let nextPropId = proposals.length > 0 ? Math.max(...proposals.map((p) => p.id)) + 1 : 1;
-  let nextDelibId = deliberations.length + state.deliberations.length + 1;
+  let nextDelibId = deliberations.length + 1;
   let delibActionCount = 0;
 
   function addEvent(

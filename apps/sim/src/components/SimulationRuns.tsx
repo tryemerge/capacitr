@@ -22,9 +22,6 @@ import {
   simulateRound,
   captureSnapshot,
   computeSummary,
-  loadRuns,
-  saveRun,
-  deleteRun,
 } from "@/lib/runs";
 import {
   analyzeFreeRider,
@@ -975,12 +972,9 @@ type Phase = "config" | "running" | "completed" | "viewing";
 export default function SimulationRuns() {
   // Phase management
   const [phase, setPhase] = useState<Phase>("config");
-  const [runConfig, setRunConfig] = useState<RunConfig>(() => {
-    const existing = loadRuns();
-    return {
-      ...DEFAULT_RUN_CONFIG,
-      name: `Run #${existing.length + 1}`,
-    };
+  const [runConfig, setRunConfig] = useState<RunConfig>({
+    ...DEFAULT_RUN_CONFIG,
+    name: "Run #1",
   });
 
   // Simulation state
@@ -1007,7 +1001,41 @@ export default function SimulationRuns() {
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
 
   // Saved runs
-  const [savedRuns, setSavedRuns] = useState<SavedRun[]>(() => loadRuns());
+  const [savedRuns, setSavedRuns] = useState<SavedRun[]>([]);
+  const [runsLoading, setRunsLoading] = useState(true);
+
+  const fetchRuns = useCallback(async () => {
+    try {
+      const res = await fetch("/api/governance-runs");
+      if (!res.ok) return;
+      const rows = await res.json() as Array<{
+        id: string; name: string; createdAt: string;
+        rounds: number; configUsed: unknown; summary: RunSummary;
+        deliberationCount: number; selfFundingRatio: number | null;
+      }>;
+      const mapped: SavedRun[] = rows.map((r) => ({
+        id: r.id,
+        config: { ...(r.configUsed as RunConfig ?? DEFAULT_RUN_CONFIG), name: r.name },
+        status: "completed" as const,
+        createdAt: new Date(r.createdAt).getTime(),
+        completedAt: new Date(r.createdAt).getTime(),
+        snapshots: [],
+        summary: r.summary,
+      }));
+      setSavedRuns(mapped);
+      // Update default run name based on count
+      setRunConfig((prev) => ({
+        ...prev,
+        name: prev.name === "Run #1" ? `Run #${mapped.length + 1}` : prev.name,
+      }));
+    } finally {
+      setRunsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchRuns();
+  }, [fetchRuns]);
 
   // ── Start a new run ───────────────────────────────────────────────
 
@@ -1128,34 +1156,46 @@ export default function SimulationRuns() {
   const handleSave = useCallback(() => {
     if (!currentRunId || !summary) return;
 
-    const run: SavedRun = {
-      id: currentRunId,
-      config: runConfig,
-      status: "completed",
-      createdAt: Date.now(),
-      completedAt: Date.now(),
-      snapshots,
-      summary,
-    };
-    saveRun(run);
-    setSavedRuns(loadRuns());
-  }, [currentRunId, runConfig, snapshots, summary]);
+    fetch("/api/governance-runs", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: currentRunId,
+        name: runConfig.name || `Run ${new Date().toLocaleDateString()}`,
+        rounds: snapshots.length,
+        configUsed: runConfig,
+        summary,
+        snapshots,
+        deliberationCount: summary.deliberationsCompleted ?? 0,
+        selfFundingRatio: null,
+      }),
+    }).then(() => fetchRuns());
+  }, [currentRunId, runConfig, snapshots, summary, fetchRuns]);
 
   // ── View saved run ────────────────────────────────────────────────
 
-  const handleSelectSavedRun = useCallback((run: SavedRun) => {
+  const handleSelectSavedRun = useCallback(async (run: SavedRun) => {
     if (run.status === "completed" && run.summary) {
-      setSummary(run.summary);
-      setSnapshots(run.snapshots);
       setRunConfig(run.config);
+      setSummary(run.summary);
       setPhase("viewing");
+      // Fetch full run (with snapshots) for adversarial analysis sparklines
+      try {
+        const res = await fetch(`/api/governance-runs/${run.id}`);
+        if (res.ok) {
+          const full = await res.json() as { snapshots?: RoundSnapshot[] };
+          setSnapshots(Array.isArray(full.snapshots) ? full.snapshots : []);
+        }
+      } catch {
+        setSnapshots([]);
+      }
     }
   }, []);
 
-  const handleDeleteRun = useCallback((id: string) => {
-    deleteRun(id);
-    setSavedRuns(loadRuns());
-  }, []);
+  const handleDeleteRun = useCallback(async (id: string) => {
+    await fetch(`/api/governance-runs/${id}`, { method: "DELETE" });
+    fetchRuns();
+  }, [fetchRuns]);
 
   // ── Reset ─────────────────────────────────────────────────────────
 
@@ -1167,10 +1207,9 @@ export default function SimulationRuns() {
     setProfiles(null);
     setSummary(null);
     setCurrentRunId(null);
-    const existing = loadRuns();
     setRunConfig({
       ...DEFAULT_RUN_CONFIG,
-      name: `Run #${existing.length + 1}`,
+      name: `Run #${savedRuns.length + 1}`,
     });
   }, []);
 
