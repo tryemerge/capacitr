@@ -1,0 +1,26 @@
+{
+  "name": "@capacitr/database",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts",
+    "./client": "./src/client.ts"
+  },
+  "scripts": {
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:push": "ce run --profile -- drizzle-kit push",
+    "db:studio": "ce run --profile -- drizzle-kit studio"
+  },
+  "dependencies": {
+    "drizzle-orm": "^0.41.0",
+    "postgres": "^3.4.5"
+  },
+  "devDependencies": {
+    "composable.env": "0.8.1",
+    "drizzle-kit": "^0.30.0",
+    "typescript": "^5.3.3"
+  }
+}

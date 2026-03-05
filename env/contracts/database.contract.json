@@ -1,0 +1,14 @@
+{
+  "name": "database",
+  "location": "packages/database",
+  "vars": {
+    "DATABASE_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_POOL_PORT}/${database.GCP_NAME}?${database.GCP_POOL_CONNECTION_URL_PARAMS}",
+    "DIRECT_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_PORT}/${database.GCP_NAME}?${database.GCP_CONNECTION_URL_PARAMS}",
+    "GCP_HOST": "${database.GCP_HOST}",
+    "GCP_DB_USER": "${database.GCP_USER}",
+    "GCP_DB_PASSWORD": "${database.GCP_PASSWORD}",
+    "GCP_DB_NAME": "${database.GCP_NAME}",
+    "GCP_DB_PORT": "${database.GCP_PORT}",
+    "GCP_DB_POOL_PORT": "${database.GCP_POOL_PORT}"
+  }
+}
