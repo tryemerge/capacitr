@@ -6,6 +6,7 @@ import {
   integer,
   real,
   boolean,
+  unique,
 } from "drizzle-orm/pg-core";
 
 // ── Better Auth Tables ───────────────────────────────────────────────
@@ -81,7 +82,10 @@ export const projects = pgTable("projects", {
   tokenAddress: text("token_address"),
   wTokenAddress: text("w_token_address"),
   bondingCurveAddress: text("bonding_curve_address"),
-  tokenPrice: real("token_price").default(0),
+  reserveETH: real("reserve_eth").notNull().default(10),
+  reserveToken: real("reserve_token").notNull().default(1_000_000),
+  totalSupply: real("total_supply").notNull().default(1_000_000),
+  tokenPrice: real("token_price").default(0.00001),
   marketCap: real("market_cap").default(0),
   totalVolume: real("total_volume").default(0),
   workPoolValue: real("work_pool_value").default(0),
@@ -199,6 +203,45 @@ export const referrals = pgTable("referrals", {
   wTokensMinted: real("w_tokens_minted"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
+
+// ── Launchpad: Trades ────────────────────────────────────────────────
+
+export const trades = pgTable("trades", {
+  id: text("id").primaryKey(),
+  projectId: text("project_id")
+    .notNull()
+    .references(() => projects.id, { onDelete: "cascade" }),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  side: text("side").notNull(), // "buy" | "sell"
+  amountIn: real("amount_in").notNull(),
+  amountOut: real("amount_out").notNull(),
+  fee: real("fee").notNull(),
+  creatorFee: real("creator_fee").notNull(),
+  protocolFee: real("protocol_fee").notNull(),
+  workPoolFee: real("work_pool_fee").notNull(),
+  priceAfter: real("price_after").notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+// ── Launchpad: Token Balances ────────────────────────────────────────
+
+export const tokenBalances = pgTable(
+  "token_balances",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    balance: real("balance").notNull().default(0),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [unique("token_balances_user_project").on(t.userId, t.projectId)],
+);
 
 // ── Simulator: Launchpad Setups ──────────────────────────────────────
 // Named setup snapshots saved from /emitter (LaunchpadSetupValues).
