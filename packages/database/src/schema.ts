@@ -210,6 +210,9 @@ export const referrals = pgTable("referrals", {
 
 export const investors = pgTable("investors", {
   id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   ethBalance: real("eth_balance").notNull().default(100),
   createdAt: timestamp("created_at").notNull().defaultNow(),

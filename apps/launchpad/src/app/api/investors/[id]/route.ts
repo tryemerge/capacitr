@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { getDb } from "@capacitr/database";
 import {
   investors,
@@ -6,20 +7,26 @@ import {
   wTokenBalances,
   projects,
 } from "@capacitr/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { ETH_USD_PRICE } from "@/lib/constants";
+import { getSession } from "@/lib/get-session";
 
 export async function GET(
   _req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
+    const session = await getSession(await headers());
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const db = getDb();
 
     const [investor] = await db
       .select()
       .from(investors)
-      .where(eq(investors.id, params.id));
+      .where(and(eq(investors.id, params.id), eq(investors.userId, session.user.id)));
 
     if (!investor) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });

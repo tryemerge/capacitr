@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { getDb } from "@capacitr/database";
 import {
   projects,
@@ -18,12 +19,18 @@ import {
   spotPrice,
   marketCap,
 } from "@/lib/emitter";
+import { getSession } from "@/lib/get-session";
 
 export async function POST(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
+    const session = await getSession(await headers());
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const { investorId, side, amount, referrerCode } = body as {
       investorId: string;
@@ -44,11 +51,11 @@ export async function POST(
 
     const db = getDb();
 
-    // Verify investor
+    // Verify investor belongs to session user
     const [investor] = await db
       .select()
       .from(investors)
-      .where(eq(investors.id, investorId));
+      .where(and(eq(investors.id, investorId), eq(investors.userId, session.user.id)));
 
     if (!investor) {
       return NextResponse.json({ error: "Investor not found" }, { status: 404 });
