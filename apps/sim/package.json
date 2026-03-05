@@ -8,9 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@capacitr/auth": "workspace:^",
     "@capacitr/database": "workspace:^",
     "@capacitr/facilitator": "workspace:^",
-    "better-auth": "^1.2.9",
     "drizzle-orm": "^0.41.0",
     "next": "^14.2.35",
     "react": "^18.3.1",
