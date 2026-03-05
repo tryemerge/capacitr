@@ -1,0 +1,4 @@
+interface:
+  display_name: "Capacitr Planner Workflow"
+  short_description: "Create and run Capacitr ADR/Impl workflows."
+  default_prompt: "Use $capacitr-planner-workflow to draft or execute a planning doc workflow for this repo."
