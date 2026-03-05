@@ -5,8 +5,17 @@ import * as schema from "./schema";
 // DATABASE_URL → PgBouncer (pooled, for runtime queries)
 // DIRECT_URL   → direct connection (for migrations only)
 
+function cleanUrl(url: string): string {
+  // Strip params that postgres.js doesn't understand — they get sent as
+  // startup parameters and PgBouncer rejects them (08P01 protocol violation).
+  const u = new URL(url);
+  u.searchParams.delete("pgbouncer");
+  u.searchParams.delete("statement_cache_size");
+  return u.toString();
+}
+
 function createClient(url: string, options?: postgres.Options<{}>) {
-  const sql = postgres(url, { prepare: false, ...options });
+  const sql = postgres(cleanUrl(url), { prepare: false, ...options });
   return drizzle(sql, { schema });
 }
 

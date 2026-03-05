@@ -89,6 +89,8 @@ export const projects = pgTable("projects", {
   marketCap: real("market_cap").default(0),
   totalVolume: real("total_volume").default(0),
   workPoolValue: real("work_pool_value").default(0),
+  wTokenPerBuy: real("w_token_per_buy").notNull().default(0),
+  wTokenPerReferralBuy: real("w_token_per_referral_buy").notNull().default(1),
   contributorCount: integer("contributor_count").default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -204,6 +206,15 @@ export const referrals = pgTable("referrals", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
+// ── Launchpad: Investors (seeded test accounts) ─────────────────────
+
+export const investors = pgTable("investors", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  ethBalance: real("eth_balance").notNull().default(100),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
 // ── Launchpad: Trades ────────────────────────────────────────────────
 
 export const trades = pgTable("trades", {
@@ -212,8 +223,9 @@ export const trades = pgTable("trades", {
     .notNull()
     .references(() => projects.id, { onDelete: "cascade" }),
   userId: text("user_id")
-    .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
+  investorId: text("investor_id")
+    .references(() => investors.id, { onDelete: "cascade" }),
   side: text("side").notNull(), // "buy" | "sell"
   amountIn: real("amount_in").notNull(),
   amountOut: real("amount_out").notNull(),
@@ -241,6 +253,46 @@ export const tokenBalances = pgTable(
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
   (t) => [unique("token_balances_user_project").on(t.userId, t.projectId)],
+);
+
+// ── Launchpad: Investor Token Balances ───────────────────────────────
+
+export const investorTokenBalances = pgTable(
+  "investor_token_balances",
+  {
+    id: text("id").primaryKey(),
+    investorId: text("investor_id")
+      .notNull()
+      .references(() => investors.id, { onDelete: "cascade" }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    balance: real("balance").notNull().default(0),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [unique("investor_token_balances_investor_project").on(t.investorId, t.projectId)],
+);
+
+// ── Launchpad: wToken Balances ──────────────────────────────────────
+
+export const wTokenBalances = pgTable(
+  "w_token_balances",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .references(() => user.id, { onDelete: "cascade" }),
+    investorId: text("investor_id")
+      .references(() => investors.id, { onDelete: "cascade" }),
+    projectId: text("project_id")
+      .notNull()
+      .references(() => projects.id, { onDelete: "cascade" }),
+    balance: real("balance").notNull().default(0),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => [
+    unique("w_token_balances_user_project").on(t.userId, t.projectId),
+    unique("w_token_balances_investor_project").on(t.investorId, t.projectId),
+  ],
 );
 
 // ── Simulator: Launchpad Setups ──────────────────────────────────────
