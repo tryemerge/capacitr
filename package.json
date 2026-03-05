@@ -4,11 +4,10 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "lint": "turbo lint",
-    "env:build:docs": "ce build --profile",
+    "env:build": "ce build --profile",
     "dev:docs": "ce run --profile -- turbo dev --filter=docs",
     "build:docs": "ce run --profile -- turbo build --filter=docs",
     "start:docs": "ce run --profile -- turbo start --filter=docs",
-    "env:build:sim": "ce build --profile",
     "dev:sim": "ce run --profile -- turbo dev --filter=sim",
     "build:sim": "ce run --profile -- turbo build --filter=sim",
     "start:sim": "ce run --profile -- turbo start --filter=sim",

@@ -1,6 +1,6 @@
 {
-  "name": "sim",
-  "location": "apps/sim",
+  "name": "launchpad",
+  "location": "apps/launchpad",
   "vars": {
     "DATABASE_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_POOL_PORT}/${database.GCP_NAME}?${database.GCP_POOL_CONNECTION_URL_PARAMS}",
     "DIRECT_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_PORT}/${database.GCP_NAME}?${database.GCP_CONNECTION_URL_PARAMS}",
@@ -8,16 +8,14 @@
     "GOOGLE_CLIENT_ID": "${google.AUTH_CLIENT_ID}",
     "GOOGLE_CLIENT_SECRET": "${google.AUTH_CLIENT_SECRET}",
     "ALLOWED_EMAILS": "${better-auth.ALLOWED_EMAILS}",
-    "BASE_URL": "${sim.BASE_URL}",
-    "PORT": "${SIM_PORT}",
-    "LOG_LEVEL": "${LOG_LEVEL}"
+    "BASE_URL": "${launchpad.BASE_URL}",
+    "PORT": "${LAUNCHPAD_PORT}"
   },
   "defaults": {
-    "PORT": "3000",
-    "LOG_LEVEL": "info"
+    "PORT": "3001"
   },
   "dev": {
     "command": "pnpm dev",
-    "label": "Sim"
+    "label": "Launchpad"
   }
 }
