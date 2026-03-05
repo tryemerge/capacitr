@@ -4,6 +4,7 @@ import { projects } from "@capacitr/database/schema";
 import { desc } from "drizzle-orm";
 import { getSession } from "@/lib/get-session";
 import { nanoid } from "nanoid";
+import { createBondingCurve, spotPrice } from "@/lib/emitter";
 
 export async function GET() {
   try {
@@ -57,6 +58,11 @@ export async function POST(req: NextRequest) {
     const db = getDb();
     const id = nanoid();
 
+    const initialETH = 10;
+    const initialTokens = 1_000_000;
+    const initialState = createBondingCurve(initialETH, initialTokens);
+    const initialPrice = spotPrice(initialState);
+
     const [row] = await db
       .insert(projects)
       .values({
@@ -68,6 +74,11 @@ export async function POST(req: NextRequest) {
         systemPrompt,
         decayK: decayK ?? 0.002,
         graduationThreshold: graduationThreshold ?? 69000,
+        reserveETH: initialETH,
+        reserveToken: initialTokens,
+        totalSupply: initialTokens,
+        tokenPrice: initialPrice,
+        marketCap: initialPrice * initialTokens,
       })
       .returning();
 

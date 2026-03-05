@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import { BondingCurveChart } from "@/components/BondingCurveChart";
@@ -27,6 +27,9 @@ interface Project {
   decayK: number;
   graduationThreshold: number;
   status: string;
+  reserveETH: number;
+  reserveToken: number;
+  totalSupply: number;
   tokenPrice: number | null;
   marketCap: number | null;
   totalVolume: number | null;
@@ -49,21 +52,25 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const refreshProject = useCallback(() => {
     fetch(`/api/projects/${id}`)
       .then((r) => {
         if (!r.ok) throw new Error("Not found");
         return r.json();
       })
       .then((data) => setProject(data))
-      .catch((err) => setError(err.message))
-      .finally(() => setLoading(false));
+      .catch((err) => setError(err.message));
+  }, [id]);
+
+  useEffect(() => {
+    refreshProject();
+    setLoading(false);
 
     fetch(`/api/snap-polls?projectId=${id}`)
       .then((r) => r.json())
-      .then((data) => setPolls(data))
+      .then((data) => { if (Array.isArray(data)) setPolls(data); })
       .catch(() => setPolls([]));
-  }, [id]);
+  }, [id, refreshProject]);
 
   if (loading) {
     return (
@@ -159,7 +166,13 @@ export default function ProjectDetailPage() {
       {/* Trading + Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         <BondingCurveChart />
-        <TokenTradePanel symbol={project.symbol} />
+        <TokenTradePanel
+          projectId={project.id}
+          symbol={project.symbol}
+          reserveETH={project.reserveETH}
+          reserveToken={project.reserveToken}
+          onTrade={refreshProject}
+        />
       </div>
 
       {/* Snap Polls */}

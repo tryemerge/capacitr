@@ -1,0 +1,164 @@
+import { NextRequest, NextResponse } from "next/server";
+import { getDb } from "@capacitr/database";
+import { projects, trades, tokenBalances } from "@capacitr/database/schema";
+import { eq, and } from "drizzle-orm";
+import { getSession } from "@/lib/get-session";
+import { nanoid } from "nanoid";
+import {
+  createBondingCurve,
+  buyToken,
+  sellToken,
+  spotPrice,
+  marketCap,
+} from "@/lib/emitter";
+
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { id: string } },
+) {
+  try {
+    const session = await getSession(req.headers);
+    if (!session)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const body = await req.json();
+    const { side, amount } = body as { side: string; amount: number };
+
+    if (!["buy", "sell"].includes(side)) {
+      return NextResponse.json(
+        { error: "side must be 'buy' or 'sell'" },
+        { status: 400 },
+      );
+    }
+    if (!amount || amount <= 0) {
+      return NextResponse.json(
+        { error: "amount must be a positive number" },
+        { status: 400 },
+      );
+    }
+
+    const db = getDb();
+
+    // Read current project state
+    const [project] = await db
+      .select({
+        reserveETH: projects.reserveETH,
+        reserveToken: projects.reserveToken,
+        totalSupply: projects.totalSupply,
+        totalVolume: projects.totalVolume,
+        workPoolValue: projects.workPoolValue,
+      })
+      .from(projects)
+      .where(eq(projects.id, params.id));
+
+    if (!project) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
+
+    const state = createBondingCurve(project.reserveETH, project.reserveToken);
+
+    // For sells, check the user has enough tokens
+    if (side === "sell") {
+      const [bal] = await db
+        .select({ balance: tokenBalances.balance })
+        .from(tokenBalances)
+        .where(
+          and(
+            eq(tokenBalances.userId, session.user.id),
+            eq(tokenBalances.projectId, params.id),
+          ),
+        );
+
+      if (!bal || bal.balance < amount) {
+        return NextResponse.json(
+          { error: "Insufficient token balance" },
+          { status: 400 },
+        );
+      }
+    }
+
+    // Execute trade math
+    const result = side === "buy" ? buyToken(state, amount) : sellToken(state, amount);
+    const newPrice = spotPrice(result.newState);
+    const newMarketCap = marketCap(result.newState, project.totalSupply);
+    const volumeAdd = side === "buy" ? amount : result.ethTraded;
+
+    // Persist everything in a transaction
+    await db.transaction(async (tx) => {
+      // Update project reserves + aggregates
+      await tx
+        .update(projects)
+        .set({
+          reserveETH: result.newState.reserveETH,
+          reserveToken: result.newState.reserveToken,
+          tokenPrice: newPrice,
+          marketCap: newMarketCap,
+          totalVolume: (project.totalVolume ?? 0) + volumeAdd,
+          workPoolValue: (project.workPoolValue ?? 0) + result.workPoolFee,
+          updatedAt: new Date(),
+        })
+        .where(eq(projects.id, params.id));
+
+      // Insert trade record
+      await tx.insert(trades).values({
+        id: nanoid(),
+        projectId: params.id,
+        userId: session.user.id,
+        side,
+        amountIn: side === "buy" ? amount : result.tokensTraded,
+        amountOut: side === "buy" ? result.tokensTraded : result.ethTraded,
+        fee: result.fee,
+        creatorFee: result.creatorFee,
+        protocolFee: result.protocolFee,
+        workPoolFee: result.workPoolFee,
+        priceAfter: newPrice,
+      });
+
+      // Upsert token balance
+      const [existing] = await tx
+        .select({ id: tokenBalances.id, balance: tokenBalances.balance })
+        .from(tokenBalances)
+        .where(
+          and(
+            eq(tokenBalances.userId, session.user.id),
+            eq(tokenBalances.projectId, params.id),
+          ),
+        );
+
+      const delta = side === "buy" ? result.tokensTraded : -result.tokensTraded;
+
+      if (existing) {
+        await tx
+          .update(tokenBalances)
+          .set({
+            balance: existing.balance + delta,
+            updatedAt: new Date(),
+          })
+          .where(eq(tokenBalances.id, existing.id));
+      } else {
+        await tx.insert(tokenBalances).values({
+          id: nanoid(),
+          userId: session.user.id,
+          projectId: params.id,
+          balance: delta,
+        });
+      }
+    });
+
+    return NextResponse.json({
+      side,
+      amountIn: side === "buy" ? amount : result.tokensTraded,
+      amountOut: side === "buy" ? result.tokensTraded : result.ethTraded,
+      fee: result.fee,
+      priceAfter: newPrice,
+      marketCap: newMarketCap,
+      reserveETH: result.newState.reserveETH,
+      reserveToken: result.newState.reserveToken,
+    });
+  } catch {
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 },
+    );
+  }
+}

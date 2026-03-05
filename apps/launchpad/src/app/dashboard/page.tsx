@@ -31,8 +31,8 @@ export default function DashboardPage() {
     ])
       .then(([agents, subs]) => {
         // Use first agent (current user's)
-        if (agents.length > 0) setAgent(agents[0]);
-        setSubmissions(subs);
+        if (Array.isArray(agents) && agents.length > 0) setAgent(agents[0]);
+        if (Array.isArray(subs)) setSubmissions(subs);
       })
       .catch(() => {})
       .finally(() => setLoading(false));

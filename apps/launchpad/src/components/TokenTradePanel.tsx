@@ -2,23 +2,26 @@
 
 import { useState, useMemo } from "react";
 import { createBondingCurve, buyToken, sellToken, spotPrice } from "@/lib/emitter";
-import { ConnectWalletButton } from "./ConnectWalletButton";
-import { useAccount } from "wagmi";
 
 interface TokenTradePanelProps {
+  projectId: string;
   symbol: string;
-  reserveETH?: number;
-  reserveToken?: number;
+  reserveETH: number;
+  reserveToken: number;
+  onTrade?: () => void;
 }
 
 export function TokenTradePanel({
+  projectId,
   symbol,
-  reserveETH = 10,
-  reserveToken = 1_000_000,
+  reserveETH,
+  reserveToken,
+  onTrade,
 }: TokenTradePanelProps) {
-  const { isConnected } = useAccount();
   const [side, setSide] = useState<"buy" | "sell">("buy");
   const [amount, setAmount] = useState("");
+  const [trading, setTrading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const state = useMemo(
     () => createBondingCurve(reserveETH, reserveToken),
@@ -32,6 +35,34 @@ export function TokenTradePanel({
   }, [state, side, amount]);
 
   const currentPrice = spotPrice(state);
+
+  async function executeTrade() {
+    const val = parseFloat(amount);
+    if (!val || val <= 0) return;
+
+    setTrading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`/api/projects/${projectId}/trade`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ side, amount: val }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || "Trade failed");
+      }
+
+      setAmount("");
+      onTrade?.();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Trade failed");
+    } finally {
+      setTrading(false);
+    }
+  }
 
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4">
@@ -85,9 +116,7 @@ export function TokenTradePanel({
       {preview && (
         <div className="bg-zinc-950 rounded-md p-3 mb-3 space-y-1.5">
           <div className="flex justify-between text-[10px]">
-            <span className="text-zinc-500">
-              {side === "buy" ? "You receive" : "You receive"}
-            </span>
+            <span className="text-zinc-500">You receive</span>
             <span className="text-zinc-200 font-mono">
               {side === "buy"
                 ? `${preview.tokensTraded.toFixed(2)} ${symbol}`
@@ -127,26 +156,27 @@ export function TokenTradePanel({
         </div>
       )}
 
+      {error && <p className="text-red-400 text-xs mb-2">{error}</p>}
+
       {/* Action button */}
-      {isConnected ? (
-        <button
-          disabled={!preview}
-          className={`w-full px-4 py-2.5 text-sm font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-            side === "buy"
-              ? "bg-emerald-600 text-white hover:bg-emerald-500"
-              : "bg-red-600 text-white hover:bg-red-500"
-          }`}
-        >
-          {side === "buy" ? `Buy ${symbol}` : `Sell ${symbol}`}
-        </button>
-      ) : (
-        <div className="flex justify-center">
-          <ConnectWalletButton />
-        </div>
-      )}
+      <button
+        onClick={executeTrade}
+        disabled={!preview || trading}
+        className={`w-full px-4 py-2.5 text-sm font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+          side === "buy"
+            ? "bg-emerald-600 text-white hover:bg-emerald-500"
+            : "bg-red-600 text-white hover:bg-red-500"
+        }`}
+      >
+        {trading
+          ? "Processing..."
+          : side === "buy"
+            ? `Buy ${symbol}`
+            : `Sell ${symbol}`}
+      </button>
 
       <p className="text-[9px] text-zinc-600 text-center mt-2">
-        Mock mode — trades are simulated using bonding curve math
+        DB mock mode — trades persist server-side
       </p>
     </div>
   );

@@ -42,13 +42,13 @@ export function RolodexGrid() {
     if (tab === "projects") {
       fetch("/api/projects")
         .then((r) => r.json())
-        .then((data) => setProjects(data))
+        .then((data) => { if (Array.isArray(data)) setProjects(data); })
         .catch(() => setProjects([]))
         .finally(() => setLoading(false));
     } else if (tab === "agents") {
       fetch("/api/agents")
         .then((r) => r.json())
-        .then((data) => setAgents(data))
+        .then((data) => { if (Array.isArray(data)) setAgents(data); })
         .catch(() => setAgents([]))
         .finally(() => setLoading(false));
     } else {
