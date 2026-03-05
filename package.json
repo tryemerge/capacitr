@@ -12,12 +12,14 @@
     "dev:sim": "ce run --profile -- turbo dev --filter=sim",
     "build:sim": "ce run --profile -- turbo build --filter=sim",
     "start:sim": "ce run --profile -- turbo start --filter=sim",
+    "db:push": "ce run --profile -- pnpm --filter=@capacitr/database db:push",
+    "db:studio": "ce run --profile -- pnpm --filter=@capacitr/database db:studio",
     "dev": "ce run --profile default -- turbo dev",
     "build": "ce run --profile default -- turbo build",
     "start": "ce run --profile default -- turbo start"
   },
   "devDependencies": {
-    "composable.env": "0.6.0",
+    "composable.env": "0.8.1",
     "turbo": "^2"
   }
 }
