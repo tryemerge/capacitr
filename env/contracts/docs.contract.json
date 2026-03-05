@@ -1,21 +1,20 @@
 {
   "name": "docs",
   "location": "apps/docs",
-  "dev": {
-    "command": "pnpm dev",
-    "label": "Docs"
-  },
-  "required": {},
-  "optional": {
-    "PORT": "DOCS_PORT",
-    "LOG_LEVEL": "LOG_LEVEL",
-    "VITE_GISCUS_REPO": "GISCUS_REPO",
-    "VITE_GISCUS_REPO_ID": "GISCUS_REPO_ID",
-    "VITE_GISCUS_CATEGORY": "GISCUS_CATEGORY",
-    "VITE_GISCUS_CATEGORY_ID": "GISCUS_CATEGORY_ID"
+  "vars": {
+    "PORT": "${DOCS_PORT}",
+    "LOG_LEVEL": "${LOG_LEVEL}",
+    "VITE_GISCUS_REPO": "${giscus.REPO}",
+    "VITE_GISCUS_REPO_ID": "${giscus.REPO_ID}",
+    "VITE_GISCUS_CATEGORY": "${giscus.CATEGORY}",
+    "VITE_GISCUS_CATEGORY_ID": "${giscus.CATEGORY_ID}"
   },
   "defaults": {
     "PORT": "5173",
     "LOG_LEVEL": "info"
+  },
+  "dev": {
+    "command": "pnpm dev",
+    "label": "Docs"
   }
 }
