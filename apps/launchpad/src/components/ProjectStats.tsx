@@ -27,7 +27,7 @@ export function ProjectStats({
     { label: "Price", value: formatNum(tokenPrice), suffix: "ETH" },
     { label: "Market Cap", value: formatNum(marketCap), suffix: "ETH" },
     { label: "Volume", value: formatNum(totalVolume), suffix: "ETH" },
-    { label: "Work Pool", value: formatNum(workPoolValue), suffix: "ETH" },
+    { label: "Work Pool", value: formatNum(workPoolValue), suffix: "tokens" },
     { label: "Builders", value: String(contributorCount ?? 0), suffix: "" },
   ];
 

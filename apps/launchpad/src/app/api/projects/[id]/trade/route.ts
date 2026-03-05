@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@capacitr/database";
-import { projects, trades, tokenBalances } from "@capacitr/database/schema";
+import { projects, trades, tokenBalances, wTokenBalances, agents, referrals } from "@capacitr/database/schema";
 import { eq, and } from "drizzle-orm";
 import { getSession } from "@/lib/get-session";
 import { nanoid } from "nanoid";
@@ -22,7 +22,11 @@ export async function POST(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const body = await req.json();
-    const { side, amount } = body as { side: string; amount: number };
+    const { side, amount, referrerCode } = body as {
+      side: string;
+      amount: number;
+      referrerCode?: string;
+    };
 
     if (!["buy", "sell"].includes(side)) {
       return NextResponse.json(
@@ -47,6 +51,8 @@ export async function POST(
         totalSupply: projects.totalSupply,
         totalVolume: projects.totalVolume,
         workPoolValue: projects.workPoolValue,
+        wTokenPerBuy: projects.wTokenPerBuy,
+        wTokenPerReferralBuy: projects.wTokenPerReferralBuy,
       })
       .from(projects)
       .where(eq(projects.id, params.id));
@@ -142,6 +148,75 @@ export async function POST(
           projectId: params.id,
           balance: delta,
         });
+      }
+
+      // wToken credit on buy
+      if (side === "buy" && project.wTokenPerBuy > 0) {
+        const [existingW] = await tx
+          .select({ id: wTokenBalances.id, balance: wTokenBalances.balance })
+          .from(wTokenBalances)
+          .where(
+            and(
+              eq(wTokenBalances.userId, session.user.id),
+              eq(wTokenBalances.projectId, params.id),
+            ),
+          );
+
+        if (existingW) {
+          await tx
+            .update(wTokenBalances)
+            .set({ balance: existingW.balance + project.wTokenPerBuy, updatedAt: new Date() })
+            .where(eq(wTokenBalances.id, existingW.id));
+        } else {
+          await tx.insert(wTokenBalances).values({
+            id: nanoid(),
+            userId: session.user.id,
+            projectId: params.id,
+            balance: project.wTokenPerBuy,
+          });
+        }
+      }
+
+      // Referral wToken credit
+      if (referrerCode && side === "buy" && project.wTokenPerReferralBuy > 0) {
+        const [agent] = await tx
+          .select({ userId: agents.userId })
+          .from(agents)
+          .where(eq(agents.builderCode, referrerCode.toUpperCase()));
+
+        if (agent) {
+          const [existingRef] = await tx
+            .select({ id: wTokenBalances.id, balance: wTokenBalances.balance })
+            .from(wTokenBalances)
+            .where(
+              and(
+                eq(wTokenBalances.userId, agent.userId),
+                eq(wTokenBalances.projectId, params.id),
+              ),
+            );
+
+          if (existingRef) {
+            await tx
+              .update(wTokenBalances)
+              .set({ balance: existingRef.balance + project.wTokenPerReferralBuy, updatedAt: new Date() })
+              .where(eq(wTokenBalances.id, existingRef.id));
+          } else {
+            await tx.insert(wTokenBalances).values({
+              id: nanoid(),
+              userId: agent.userId,
+              projectId: params.id,
+              balance: project.wTokenPerReferralBuy,
+            });
+          }
+
+          await tx.insert(referrals).values({
+            id: nanoid(),
+            projectId: params.id,
+            referrerCode: referrerCode.toUpperCase(),
+            refereeAddress: session.user.id,
+            wTokensMinted: project.wTokenPerReferralBuy,
+          });
+        }
       }
     });
 

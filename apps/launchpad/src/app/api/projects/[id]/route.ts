@@ -47,7 +47,7 @@ export async function PUT(
     }
 
     const body = await req.json();
-    const { name, description, systemPrompt, decayK, graduationThreshold, config } =
+    const { name, description, systemPrompt, decayK, graduationThreshold, config, wTokenPerBuy, wTokenPerReferralBuy } =
       body as {
         name?: string;
         description?: string;
@@ -55,6 +55,8 @@ export async function PUT(
         decayK?: number;
         graduationThreshold?: number;
         config?: unknown;
+        wTokenPerBuy?: number;
+        wTokenPerReferralBuy?: number;
       };
 
     const [row] = await db
@@ -66,6 +68,8 @@ export async function PUT(
         ...(decayK !== undefined && { decayK }),
         ...(graduationThreshold !== undefined && { graduationThreshold }),
         ...(config !== undefined && { config }),
+        ...(wTokenPerBuy !== undefined && { wTokenPerBuy }),
+        ...(wTokenPerReferralBuy !== undefined && { wTokenPerReferralBuy }),
         updatedAt: new Date(),
       })
       .where(eq(projects.id, params.id))

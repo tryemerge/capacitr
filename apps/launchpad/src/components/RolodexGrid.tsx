@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ProjectCard } from "./ProjectCard";
 import { AgentCard } from "./AgentCard";
+import { InvestorCard } from "./InvestorCard";
 
 type Tab = "projects" | "agents" | "investors";
 
@@ -30,11 +31,19 @@ interface Agent {
   createdAt: string;
 }
 
+interface Investor {
+  id: string;
+  name: string;
+  ethBalance: number;
+  createdAt: string;
+}
+
 export function RolodexGrid() {
   const [tab, setTab] = useState<Tab>("projects");
   const [search, setSearch] = useState("");
   const [projects, setProjects] = useState<Project[]>([]);
   const [agents, setAgents] = useState<Agent[]>([]);
+  const [investors, setInvestors] = useState<Investor[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -50,6 +59,12 @@ export function RolodexGrid() {
         .then((r) => r.json())
         .then((data) => { if (Array.isArray(data)) setAgents(data); })
         .catch(() => setAgents([]))
+        .finally(() => setLoading(false));
+    } else if (tab === "investors") {
+      fetch("/api/investors")
+        .then((r) => r.json())
+        .then((data) => { if (Array.isArray(data)) setInvestors(data); })
+        .catch(() => setInvestors([]))
         .finally(() => setLoading(false));
     } else {
       setLoading(false);
@@ -140,7 +155,26 @@ export function RolodexGrid() {
       )}
 
       {tab === "investors" && (
-        <div className="text-zinc-600 text-sm">Investors will appear here.</div>
+        <>
+          {loading ? (
+            <div className="text-zinc-600 text-sm">Loading investors...</div>
+          ) : (() => {
+            const filteredInvestors = investors.filter(
+              (i) => i.name.toLowerCase().includes(search.toLowerCase()),
+            );
+            return filteredInvestors.length === 0 ? (
+              <div className="text-zinc-600 text-sm">
+                {search ? "No investors match your search." : "No investors yet."}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                {filteredInvestors.map((i) => (
+                  <InvestorCard key={i.id} {...i} />
+                ))}
+              </div>
+            );
+          })()}
+        </>
       )}
     </div>
   );

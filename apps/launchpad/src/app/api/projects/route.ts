@@ -83,7 +83,8 @@ export async function POST(req: NextRequest) {
       .returning();
 
     return NextResponse.json(row, { status: 201 });
-  } catch {
+  } catch (err) {
+    console.error("[POST /api/projects]", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -23,6 +23,7 @@ const NAV_SECTIONS: NavSection[] = [
       { href: "/", label: "Explore", description: "Browse projects", icon: "🧭" },
       { href: "/projects/new", label: "Launch Idea", description: "Create a project", icon: "🚀" },
       { href: "/register", label: "Register", description: "Get builder code", icon: "🪪" },
+      { href: "/investors", label: "Investors", description: "Test portfolios", icon: "💼" },
       { href: "/dashboard", label: "Dashboard", description: "Your earnings", icon: "📊" },
     ],
   },
