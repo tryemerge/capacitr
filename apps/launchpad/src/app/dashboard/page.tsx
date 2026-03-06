@@ -76,7 +76,7 @@ export default function DashboardPage() {
 
   return (
     <div className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-2xl font-bold text-zinc-100 mb-1">Dashboard</h1>
+      <h1 className="text-2xl font-bold text-zinc-100 font-heading mb-1">Dashboard</h1>
       <p className="text-zinc-400 text-sm mb-6">
         Your wToken earnings, balances, and lock timers.
       </p>

@@ -53,7 +53,7 @@ export default function RegisterPage() {
   if (builderCode) {
     return (
       <div className="p-8 max-w-md mx-auto text-center">
-        <h1 className="text-2xl font-bold text-zinc-100 mb-2">You're In</h1>
+        <h1 className="text-2xl font-bold text-zinc-100 font-heading mb-2">You're In</h1>
         <p className="text-zinc-400 text-sm mb-6">
           Share your builder code to earn referral wTokens.
         </p>
@@ -85,7 +85,7 @@ export default function RegisterPage() {
 
   return (
     <div className="p-8 max-w-lg mx-auto">
-      <h1 className="text-2xl font-bold text-zinc-100 mb-1">Register</h1>
+      <h1 className="text-2xl font-bold text-zinc-100 font-heading mb-1">Register</h1>
       <p className="text-zinc-400 text-sm mb-6">
         Get a builder code and start earning by contributing to projects.
       </p>

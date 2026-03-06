@@ -19,6 +19,10 @@ Ship a thin MVP that combines:
 ## In This Section
 
 - [MVP Build Brief](/hackathon/mvp-build-brief)
+- [User Personas](/hackathon/personas)
+- [Epics & User Stories](/hackathon/user-stories)
+- [Work Actions](/hackathon/work-actions)
+- [Integrations](/hackathon/integrations)
 - [MVP Build Brief Version History](/hackathon/mvp-build-brief-changelog)
 - [Hackathon Archive](/hackathon/versions/)
 

@@ -1,3 +1,135 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ── Capacitr Hack-a-thon Brand Kit ─────────────────────────
+ * Typeface: Gridnik (headings), Arial (body)
+ * Scale: 1.25 ratio, base 16px, line-height 1.2
+ *
+ * LIGHT CANVAS THEME — beige/cream background,
+ * green + orange primary accents,
+ * blue + yellow reserved alt accents.
+ *
+ * If you have the Gridnik font files, place them in
+ * public/fonts/ and uncomment the @font-face below.
+ * Until then, Space Grotesk (Google Fonts) is loaded as a
+ * close geometric sans-serif stand-in.
+ * ─────────────────────────────────────────────────────────── */
+
+/* Gridnik — uncomment when font files are available:
+@font-face {
+  font-family: "Gridnik";
+  src: url("/fonts/Gridnik-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gridnik";
+  src: url("/fonts/Gridnik-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+*/
+
+/* Space Grotesk fallback (similar geometric feel to Gridnik) */
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+/* ── CSS Custom Properties (for use outside Tailwind) ─────── */
+:root {
+  /* Brand primaries */
+  --brand-green: #0F5331;
+  --brand-orange: #FA5302;
+
+  /* Brand alt accents */
+  --brand-dark: #021822;
+  --brand-yellow: #CBFF02;
+
+  /* Brand neutrals */
+  --brand-cream: #FDFCFA;
+  --brand-canvas: #F5F0E8;
+  --brand-tan: #D9D0C0;
+  --brand-grey: #F1F9FF;
+
+  /* Typography */
+  --font-heading: "Gridnik", "Space Grotesk", Arial, sans-serif;
+  --font-body: Arial, Helvetica, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  --line-height: 1.2;
+}
+
+/* ── Base layer overrides ──────────────────────────────────── */
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    line-height: var(--line-height);
+    background-color: var(--brand-cream);
+    color: #4A3F34;
+  }
+
+  /* Apply heading font to all heading elements */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* ── Component layer — brand utilities ─────────────────────── */
+@layer components {
+  /* Primary CTA button — brand orange */
+  .btn-cta {
+    @apply px-4 py-2.5 text-sm font-medium rounded-md transition-colors;
+    background-color: var(--brand-orange);
+    color: white;
+  }
+  .btn-cta:hover {
+    background-color: #e04a00;
+  }
+  .btn-cta:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  /* Callout highlight */
+  .callout-highlight {
+    color: var(--brand-yellow);
+  }
+
+  /* Brand card with subtle green border glow on hover */
+  .brand-card {
+    @apply rounded-lg border border-zinc-200 bg-zinc-100 p-4 transition-all;
+  }
+  .brand-card:hover {
+    border-color: rgba(15, 83, 49, 0.3);
+    box-shadow: 0 0 20px rgba(15, 83, 49, 0.06);
+  }
+}
+
+/* ── Utility layer — brand-specific helpers ────────────────── */
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .text-brand-orange {
+    color: var(--brand-orange);
+  }
+
+  .bg-brand-orange {
+    background-color: var(--brand-orange);
+  }
+
+  .text-brand-yellow {
+    color: var(--brand-yellow);
+  }
+
+  .bg-brand-yellow {
+    background-color: var(--brand-yellow);
+  }
+}
