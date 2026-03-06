@@ -15,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen bg-zinc-950 text-zinc-100">
+      <body className="flex min-h-screen bg-zinc-50 text-zinc-700 font-sans antialiased">
         <Web3Provider>
           <AppShell>{children}</AppShell>
         </Web3Provider>
