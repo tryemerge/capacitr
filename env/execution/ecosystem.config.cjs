@@ -19,8 +19,8 @@ module.exports = {
       "name": "docs",
       "script": "bash",
       "args": "-c \"pnpm dev\"",
-      "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/docs",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/docs/.env.default"),
+      "cwd": "/Users/sigalafosam/capacitr/apps/docs",
+      "env": loadEnvFile("/Users/sigalafosam/capacitr/apps/docs/.env.default"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3
@@ -29,8 +29,8 @@ module.exports = {
       "name": "launchpad",
       "script": "bash",
       "args": "-c \"pnpm dev\"",
-      "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/launchpad",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/launchpad/.env.default"),
+      "cwd": "/Users/sigalafosam/capacitr/apps/launchpad",
+      "env": loadEnvFile("/Users/sigalafosam/capacitr/apps/launchpad/.env.default"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3
@@ -39,8 +39,8 @@ module.exports = {
       "name": "sim",
       "script": "bash",
       "args": "-c \"pnpm dev\"",
-      "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/sim",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/sim/.env.default"),
+      "cwd": "/Users/sigalafosam/capacitr/apps/sim",
+      "env": loadEnvFile("/Users/sigalafosam/capacitr/apps/sim/.env.default"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3

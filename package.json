@@ -1,7 +1,7 @@
 {
   "name": "capacitr",
   "private": true,
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@9.0.4",
   "scripts": {
     "lint": "turbo lint",
     "env:build": "ce build --profile",
@@ -14,6 +14,7 @@
     "dev:launchpad": "ce run --profile -- turbo dev --filter=launchpad",
     "build:launchpad": "ce run --profile -- turbo build --filter=launchpad",
     "start:launchpad": "ce run --profile -- turbo start --filter=launchpad",
+    "build:contracts": "ce run --profile -- turbo build --filter=contracts",
     "db:push": "ce run --profile -- pnpm --filter=@capacitr/database db:push",
     "db:studio": "ce run --profile -- pnpm --filter=@capacitr/database db:studio",
     "dev": "ce run --profile default -- turbo dev",
