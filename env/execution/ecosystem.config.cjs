@@ -20,7 +20,7 @@ module.exports = {
       "script": "bash",
       "args": "-c \"pnpm dev\"",
       "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/docs",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/docs/.env.default"),
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/docs/.env.local"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3
@@ -30,7 +30,7 @@ module.exports = {
       "script": "bash",
       "args": "-c \"pnpm dev\"",
       "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/launchpad",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/launchpad/.env.default"),
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/launchpad/.env.local"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3
@@ -40,7 +40,7 @@ module.exports = {
       "script": "bash",
       "args": "-c \"pnpm dev\"",
       "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/sim",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/sim/.env.default"),
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/sim/.env.local"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3

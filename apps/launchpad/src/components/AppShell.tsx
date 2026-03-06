@@ -11,7 +11,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       {showNav && <SideNav />}
-      <div className={showNav ? "flex-1 ml-48" : "flex-1"}>{children}</div>
+      <div className={showNav ? "flex-1 ml-48" : "flex-1 min-h-screen"}>{children}</div>
       {showNav && <TestToolbar />}
     </>
   );
