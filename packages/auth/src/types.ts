@@ -12,7 +12,22 @@ export interface AuthContextValue {
   logout: () => Promise<void>;
 }
 
+export type PrivyLoginMethod =
+  | "wallet"
+  | "email"
+  | "sms"
+  | "google"
+  | "twitter"
+  | "discord"
+  | "github"
+  | "linkedin"
+  | "apple"
+  | "farcaster"
+  | "telegram"
+  | "passkey";
+
 export interface PrivyAuthConfig {
   theme?: "dark" | "light";
   accentColor?: `#${string}`;
+  loginMethods?: PrivyLoginMethod[];
 }

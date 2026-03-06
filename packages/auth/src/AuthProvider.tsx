@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext } from "react";
 import { PrivyProvider as PrivyProviderBase, usePrivy } from "@privy-io/react-auth";
 import type { AuthContextValue, PrivyAuthConfig } from "./types";
 
@@ -50,25 +50,6 @@ export function PrivyAuthProvider({
   children: ReactNode;
   config?: PrivyAuthConfig;
 }) {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  if (!isClient) {
-    const loadingValue: AuthContextValue = {
-      ready: false,
-      authenticated: false,
-      user: null,
-      login: () => {},
-      logout: async () => {},
-    };
-    return (
-      <AuthContext.Provider value={loadingValue}>{children}</AuthContext.Provider>
-    );
-  }
-
   const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID;
 
   if (!appId) {
@@ -96,6 +77,7 @@ export function PrivyAuthProvider({
           theme: config?.theme ?? "dark",
           accentColor: config?.accentColor ?? "#676FFF",
         },
+        loginMethods: config?.loginMethods,
         embeddedWallets: isHttps
           ? { ethereum: { createOnLogin: "users-without-wallets" } }
           : undefined,
