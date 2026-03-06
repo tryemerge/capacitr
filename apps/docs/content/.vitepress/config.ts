@@ -126,10 +126,6 @@ export default withMermaid({
           items: [
             { text: 'Overview', link: '/hackathon/' },
             { text: 'MVP Build Brief', link: '/hackathon/mvp-build-brief' },
-            { text: 'User Personas', link: '/hackathon/personas' },
-            { text: 'Epics & User Stories', link: '/hackathon/user-stories' },
-            { text: 'Work Actions', link: '/hackathon/work-actions' },
-            { text: 'Integrations', link: '/hackathon/integrations' },
             { text: 'MVP Brief Changelog', link: '/hackathon/mvp-build-brief-changelog' },
             { text: 'Archive', link: '/hackathon/versions/' },
           ],
