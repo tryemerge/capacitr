@@ -102,7 +102,7 @@ export default function InvestorDetailPage() {
       {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-zinc-100">{portfolio.name}</h1>
+          <h1 className="text-2xl font-bold text-zinc-100 font-heading">{portfolio.name}</h1>
           <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-950 text-amber-400">
             investor
           </span>

@@ -122,7 +122,7 @@ export default function PollPage() {
         &larr; Back to project
       </Link>
 
-      <h1 className="text-2xl font-bold text-zinc-100 mt-4 mb-2">Snap Poll</h1>
+      <h1 className="text-2xl font-bold text-zinc-100 font-heading mt-4 mb-2">Snap Poll</h1>
 
       <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 mb-6">
         <div className="flex items-start justify-between mb-4">

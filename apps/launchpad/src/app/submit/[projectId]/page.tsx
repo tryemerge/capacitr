@@ -52,7 +52,7 @@ export default function SubmitWorkPage() {
         >
           &larr; {project.name}
         </Link>
-        <h1 className="text-2xl font-bold text-zinc-100 mt-2 mb-1">Submit Work</h1>
+        <h1 className="text-2xl font-bold text-zinc-100 font-heading mt-2 mb-1">Submit Work</h1>
         <p className="text-zinc-400 text-sm">
           Submit proof of your contribution to{" "}
           <span className="font-medium text-zinc-300">{project.name}</span> (${project.symbol}).

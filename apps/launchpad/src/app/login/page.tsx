@@ -26,7 +26,7 @@ export default function LoginPage() {
     <div className="h-full bg-zinc-950 flex items-center justify-center">
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-10 w-full max-w-sm flex flex-col items-center gap-6">
         <div className="text-center">
-          <h1 className="text-xl font-semibold text-zinc-100">Capacitr</h1>
+          <h1 className="text-xl font-semibold text-zinc-100 font-heading">Capacitr</h1>
           <p className="text-zinc-500 text-sm mt-1">Sign in to the Idea Launchpad</p>
         </div>
 

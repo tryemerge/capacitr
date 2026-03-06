@@ -83,7 +83,7 @@ export default function ConfigurePage() {
         >
           &larr; {project.name}
         </Link>
-        <h1 className="text-2xl font-bold text-zinc-100 mt-2 mb-1">Configure</h1>
+        <h1 className="text-2xl font-bold text-zinc-100 font-heading mt-2 mb-1">Configure</h1>
         <p className="text-zinc-400 text-sm">
           Agent and project settings for{" "}
           <span className="font-medium text-zinc-300">{project.name}</span> (${project.symbol}).
