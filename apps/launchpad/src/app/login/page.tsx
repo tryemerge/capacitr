@@ -16,14 +16,14 @@ export default function LoginPage() {
 
   if (!ready) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+      <div className="h-full bg-zinc-950 flex items-center justify-center">
         <div className="text-zinc-500 text-sm">Loading...</div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
+    <div className="h-full bg-zinc-950 flex items-center justify-center">
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-10 w-full max-w-sm flex flex-col items-center gap-6">
         <div className="text-center">
           <h1 className="text-xl font-semibold text-zinc-100">Capacitr</h1>
