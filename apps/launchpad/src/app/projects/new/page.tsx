@@ -49,7 +49,7 @@ export default function LaunchIdeaPage() {
 
   return (
     <div className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold text-zinc-100 mb-1">Launch Idea</h1>
+      <h1 className="text-2xl font-bold text-zinc-100 font-heading mb-1">Launch Idea</h1>
       <p className="text-zinc-400 text-sm mb-6">
         Create a new project with its own token and bonding curve.
       </p>

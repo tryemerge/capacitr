@@ -102,7 +102,7 @@ export default function ProjectDetailPage() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-zinc-100">{project.name}</h1>
+            <h1 className="text-2xl font-bold text-zinc-100 font-heading">{project.name}</h1>
             <span className="text-sm text-zinc-500 font-mono">${project.symbol}</span>
             <span
               className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${

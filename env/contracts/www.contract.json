@@ -1,0 +1,10 @@
+{
+  "name": "www",
+  "location": "apps/www",
+  "vars": {},
+  "defaults": {},
+  "dev": {
+    "command": "npx serve .",
+    "label": "WWW Splash"
+  }
+}

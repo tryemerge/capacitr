@@ -20,17 +20,27 @@ module.exports = {
       "script": "bash",
       "args": "-c \"pnpm dev\"",
       "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/docs",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/docs/.env.local"),
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/docs/.env.default"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3
     },
     {
-      "name": "launchpad",
+      "name": "launchpad V1",
       "script": "bash",
       "args": "-c \"pnpm dev\"",
       "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/launchpad",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/launchpad/.env.local"),
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/launchpad/.env.default"),
+      "watch": false,
+      "autorestart": true,
+      "max_restarts": 3
+    },
+    {
+      "name": "lpv2",
+      "script": "bash",
+      "args": "-c \"pnpm dev\"",
+      "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/lpv2",
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/lpv2/.env.default"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3
@@ -40,7 +50,17 @@ module.exports = {
       "script": "bash",
       "args": "-c \"pnpm dev\"",
       "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/sim",
-      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/sim/.env.local"),
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/sim/.env.default"),
+      "watch": false,
+      "autorestart": true,
+      "max_restarts": 3
+    },
+    {
+      "name": "www",
+      "script": "bash",
+      "args": "-c \"npx serve .\"",
+      "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/www",
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/www/.env.default"),
       "watch": false,
       "autorestart": true,
       "max_restarts": 3

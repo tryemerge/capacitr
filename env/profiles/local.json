@@ -1,4 +1,4 @@
 {
-  "name": "Production",
-  "description": "Production environment with remote services"
+  "name": "Local",
+  "description": "Local development environment"
 }

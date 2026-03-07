@@ -51,7 +51,7 @@ export default function InvestorsPage() {
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-xl font-bold text-zinc-100 mb-1">Investors</h1>
+      <h1 className="text-xl font-bold text-zinc-100 font-heading mb-1">Investors</h1>
       <p className="text-sm text-zinc-500 mb-6">Seeded test accounts for simulating market activity</p>
 
       {/* Create form */}
