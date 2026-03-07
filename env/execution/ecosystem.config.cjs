@@ -26,6 +26,16 @@ module.exports = {
       "max_restarts": 3
     },
     {
+      "name": "launchpad V1",
+      "script": "bash",
+      "args": "-c \"pnpm dev\"",
+      "cwd": "/Users/the_dusky/code/sandbox/capacitr/apps/launchpad",
+      "env": loadEnvFile("/Users/the_dusky/code/sandbox/capacitr/apps/launchpad/.env.default"),
+      "watch": false,
+      "autorestart": true,
+      "max_restarts": 3
+    },
+    {
       "name": "lpv2",
       "script": "bash",
       "args": "-c \"pnpm dev\"",
