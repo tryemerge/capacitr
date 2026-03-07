@@ -102,8 +102,15 @@ export function AppHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 bg-brand-cream border-z200">
-              <div className="px-3 py-2">
-                <p className="text-sm font-medium text-z800">{user?.displayName || 'Anonymous'}</p>
+              <div className="px-3 py-2 flex items-center gap-2">
+                <Avatar className="h-9 w-9 shrink-0">
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback className="bg-z200 text-z700 text-sm">
+                    {user?.displayName?.[0]?.toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                <p className="text-sm font-medium text-z800 truncate">{user?.displayName || 'Anonymous'}</p>
                 {activeWallet && (
                   <div className="flex items-center gap-1 mt-0.5">
                     <p className="text-xs text-z500 font-mono truncate">{truncateAddress(activeWallet.address)}</p>
@@ -112,6 +119,7 @@ export function AppHeader() {
                     </button>
                   </div>
                 )}
+                </div>
               </div>
               <DropdownMenuSeparator className="bg-z200" />
               {activeWallet && (

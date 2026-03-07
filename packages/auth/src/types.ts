@@ -2,6 +2,7 @@ export interface AuthUser {
   id: string;
   email: string | null;
   displayName: string | null;
+  avatar: string | null;
 }
 
 export interface AuthContextValue {
