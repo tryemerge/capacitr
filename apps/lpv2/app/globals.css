@@ -1,0 +1,174 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Capacitr Brand Kit - Custom Properties */
+:root {
+  /* Brand primaries */
+  --brand-green: #0F5331;
+  --brand-orange: #FA5302;
+
+  /* Brand alt accents */
+  --brand-dark: #021822;
+  --brand-yellow: #CBFF02;
+
+  /* Brand neutrals */
+  --brand-cream: #FDFCFA;
+  --brand-canvas: #F5F0E8;
+  --brand-tan: #D9D0C0;
+  --brand-grey: #F1F9FF;
+
+  /* Warm neutral scale */
+  --z100: #F5F0E8;
+  --z200: #E8E0D4;
+  --z300: #D9D0C0;
+  --z400: #B8A990;
+  --z500: #8C7A64;
+  --z600: #6B5D4D;
+  --z700: #4A3F34;
+  --z800: #33291E;
+  --z900: #1E1710;
+
+  /* Semantic tokens mapped to brand */
+  --background: var(--brand-cream);
+  --foreground: var(--z800);
+  --card: var(--brand-canvas);
+  --card-foreground: var(--z800);
+  --popover: var(--brand-cream);
+  --popover-foreground: var(--z800);
+  --primary: var(--brand-green);
+  --primary-foreground: #FFFFFF;
+  --secondary: var(--z200);
+  --secondary-foreground: var(--z700);
+  --muted: var(--z100);
+  --muted-foreground: var(--z500);
+  --accent: var(--brand-orange);
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: var(--z200);
+  --input: var(--brand-canvas);
+  --ring: var(--brand-green);
+  --chart-1: var(--brand-orange);
+  --chart-2: var(--brand-green);
+  --chart-3: var(--z500);
+  --chart-4: var(--brand-yellow);
+  --chart-5: var(--z300);
+  --radius: 8px;
+  --sidebar: var(--brand-canvas);
+  --sidebar-foreground: var(--z800);
+  --sidebar-primary: var(--brand-green);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: var(--z200);
+  --sidebar-accent-foreground: var(--z700);
+  --sidebar-border: var(--z200);
+  --sidebar-ring: var(--brand-green);
+}
+
+.dark {
+  --background: var(--brand-dark);
+  --foreground: var(--brand-cream);
+  --card: #0A2A3A;
+  --card-foreground: var(--brand-cream);
+  --popover: var(--brand-dark);
+  --popover-foreground: var(--brand-cream);
+  --primary: var(--brand-green);
+  --primary-foreground: #FFFFFF;
+  --secondary: #1A3A4A;
+  --secondary-foreground: var(--brand-cream);
+  --muted: #1A3A4A;
+  --muted-foreground: var(--z400);
+  --accent: var(--brand-orange);
+  --accent-foreground: #FFFFFF;
+  --destructive: #DC2626;
+  --destructive-foreground: #FFFFFF;
+  --border: #1A3A4A;
+  --input: #1A3A4A;
+  --ring: var(--brand-green);
+  --sidebar: #0A2A3A;
+  --sidebar-foreground: var(--brand-cream);
+  --sidebar-primary: var(--brand-green);
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #1A3A4A;
+  --sidebar-accent-foreground: var(--brand-cream);
+  --sidebar-border: #1A3A4A;
+  --sidebar-ring: var(--brand-green);
+}
+
+@theme inline {
+  --font-sans: 'Space Grotesk', 'Space Grotesk Fallback', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'JetBrains Mono Fallback', Consolas, monospace;
+  --font-heading: 'Space Grotesk', 'Space Grotesk Fallback', Arial, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  
+  /* Brand color utilities */
+  --color-brand-green: var(--brand-green);
+  --color-brand-orange: var(--brand-orange);
+  --color-brand-yellow: var(--brand-yellow);
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-cream: var(--brand-cream);
+  --color-brand-canvas: var(--brand-canvas);
+  --color-brand-tan: var(--brand-tan);
+  --color-z100: var(--z100);
+  --color-z200: var(--z200);
+  --color-z300: var(--z300);
+  --color-z400: var(--z400);
+  --color-z500: var(--z500);
+  --color-z600: var(--z600);
+  --color-z700: var(--z700);
+  --color-z800: var(--z800);
+  --color-z900: var(--z900);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  
+  /* Capacitr Typography Rules */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-weight: 700;
+  }
+}

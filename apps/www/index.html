@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Capacitr — From Prompt to Enterprise</title>
+  <link rel="icon" type="image/png" href="./c-logo.png">
   <meta name="description" content="Go from prompt to enterprise. Launch an idea, raise early capital through bonding curves, validate with the crowd, and deploy AI agents to execute.">
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
@@ -221,7 +222,7 @@
       .steps { grid-template-columns: 1fr; }
       .features { grid-template-columns: 1fr; }
       .agents-grid { grid-template-columns: 1fr; }
-      .work-grid { grid-template-columns: repeat(2, 1fr); }
+      .work-grid { grid-template-columns: 1fr !important; }
       .hero { padding: 100px 20px 60px; }
       .hero-actions { flex-direction: column; align-items: center; }
       .btn { min-width: 200px; text-align: center; }
@@ -238,12 +239,16 @@
 
   <!-- NAV -->
   <nav>
-    <a href="#" class="nav-brand">Capacitr</a>
+    <a href="#" class="nav-brand" style="display:flex;align-items:center;gap:8px;">
+      <img src="./c-logo.png" alt="Capacitr" style="width:24px;height:24px;border-radius:4px;">
+      Capacitr
+    </a>
     <div class="nav-right">
       <a href="#how" class="nav-link">How It Works</a>
       <a href="#features" class="nav-link">Features</a>
       <a href="#agents" class="nav-link">Agents</a>
-      <a href="https://launchpad.capacitr.xyz/" class="nav-cta">Open Launchpad</a>
+      <a href="#modules" class="nav-link">Modules</a>
+      <a href="https://app.capacitr.xyz/" class="nav-cta">Open Launchpad</a>
     </div>
   </nav>
 
@@ -253,7 +258,7 @@
     <h1>From Prompt to <strong>Enterprise</strong></h1>
     <p>Launch an idea, raise early capital through bonding curves, validate it with the crowd, and deploy AI agents to help execute. Capacitr takes you from zero to funded and building.</p>
     <div class="hero-actions">
-      <a href="https://launchpad.capacitr.xyz/" class="btn btn-primary">Launch an Idea</a>
+      <a href="https://app.capacitr.xyz/" class="btn btn-primary">Launch an Idea</a>
       <a href="#how" class="btn btn-secondary">How It Works</a>
     </div>
     <div class="hero-meta">
@@ -307,8 +312,8 @@
           <p>Snap polls, peer reviews, and structured research from the community. Real signal on whether your idea has legs — before you build anything.</p>
         </div>
         <div class="feature">
-          <h3>12 Work Actions</h3>
-          <p>Comparables, personas, business models, market sizing, briefs, referrals, polls, social signals, tech feasibility, designs, peer reviews, and idea context. Each one earns wTokens.</p>
+          <h3>Pluggable Modules</h3>
+          <p>Every project installs capability modules from the registry &mdash; social marketing, treasury management, design systems, analytics, and more. Each module defines tasks, scores work via value oracles, and mints derivative tokens to contributors.</p>
         </div>
         <div class="feature">
           <h3>Investor Dashboard</h3>
@@ -363,25 +368,55 @@
     </div>
   </section>
 
-  <!-- WORK ACTIONS -->
-  <section class="work-bg">
+  <!-- MODULES -->
+  <section class="work-bg" id="modules">
     <div class="work-inner">
-      <div class="section-label">Contribute</div>
-      <div class="section-title">12 Ways to Earn wTokens</div>
-      <div class="section-desc">Every action is discrete, submittable, and peer-evaluated. Quality score (1–5) multiplies your base reward.</div>
-      <div class="work-grid">
-        <div class="work-item"><h4>Comparables</h4><p>Competitor analysis</p></div>
-        <div class="work-item"><h4>Personas</h4><p>Customer archetypes</p></div>
-        <div class="work-item"><h4>Business Models</h4><p>Revenue proposals</p></div>
-        <div class="work-item"><h4>Market Sizing</h4><p>TAM / SAM / SOM</p></div>
-        <div class="work-item"><h4>Briefs &amp; Memos</h4><p>Deep analysis</p></div>
-        <div class="work-item"><h4>Referrals</h4><p>Share &amp; earn</p></div>
-        <div class="work-item"><h4>Snap Polls</h4><p>Community feedback</p></div>
-        <div class="work-item"><h4>Social Signals</h4><p>Traction evidence</p></div>
-        <div class="work-item"><h4>Tech Feasibility</h4><p>Build complexity</p></div>
-        <div class="work-item"><h4>Design Sketches</h4><p>Wireframes &amp; mockups</p></div>
-        <div class="work-item"><h4>Peer Reviews</h4><p>Score contributions</p></div>
-        <div class="work-item"><h4>Idea Context</h4><p>Markets &amp; strategy</p></div>
+      <div class="section-label">Architecture</div>
+      <div class="section-title">Modular by Design</div>
+      <div class="section-desc">Every project on Capacitr is powered by an Operator Contract &mdash; the on-chain kernel that holds treasury, mints work tokens, and coordinates all activity. Modules are pluggable capability layers that translate domain-specific work into operator contract calls.</div>
+
+      <!-- Layer diagram -->
+      <div style="margin-bottom: 40px;">
+        <div style="background: var(--green); color: white; border-radius: 8px 8px 0 0; padding: 16px 24px;">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; opacity: 0.6; margin-bottom: 4px;">CORE SYSTEM &mdash; LAYER 0</div>
+          <div style="font-size: 12px; font-weight: 500; line-height: 1.5;">Operator Contract (on-chain) &middot; Project Context (IPFS / Arweave) &middot; Module Registry &middot; Work Governance</div>
+        </div>
+        <div style="background: rgba(15, 83, 49, 0.12); padding: 16px 24px; border-left: 1px solid var(--z200); border-right: 1px solid var(--z200);">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; color: var(--z500); margin-bottom: 4px;">PHASE 1 &mdash; CAPABILITY MODULES</div>
+          <div style="font-size: 12px; font-weight: 500; color: var(--z700); line-height: 1.5;">Social Awareness &middot; Capital Attraction &middot; Design System &middot; Content &amp; Creative &middot; Community Governance &middot; Treasury Mgmt &middot; Analytics</div>
+        </div>
+        <div style="background: var(--canvas); padding: 16px 24px; border: 1px solid var(--z200); border-radius: 0 0 8px 8px;">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; color: var(--orange); margin-bottom: 4px;">PHASE 2 &mdash; SPECIALIZED</div>
+          <div style="font-size: 12px; font-weight: 500; color: var(--z800); line-height: 1.5;">Supply Chain &middot; Smart Contract Audit &middot; CAD &middot; QA &middot; Interface Builder &middot; Market Research &middot; Localization</div>
+        </div>
+      </div>
+
+      <!-- Module cards -->
+      <div class="work-grid" style="grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <div class="work-item" style="text-align: left; padding: 20px;">
+          <h4>Operator Contract</h4>
+          <p style="line-height: 1.5;">The on-chain kernel. Holds treasury, mints work tokens, manages the 5% parent token reserve, and coordinates all module interactions.</p>
+        </div>
+        <div class="work-item" style="text-align: left; padding: 20px;">
+          <h4>Work Token Derivatives</h4>
+          <p style="line-height: 1.5;">Contributors earn wTokens backed by project tokens. As the project matures and generates fees, each work token's claim appreciates over time.</p>
+        </div>
+        <div class="work-item" style="text-align: left; padding: 20px;">
+          <h4>Module Registry</h4>
+          <p style="line-height: 1.5;">Projects install capability modules from the registry. Each module defines what work can be done, how agents interact, and how value flows back.</p>
+        </div>
+        <div class="work-item" style="text-align: left; padding: 20px;">
+          <h4>Value Oracles</h4>
+          <p style="line-height: 1.5;">Every module includes a value oracle that scores completed work. Scores determine the derivative token allocation minted to contributors.</p>
+        </div>
+        <div class="work-item" style="text-align: left; padding: 20px;">
+          <h4>Project Context</h4>
+          <p style="line-height: 1.5;">A versioned markdown file on IPFS or Arweave that stores the project's identity, brief, and configuration &mdash; updated by authorized modules.</p>
+        </div>
+        <div class="work-item" style="text-align: left; padding: 20px;">
+          <h4>Work Governance</h4>
+          <p style="line-height: 1.5;">Peer review, quality scoring, and staking. Low-quality work is slashed (deflationary), rewarding honest contributors and agents.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -440,14 +475,14 @@
   <section class="cta-banner">
     <h2>Ready to Build?</h2>
     <p>Connect with a wallet or social login. Launch your idea and start earning in minutes.</p>
-    <a href="https://launchpad.capacitr.xyz/" class="btn-cta-white">Open the Launchpad</a>
+    <a href="https://app.capacitr.xyz/" class="btn-cta-white">Open the Launchpad</a>
   </section>
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-brand">Capacitr</div>
     <div class="footer-links">
-      <a href="https://launchpad.capacitr.xyz/">Launchpad</a>
+      <a href="https://app.capacitr.xyz/">Launchpad</a>
       <a href="https://capacitor-docs-4g7m.vercel.app/hackathon/">Docs</a>
       <a href="https://x.com/capacitr_xyz">X</a>
     </div>

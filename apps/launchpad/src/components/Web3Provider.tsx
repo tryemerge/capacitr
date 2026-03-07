@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
   return (
-    <PrivyAuthProvider>
+    <PrivyAuthProvider config={{ loginMethods: ["email", "wallet", "google", "twitter", "github"] }}>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <RainbowKitProvider theme={darkTheme()}>
