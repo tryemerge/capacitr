@@ -1,5 +1,6 @@
 {
-  "buildCommand": "pnpm build",
-  "outputDirectory": "content/.vitepress/dist",
-  "framework": null
+  "framework": null,
+  "installCommand": "cd ../.. && pnpm install",
+  "buildCommand": "cd ../.. && pnpm turbo build --filter=docs",
+  "outputDirectory": "content/.vitepress/dist"
 }
