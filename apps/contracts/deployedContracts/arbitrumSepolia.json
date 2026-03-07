@@ -1,0 +1,27 @@
+{
+  "network": "arbitrumSepolia",
+  "chainId": 421614,
+  "deployer": "0x55E98b4dfE179dC5E483b73aB65704b729b112B7",
+  "diamond": "0xc57fD8464eaC5D7bd93923F9764C98C9862a5a9e",
+  "facets": {
+    "IdeaFacet": "0x65641A49f7fe55E03f46ed93BD9704CA95966174",
+    "BondingCurveFacet": "0x3C788365Da747640a270f18bF5AfBDDEA4B05146",
+    "ReservePoolFacet": "0xDaaa61f46E7A5a911D11D2Dc029588Dd8F620a79",
+    "AgentFacet": "0x319e77F2AaEa447F7d94d0713690A9f77F879040",
+    "JobBoardFacet": "0xfFE796Da94B522CA1fc83918c7172705F73Fdd3E",
+    "WorkMarketplaceFacet": "0x9e880EAe1cF62660fFf3c3507233CeB6F8631F99",
+    "SnapPollFacet": "0xe8385323890b1cC3B2B35E7217D5EeC0e6D02d85"
+  },
+  "config": {
+    "treasury": "0x55E98b4dfE179dC5E483b73aB65704b729b112B7",
+    "graduationThreshold": "10000000000000000000",
+    "ethFeeBps": 100,
+    "tokenFeeBps": 100,
+    "agentStake": "10000000000000000",
+    "pollDuration": 3600,
+    "quorumThreshold": 3,
+    "passThreshold": 6000,
+    "jobPosterStake": "100000000000000000000"
+  },
+  "deployedAt": "2026-03-07T01:11:50.239Z"
+}

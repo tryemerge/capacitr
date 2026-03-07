@@ -31,8 +31,8 @@ contract IdeaFacet {
         string memory workSymbol = string.concat("w", symbol);
         address workToken = address(new WorkToken(workName, workSymbol));
 
-        // 5% to reserve, 95% to bonding curve
-        uint256 curveAmount = totalSupply - (totalSupply * 500) / 10000;
+        // 80% to bonding curve, 20% to reserve (pump.fun ratio)
+        uint256 curveAmount = (totalSupply * 8000) / 10000;
 
         // Write idea fields directly to avoid struct-literal stack pressure
         Idea storage idea = is_.ideas[ideaId];
@@ -63,8 +63,11 @@ contract IdeaFacet {
         LibConfig.Storage storage cs = LibConfig.store();
         BondingCurveConfig storage curve = LibBondingCurve.store().curves[ideaId];
         curve.ideaId = ideaId;
-        curve.virtualEthReserve = 1 ether;
-        curve.virtualTokenReserve = curveAmount;
+        // Pump.fun-style virtual reserves:
+        // - virtualEth = 30 ETH (high liquidity depth, small trades don't move price much)
+        // - virtualToken = realToken * 1353/1000 (pump.fun ratio: 1.073B virtual for 793M real)
+        curve.virtualEthReserve = 30 ether;
+        curve.virtualTokenReserve = (curveAmount * 1353) / 1000;
         curve.realTokenReserve = curveAmount;
         curve.ethFeePercent = cs.defaultEthFeeBps;
         curve.tokenFeePercent = cs.defaultTokenFeeBps;

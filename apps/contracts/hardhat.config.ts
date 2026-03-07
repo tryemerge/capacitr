@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
 import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import { configVariable, defineConfig } from "hardhat/config";
 
@@ -28,11 +30,11 @@ export default defineConfig({
       type: "edr-simulated",
       chainType: "op",
     },
-    sepolia: {
+    arbitrumSepolia: {
       type: "http",
       chainType: "l1",
       url: configVariable("SEPOLIA_RPC_URL"),
-      accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
+      accounts: [configVariable("DEPLOYER_PRIVATE_KEY")],
     },
   },
 });

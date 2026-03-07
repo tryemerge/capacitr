@@ -1,0 +1,8 @@
+{
+  "name": "contracts",
+  "location": "apps/contracts",
+  "vars": {
+    "DEPLOYER_PRIVATE_KEY": "${contracts.DEPLOYER_PRIVATE_KEY}",
+    "SEPOLIA_RPC_URL": "${contracts.SEPOLIA_RPC_URL}"
+  }
+}
