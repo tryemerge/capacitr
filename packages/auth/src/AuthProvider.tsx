@@ -76,6 +76,9 @@ export function PrivyAuthProvider({
         appearance: {
           theme: config?.theme ?? "dark",
           accentColor: config?.accentColor ?? "#676FFF",
+          ...(config?.logo !== undefined && { logo: config.logo }),
+          ...(config?.landingHeader && { landingHeader: config.landingHeader }),
+          ...(config?.loginMessage && { loginMessage: config.loginMessage }),
         },
         loginMethods: config?.loginMethods,
         embeddedWallets: isHttps

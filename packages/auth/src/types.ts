@@ -30,4 +30,7 @@ export interface PrivyAuthConfig {
   theme?: "dark" | "light";
   accentColor?: `#${string}`;
   loginMethods?: PrivyLoginMethod[];
+  logo?: string;
+  landingHeader?: string;
+  loginMessage?: string;
 }
