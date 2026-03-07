@@ -10,7 +10,8 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 
 | Document | Version | Date | Status |
 |----------|---------|------|--------|
-| [Capacitor Brief](/brief/) | v0.5 | 2026-03-04 | Current |
+| [Capacitor Brief](/brief/) | v0.6.0 | 2026-03-06 | Current |
+| [Pitch Deck](/pitch/) | v0.1.0 | 2026-03-06 | Current |
 | [Capacitor Whitepaper (Emitter Phase)](/whitepaper/) | v0.0.20 | 2026-02-25 | Current |
 | [V0 Prompt Pack](/ux/v0-prompt-pack) | v0.4 | 2026-03-04 | Current |
 
@@ -49,6 +50,12 @@ Brief branching/track convention: [Brief Versioning Model](/versions/brief-versi
 | [v0.0.5](/versions/whitepaper/v0-0-5) | 2026-02-11 | SDK reframe + agent positioning | Full |
 | [v0.0.4](/versions/whitepaper/v0-0-4) | 2026-02-11 | Terminology corrections | Full |
 | [v0.0.3](/versions/whitepaper/v0-0-3) | 2026-02-11 | First complete whitepaper draft | Summary |
+
+## Pitch Deck Versions
+
+| Version | Date | Summary | Content |
+|---------|------|---------|---------|
+| [v0.1.0](/pitch/) | 2026-03-06 | Initial pitch deck --- escalation narrative, modular architecture, work-centric economics | Current |
 
 ## Brief Versions
 

@@ -12,10 +12,41 @@ Branching convention: [Brief Versioning Model](/versions/brief-versioning)
 Versions with full content snapshots are linked. Other versions are documented by their changes below.
 :::
 
-## Canonical Tracks (as of 2026-03-03)
+## Current Version
 
-- **Track X (default):** [v0.3.3a-X](/brief/) — activity-market-making marketplace
-- **Track V (alternate canonical):** [v0.3.2-V](/versions/brief/v0-3-2) — context-first coordination variant
+- [v0.6.0](/brief/) — 2026-03-06
+
+---
+
+## v0.6.0 — 2026-03-06
+**Capacitr --- Modular idea launchpad** --- [Read current version](/brief/)
+
+Lineage: `v0.5.1 -> v0.6.0`
+
+Major architectural update reflecting new MVP direction:
+
+- fee split changed from 40/50/10 (work pool / creator / protocol) to 90/10 (project / protocol), with project share split 50% ETH to ecosystem pool + 50% token to derivative pool
+- introduced **modules** as composable project capabilities (governance, Farcaster incentives, Shopify, etc.) --- creator picks initial modules at launch, governance module can manage the registry
+- replaced three work tiers (Default / Custom / Qualitative) with two types: **auto-judged work** (deterministic verification via modules) and **proposal work** (staked submissions, 66% spam vote, simple majority approval)
+- enterprise prompt stored off-chain with on-chain `contextURI` pointer, updateable via access control or governance module
+- wTkn explicitly pegged to derivative pool (price = pool value / supply)
+- cut competitive comparison table, three-actor demand breakdown, decay curve details, opportunity section, and Proof of Good Judgement teaser to keep brief focused
+
+---
+
+## v0.5.1 — 2026-03-04
+**Capacitr --- The Idea Launchpad (archived)** --- [Read archived version](/versions/brief/v0-5-1)
+
+Lineage: `v0.5 -> v0.5.1`
+
+Full brief rewrite with two-phase lifecycle, supply/demand marketplace framing, three work tiers, and orchestration agent.
+
+---
+
+## Prior Canonical Tracks (as of 2026-03-03)
+
+- **Track X:** v0.3.3a-X — activity-market-making marketplace
+- **Track V:** [v0.3.2-V](/versions/brief/v0-3-2) — context-first coordination variant
 
 ---
 
