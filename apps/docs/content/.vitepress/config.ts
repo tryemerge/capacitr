@@ -44,6 +44,7 @@ export default withMermaid({
 
     nav: [
       { text: 'Brief', link: '/brief/' },
+      { text: 'Pitch', link: '/pitch/' },
       { text: 'Hackathon', link: '/hackathon/' },
       { text: 'UX', link: '/ux/' },
       { text: 'Whitepaper', link: '/whitepaper/' },
@@ -93,17 +94,26 @@ export default withMermaid({
           ],
         },
       ],
+      '/pitch/': [
+        {
+          text: 'Pitch Deck',
+          items: [
+            { text: 'Slides', link: '/pitch/' },
+          ],
+        },
+      ],
       '/brief/': [
         {
           text: 'Brief',
           items: [
-            { text: 'v0.4.0 — The Idea Launchpad', link: '/brief/' },
+            { text: 'v0.6.0 — Modular Idea Launchpad', link: '/brief/' },
           ],
         },
         {
           text: 'Archive',
           collapsed: true,
           items: [
+            { text: 'v0.5.1 (Idea Launchpad)', link: '/versions/brief/v0-5-1' },
             { text: 'v0.3.3a-X (AMM Marketplace)', link: '/versions/brief/v0-3-3a' },
             { text: 'v0.3.2-V (Context-First)', link: '/versions/brief/v0-3-2' },
             { text: 'v0.3.3x', link: '/versions/brief/v0-3-3x' },
