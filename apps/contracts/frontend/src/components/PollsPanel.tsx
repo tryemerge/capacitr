@@ -7,7 +7,6 @@ const POLL_STATUS: Record<number, string> = {
   0: 'ACTIVE',
   1: 'PASSED',
   2: 'FAILED',
-  3: 'EXPIRED',
 };
 
 export function PollsPanel() {

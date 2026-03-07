@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
-import { parseEther, formatEther, parseUnits, formatUnits } from 'viem';
+import { useState, useEffect } from 'react';
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt, useAccount } from 'wagmi';
+import { parseEther, formatEther, parseUnits, formatUnits, erc20Abi, maxUint256 } from 'viem';
 import { DIAMOND_ADDRESS } from '../wagmi';
 import { IdeaMarketplaceABI } from '../abi';
 
@@ -13,6 +13,8 @@ export function TradePanel() {
   const [quoteBuyEth, setQuoteBuyEth] = useState('');
   const [quoteSellTokens, setQuoteSellTokens] = useState('');
 
+  const [sellStep, setSellStep] = useState<'idle' | 'approving' | 'selling'>('idle');
+  const { address } = useAccount();
   const ideaIdBigInt = ideaId ? BigInt(ideaId) : undefined;
 
   // Read: current price
@@ -77,6 +79,41 @@ export function TradePanel() {
     query: { enabled: false },
   });
 
+  // Read: idea data (for token address)
+  const { data: ideaData } = useReadContract({
+    address: DIAMOND_ADDRESS,
+    abi: IdeaMarketplaceABI,
+    functionName: 'getIdea',
+    args: ideaIdBigInt !== undefined ? [ideaIdBigInt] : undefined,
+    query: { enabled: ideaIdBigInt !== undefined },
+  });
+
+  const ideaTokenAddress = (ideaData as { ideaToken: `0x${string}` })?.ideaToken as `0x${string}` | undefined;
+
+  // Read: current allowance
+  const {
+    refetch: refetchAllowance,
+  } = useReadContract({
+    address: ideaTokenAddress,
+    abi: erc20Abi,
+    functionName: 'allowance',
+    args: address && ideaTokenAddress ? [address, DIAMOND_ADDRESS] : undefined,
+    query: { enabled: !!address && !!ideaTokenAddress },
+  });
+
+  // Write: approve
+  const {
+    writeContract: writeApprove,
+    data: approveTxHash,
+    isPending: isApproving,
+    error: approveError,
+  } = useWriteContract();
+
+  const {
+    isLoading: approveConfirming,
+    isSuccess: approveConfirmed,
+  } = useWaitForTransactionReceipt({ hash: approveTxHash });
+
   // Write: buy
   const {
     writeContract: writeBuy,
@@ -116,15 +153,50 @@ export function TradePanel() {
     });
   }
 
-  function handleSell() {
-    if (ideaIdBigInt === undefined || !sellTokenAmount || !sellMinEth) return;
-    writeSell({
-      address: DIAMOND_ADDRESS,
-      abi: IdeaMarketplaceABI,
-      functionName: 'sell',
-      args: [ideaIdBigInt, parseUnits(sellTokenAmount, 18), parseEther(sellMinEth)],
-    });
+  async function handleSell() {
+    if (ideaIdBigInt === undefined || !sellTokenAmount || !sellMinEth || !ideaTokenAddress) return;
+    const amount = parseUnits(sellTokenAmount, 18);
+
+    // Refetch allowance to get fresh value before deciding
+    const { data: freshAllowance } = await refetchAllowance();
+    const currentAllowance = (freshAllowance as bigint) ?? 0n;
+
+    if (currentAllowance >= amount) {
+      // Allowance sufficient — skip approval, sell directly
+      setSellStep('selling');
+      writeSell({
+        address: DIAMOND_ADDRESS,
+        abi: IdeaMarketplaceABI,
+        functionName: 'sell',
+        args: [ideaIdBigInt, amount, parseEther(sellMinEth)],
+      });
+    } else {
+      // Need approval first
+      setSellStep('approving');
+      writeApprove({
+        address: ideaTokenAddress,
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [DIAMOND_ADDRESS, maxUint256],
+      });
+    }
   }
+
+  // After approve confirms, execute the sell
+  useEffect(() => {
+    if (approveConfirmed && sellStep === 'approving') {
+      setSellStep('selling');
+      refetchAllowance();
+      if (ideaIdBigInt !== undefined && sellTokenAmount && sellMinEth) {
+        writeSell({
+          address: DIAMOND_ADDRESS,
+          abi: IdeaMarketplaceABI,
+          functionName: 'sell',
+          args: [ideaIdBigInt, parseUnits(sellTokenAmount, 18), parseEther(sellMinEth)],
+        });
+      }
+    }
+  }, [approveConfirmed]);
 
   return (
     <div className="panel">
@@ -263,14 +335,18 @@ export function TradePanel() {
             placeholder="0"
           />
         </div>
-        <button onClick={handleSell} disabled={isSelling || sellConfirming || ideaIdBigInt === undefined}>
-          {isSelling ? 'Sending...' : sellConfirming ? 'Confirming...' : 'Sell'}
+        <button onClick={handleSell} disabled={isApproving || approveConfirming || isSelling || sellConfirming || ideaIdBigInt === undefined}>
+          {isApproving || approveConfirming ? 'Approving...' : isSelling ? 'Sending...' : sellConfirming ? 'Confirming...' : 'Sell'}
         </button>
+        {approveError && <div className="error">Approve error: {approveError.message}</div>}
         {sellError && <div className="error">Error: {sellError.message}</div>}
         {sellConfirmError && <div className="error">Error: {sellConfirmError.message}</div>}
+        {approveTxHash && sellStep === 'approving' && (
+          <div className="result">Approve tx: {approveTxHash}</div>
+        )}
         {sellTxHash && (
           <div className="result">
-            Tx hash: {sellTxHash}
+            Sell tx: {sellTxHash}
             {sellConfirmed && ' (confirmed)'}
           </div>
         )}

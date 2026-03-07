@@ -9,8 +9,7 @@ const JOB_STATUS_LABELS: Record<number, string> = {
   1: 'CLAIMED',
   2: 'SUBMITTED',
   3: 'COMPLETED',
-  4: 'REJECTED',
-  5: 'CANCELLED',
+  4: 'CANCELLED',
 };
 
 function jobStatusLabel(status: number | bigint): string {
@@ -26,7 +25,7 @@ interface Job {
   workTokenReward: bigint;
   deliverableSpec: string;
   ideaId: bigint;
-  jobType: number;
+  jobType: string;
 }
 
 export function JobsPanel() {
@@ -99,7 +98,7 @@ export function JobsPanel() {
         BigInt(postIdeaId || '0'),
         postTitle,
         postSpec,
-        BigInt(postJobType || '0'),
+        postJobType,
         parseUnits(postReward || '0', 18),
       ],
     });
@@ -180,10 +179,9 @@ export function JobsPanel() {
         <label>Job Type</label>
         <input
           type="text"
-          inputMode="decimal"
           value={postJobType}
           onChange={(e) => setPostJobType(e.target.value)}
-          placeholder="0"
+          placeholder="e.g. development"
         />
       </div>
       <div className="field">

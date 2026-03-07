@@ -8,8 +8,6 @@ library LibAgent {
 
     struct Storage {
         mapping(address => AgentData) agents;
-        mapping(uint256 => address) erc8004ToWallet;
-        uint256 stakeRequirement;
     }
 
     function store() internal pure returns (Storage storage s) {

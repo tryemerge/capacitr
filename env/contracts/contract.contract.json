@@ -3,6 +3,7 @@
   "location": "apps/contracts",
   "vars": {
     "DEPLOYER_PRIVATE_KEY": "${contracts.DEPLOYER_PRIVATE_KEY}",
-    "SEPOLIA_RPC_URL": "${contracts.SEPOLIA_RPC_URL}"
+    "SEPOLIA_RPC_URL": "${contracts.SEPOLIA_RPC_URL}",
+    "ETHERSCAN_API_KEY": "DPESAIK5T86881FMVTYYNMQ17RD7G49ZMJ"
   }
 }

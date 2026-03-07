@@ -6,9 +6,6 @@ library LibConfig {
 
     struct Storage {
         address treasury;
-        address erc8004IdentityRegistry;
-        address erc8004ReputationRegistry;
-        address erc8004ValidationRegistry;
         uint256 defaultGraduationThreshold;
         uint256 defaultEthFeeBps;
         uint256 defaultTokenFeeBps;

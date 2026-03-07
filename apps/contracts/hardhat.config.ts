@@ -5,6 +5,17 @@ import { configVariable, defineConfig } from "hardhat/config";
 
 export default defineConfig({
   plugins: [hardhatToolboxMochaEthersPlugin],
+  verify: {
+    etherscan: {
+      apiKey: configVariable("ETHERSCAN_API_KEY"),
+    },
+    sourcify: {
+      enabled: false,
+    },
+    blockscout: {
+      enabled: false,
+    },
+  },
   solidity: {
     profiles: {
       default: {

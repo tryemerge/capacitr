@@ -51,9 +51,9 @@ export function RedeemPanel() {
 
   return (
     <div className="panel">
-      <h2>Redeem Panel</h2>
+      <h2>Redeem Module</h2>
 
-      <h3>View Reserve Pool</h3>
+      <h3>View Derivative Pool</h3>
       <div className="field">
         <label>Idea ID</label>
         <input type="text" inputMode="decimal" value={reserveIdeaId} onChange={(e) => { setReserveIdeaId(e.target.value); setFetchReserve(false); }} />

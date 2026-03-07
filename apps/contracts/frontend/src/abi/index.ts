@@ -5,6 +5,8 @@ import { AgentFacetABI } from './AgentFacet';
 import { JobBoardFacetABI } from './JobBoardFacet';
 import { WorkMarketplaceFacetABI } from './WorkMarketplaceFacet';
 import { SnapPollFacetABI } from './SnapPollFacet';
+import { ContextFacetABI } from './ContextFacet';
+import { ModuleRegistryFacetABI } from './ModuleRegistryFacet';
 
 export {
   IdeaFacetABI,
@@ -14,6 +16,8 @@ export {
   JobBoardFacetABI,
   WorkMarketplaceFacetABI,
   SnapPollFacetABI,
+  ContextFacetABI,
+  ModuleRegistryFacetABI,
 };
 
 export const IdeaMarketplaceABI = [
@@ -24,4 +28,6 @@ export const IdeaMarketplaceABI = [
   ...JobBoardFacetABI,
   ...WorkMarketplaceFacetABI,
   ...SnapPollFacetABI,
+  ...ContextFacetABI,
+  ...ModuleRegistryFacetABI,
 ] as const;

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {DerivativePool} from "../DataTypes.sol";
+import {TeamReserve} from "../DataTypes.sol";
 
-library LibReservePool {
-    bytes32 constant STORAGE_POSITION = keccak256("idea.marketplace.reservepool.storage");
+library LibTeamReserve {
+    bytes32 constant STORAGE_POSITION = keccak256("idea.marketplace.teamreserve.storage");
 
     struct Storage {
-        mapping(uint256 => DerivativePool) pools;
+        mapping(uint256 => TeamReserve) reserves;
     }
 
     function store() internal pure returns (Storage storage s) {

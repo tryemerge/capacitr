@@ -1,274 +1,94 @@
 export const AgentFacetABI = [
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "newContextURI",
-        "type": "string"
-      }
+    type: 'event',
+    name: 'AgentRegistered',
+    inputs: [
+      { name: 'owner', type: 'address', indexed: true },
+      { name: 'wallet', type: 'address', indexed: false },
+      { name: 'contextURI', type: 'string', indexed: false },
     ],
-    "name": "AgentContextUpdated",
-    "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
-      }
+    type: 'event',
+    name: 'AgentDeactivated',
+    inputs: [
+      { name: 'wallet', type: 'address', indexed: true },
     ],
-    "name": "AgentDeactivated",
-    "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
-      }
+    type: 'event',
+    name: 'AgentReactivated',
+    inputs: [
+      { name: 'wallet', type: 'address', indexed: true },
     ],
-    "name": "AgentReactivated",
-    "type": "event"
   },
   {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "erc8004AgentId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "contextURI",
-        "type": "string"
-      }
+    type: 'event',
+    name: 'AgentContextUpdated',
+    inputs: [
+      { name: 'wallet', type: 'address', indexed: true },
+      { name: 'newContextURI', type: 'string', indexed: false },
     ],
-    "name": "AgentRegistered",
-    "type": "event"
   },
   {
-    "inputs": [],
-    "name": "deactivateAgent",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    type: 'function',
+    name: 'registerAgent',
+    stateMutability: 'payable',
+    inputs: [
+      { name: 'contextURI', type: 'string' },
+    ],
+    outputs: [],
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
-      }
+    type: 'function',
+    name: 'updateContextURI',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'newContextURI', type: 'string' },
     ],
-    "name": "getAgent",
-    "outputs": [
+    outputs: [],
+  },
+  {
+    type: 'function',
+    name: 'deactivateAgent',
+    stateMutability: 'nonpayable',
+    inputs: [],
+    outputs: [],
+  },
+  {
+    type: 'function',
+    name: 'reactivateAgent',
+    stateMutability: 'nonpayable',
+    inputs: [],
+    outputs: [],
+  },
+  {
+    type: 'function',
+    name: 'getAgent',
+    stateMutability: 'view',
+    inputs: [{ name: 'wallet', type: 'address' }],
+    outputs: [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "erc8004AgentId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "wallet",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "reputationScore",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalJobsCompleted",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalJobsFailed",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "stakedAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
-          },
-          {
-            "internalType": "string",
-            "name": "contextURI",
-            "type": "string"
-          }
+        name: '',
+        type: 'tuple',
+        components: [
+          { name: 'owner', type: 'address' },
+          { name: 'wallet', type: 'address' },
+          { name: 'reputationScore', type: 'uint256' },
+          { name: 'totalJobsCompleted', type: 'uint256' },
+          { name: 'totalJobsFailed', type: 'uint256' },
+          { name: 'stakedAmount', type: 'uint256' },
+          { name: 'isActive', type: 'bool' },
+          { name: 'contextURI', type: 'string' },
         ],
-        "internalType": "struct Agent",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "erc8004AgentId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getAgentByErc8004Id",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "erc8004AgentId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "address",
-            "name": "owner",
-            "type": "address"
-          },
-          {
-            "internalType": "address",
-            "name": "wallet",
-            "type": "address"
-          },
-          {
-            "internalType": "uint256",
-            "name": "reputationScore",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalJobsCompleted",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "totalJobsFailed",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "stakedAmount",
-            "type": "uint256"
-          },
-          {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
-          },
-          {
-            "internalType": "string",
-            "name": "contextURI",
-            "type": "string"
-          }
-        ],
-        "internalType": "struct Agent",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "wallet",
-        "type": "address"
-      }
-    ],
-    "name": "isRegistered",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "reactivateAgent",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "erc8004AgentId",
-        "type": "uint256"
       },
-      {
-        "internalType": "string",
-        "name": "contextURI",
-        "type": "string"
-      }
     ],
-    "name": "registerAgent",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "newContextURI",
-        "type": "string"
-      }
-    ],
-    "name": "updateContextURI",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
+    type: 'function',
+    name: 'isRegistered',
+    stateMutability: 'view',
+    inputs: [{ name: 'wallet', type: 'address' }],
+    outputs: [{ name: '', type: 'bool' }],
+  },
 ] as const;
