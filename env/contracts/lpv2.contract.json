@@ -1,0 +1,20 @@
+{
+  "name": "lpv2",
+  "location": "apps/lpv2",
+  "vars": {
+    "DATABASE_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_POOL_PORT}/${database.GCP_NAME}?${database.GCP_POOL_CONNECTION_URL_PARAMS}",
+    "DIRECT_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_PORT}/${database.GCP_NAME}?${database.GCP_CONNECTION_URL_PARAMS}",
+    "NEXT_PUBLIC_PRIVY_APP_ID": "${privy.APP_ID}",
+    "PRIVY_APP_SECRET": "${privy.APP_SECRET}",
+    "PORT": "${LPV2_PORT}",
+    "LOG_LEVEL": "${LOG_LEVEL}"
+  },
+  "defaults": {
+    "PORT": "3002",
+    "LOG_LEVEL": "info"
+  },
+  "dev": {
+    "command": "pnpm dev",
+    "label": "Launchpad v2"
+  }
+}

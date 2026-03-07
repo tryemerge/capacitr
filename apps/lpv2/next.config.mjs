@@ -6,6 +6,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ["@capacitr/auth", "@capacitr/database"],
 }
 
 export default nextConfig
