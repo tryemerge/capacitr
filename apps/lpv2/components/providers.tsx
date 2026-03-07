@@ -1,30 +1,31 @@
-"use client"
+"use client";
 
-import { ReactNode } from 'react'
-import dynamic from 'next/dynamic'
-import { AuthProvider } from '@/lib/auth-context'
-import { IdeasProvider } from '@/lib/ideas-context'
+import { ReactNode } from "react";
+import dynamic from "next/dynamic";
+import { AuthProvider } from "@/lib/auth-context";
+import { IdeasProvider } from "@/lib/ideas-context";
 
 const PrivyAuthProvider = dynamic(
   () => import("@capacitr/auth").then((m) => m.PrivyAuthProvider),
-  { ssr: false }
-)
+  { ssr: false },
+);
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
-    <PrivyAuthProvider config={{
-      loginMethods: ["email", "wallet", "twitter", "farcaster"],
-      theme: "light",
-      accentColor: "#F97316",
-      logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/C%20logo-CGFdgDnMtYmhvbg6hX416emVkdAZYn.png",
-      landingHeader: "From Prompt to Enterprise",
-      loginMessage: "Log in or sign up to launch ideas",
-    }}>
+    <PrivyAuthProvider
+      config={{
+        loginMethods: ["email", "wallet", "twitter", "farcaster"],
+        theme: "light",
+        accentColor: "#F97316",
+
+        logo: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/C%20logo-CGFdgDnMtYmhvbg6hX416emVkdAZYn.png",
+        landingHeader: "From Prompt to Enterprise",
+        loginMessage: "Log in or sign up to launch ideas",
+      }}
+    >
       <AuthProvider>
-        <IdeasProvider>
-          {children}
-        </IdeasProvider>
+        <IdeasProvider>{children}</IdeasProvider>
       </AuthProvider>
     </PrivyAuthProvider>
-  )
+  );
 }

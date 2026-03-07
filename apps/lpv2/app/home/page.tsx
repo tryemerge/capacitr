@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import { useIdeas } from '@/lib/ideas-context'
 import { useAuth } from '@/lib/auth-context'
+import { ProtectedRoute } from '@/components/auth-guard'
 import { AppHeader } from '@/components/app-header'
 import { IdeaCard } from '@/components/idea-card'
 import { Button } from '@/components/ui/button'
@@ -103,6 +104,7 @@ export default function HomePage() {
   ]
 
   return (
+    <ProtectedRoute>
     <div className="min-h-screen bg-brand-cream">
       <AppHeader />
 
@@ -231,5 +233,6 @@ export default function HomePage() {
         </div>
       </footer>
     </div>
+    </ProtectedRoute>
   )
 }

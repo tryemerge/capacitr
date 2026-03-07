@@ -44,6 +44,7 @@ export default withMermaid({
 
     nav: [
       { text: 'Brief', link: '/brief/' },
+      { text: 'Pitch', link: '/pitch/' },
       { text: 'Hackathon', link: '/hackathon/' },
       { text: 'UX', link: '/ux/' },
       { text: 'Whitepaper', link: '/whitepaper/' },
@@ -93,17 +94,31 @@ export default withMermaid({
           ],
         },
       ],
+      '/pitch/': [
+        {
+          text: 'Pitch Deck',
+          items: [
+            { text: 'v0.1.0 --- Agentic DAOs', link: '/pitch/' },
+          ],
+        },
+        {
+          text: 'Archive',
+          collapsed: true,
+          items: [],
+        },
+      ],
       '/brief/': [
         {
           text: 'Brief',
           items: [
-            { text: 'v0.4.0 — The Idea Launchpad', link: '/brief/' },
+            { text: 'v0.6.0 — Modular Idea Launchpad', link: '/brief/' },
           ],
         },
         {
           text: 'Archive',
           collapsed: true,
           items: [
+            { text: 'v0.5.1 (Idea Launchpad)', link: '/versions/brief/v0-5-1' },
             { text: 'v0.3.3a-X (AMM Marketplace)', link: '/versions/brief/v0-3-3a' },
             { text: 'v0.3.2-V (Context-First)', link: '/versions/brief/v0-3-2' },
             { text: 'v0.3.3x', link: '/versions/brief/v0-3-3x' },
@@ -206,6 +221,7 @@ export default withMermaid({
           items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+            { text: 'Pitch Changelog', link: '/versions/pitch-changelog' },
             { text: 'Brief Versioning Model', link: '/versions/brief-versioning' },
           ],
         },
@@ -229,6 +245,7 @@ export default withMermaid({
           items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+            { text: 'Pitch Changelog', link: '/versions/pitch-changelog' },
             { text: 'Brief Versioning Model', link: '/versions/brief-versioning' },
           ],
         },
@@ -273,6 +290,13 @@ export default withMermaid({
             { text: 'v0.2.0', link: '/versions/brief/v0-2-0' },
             { text: 'v0.1.0', link: '/versions/brief/v0-1-0' },
             { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
+          ],
+        },
+        {
+          text: 'Pitch Versions',
+          collapsed: true,
+          items: [
+            { text: 'v0.1.0 (current)', link: '/pitch/' },
           ],
         },
         {

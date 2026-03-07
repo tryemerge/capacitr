@@ -1,20 +1,15 @@
 "use client"
 
 import { useAuth } from '@/lib/auth-context'
-import { useRouter } from 'next/navigation'
-import { useEffect } from 'react'
+import { AuthGuard } from '@/components/auth-guard'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
 
 export default function LoginPage() {
-  const { login, isLoading, isAuthenticated } = useAuth()
-  const router = useRouter()
-
-  useEffect(() => {
-    if (isAuthenticated) router.push('/home')
-  }, [isAuthenticated, router])
+  const { login, isLoading } = useAuth()
 
   return (
+    <AuthGuard>
     <main className="min-h-screen bg-brand-cream flex flex-col">
       {/* Header */}
       <header className="w-full px-6 py-4 flex items-center justify-between">
@@ -78,5 +73,6 @@ export default function LoginPage() {
         </div>
       </footer>
     </main>
+    </AuthGuard>
   )
 }

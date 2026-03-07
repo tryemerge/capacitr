@@ -2,6 +2,7 @@ import DefaultTheme from 'vitepress/theme'
 import GiscusLayout from './GiscusLayout.vue'
 import ExportButtons from './ExportButtons.vue'
 import FullscreenDiagram from './FullscreenDiagram.vue'
+import PptxExport from './PptxExport.vue'
 import './print.css'
 
 export default {
@@ -10,5 +11,6 @@ export default {
   enhanceApp({ app }) {
     app.component('ExportButtons', ExportButtons)
     app.component('FullscreenDiagram', FullscreenDiagram)
+    app.component('PptxExport', PptxExport)
   },
 }

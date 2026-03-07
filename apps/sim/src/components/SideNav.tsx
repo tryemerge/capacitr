@@ -23,6 +23,7 @@ const NAV_SECTIONS: NavSection[] = [
       { href: "/emitter/walkthrough", label: "Walkthrough", description: "Independent step-by-step", icon: "📖" },
       { href: "/emitter", label: "Launchpad Setup", description: "Simulation configuration", icon: "🚀" },
       { href: "/emitter/runs", label: "Sim Runs", description: "Agent simulation", icon: "📊" },
+      { href: "/graduation", label: "Graduation Sim", description: "Full lifecycle", icon: "🎓" },
     ],
   },
   {

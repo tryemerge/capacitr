@@ -66,9 +66,6 @@ export function PrivyAuthProvider({
     );
   }
 
-  const isHttps =
-    typeof window !== "undefined" && window.location.protocol === "https:";
-
   return (
     <PrivyProviderBase
       appId={appId}
@@ -81,9 +78,9 @@ export function PrivyAuthProvider({
           ...(config?.loginMessage && { loginMessage: config.loginMessage }),
         },
         loginMethods: config?.loginMethods,
-        embeddedWallets: isHttps
-          ? { ethereum: { createOnLogin: "users-without-wallets" } }
-          : undefined,
+        embeddedWallets: {
+          ethereum: { createOnLogin: "users-without-wallets" },
+        },
       }}
     >
       <PrivyAuthBridge>{children}</PrivyAuthBridge>
