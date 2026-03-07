@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       walletAddress: '',
       displayName: privy.user.displayName || 'Anonymous',
       bio: '',
-      avatar: undefined,
+      avatar: privy.user.avatar || undefined,
       socialConnections: [],
       connectedAgents: [],
       loginMethod: 'wallet' as const,

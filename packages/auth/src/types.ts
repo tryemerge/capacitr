@@ -2,6 +2,7 @@ export interface AuthUser {
   id: string;
   email: string | null;
   displayName: string | null;
+  avatar: string | null;
 }
 
 export interface AuthContextValue {
@@ -33,4 +34,6 @@ export interface PrivyAuthConfig {
   logo?: string;
   landingHeader?: string;
   loginMessage?: string;
+  defaultChain?: import("@privy-io/chains").Chain;
+  supportedChains?: import("@privy-io/chains").Chain[];
 }
