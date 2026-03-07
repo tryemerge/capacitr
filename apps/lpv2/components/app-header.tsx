@@ -63,6 +63,10 @@ export function AppHeader() {
           {/* Wallet Chip */}
           {activeWallet && (
             <div className="hidden sm:flex items-center gap-1 bg-z100 rounded-full px-3 py-1.5 border border-z200">
+              <div className="flex items-center gap-1.5 pr-1.5 border-r border-z200 mr-0.5">
+                <div className="w-2 h-2 rounded-full bg-brand-orange" />
+                <span className="text-[10px] font-medium text-z500">Arb Sepolia</span>
+              </div>
               <Wallet className="h-3.5 w-3.5 text-z500" />
               <span className="text-xs font-mono text-z600">
                 {truncateAddress(activeWallet.address)}

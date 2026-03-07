@@ -81,6 +81,8 @@ export function PrivyAuthProvider({
         embeddedWallets: {
           ethereum: { createOnLogin: "users-without-wallets" },
         },
+        ...(config?.defaultChain && { defaultChain: config.defaultChain }),
+        ...(config?.supportedChains && { supportedChains: config.supportedChains }),
       }}
     >
       <PrivyAuthBridge>{children}</PrivyAuthBridge>

@@ -33,4 +33,6 @@ export interface PrivyAuthConfig {
   logo?: string;
   landingHeader?: string;
   loginMessage?: string;
+  defaultChain?: import("@privy-io/chains").Chain;
+  supportedChains?: import("@privy-io/chains").Chain[];
 }
