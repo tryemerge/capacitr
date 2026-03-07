@@ -98,8 +98,13 @@ export default withMermaid({
         {
           text: 'Pitch Deck',
           items: [
-            { text: 'Slides', link: '/pitch/' },
+            { text: 'v0.1.0 --- Agentic DAOs', link: '/pitch/' },
           ],
+        },
+        {
+          text: 'Archive',
+          collapsed: true,
+          items: [],
         },
       ],
       '/brief/': [
@@ -216,6 +221,7 @@ export default withMermaid({
           items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+            { text: 'Pitch Changelog', link: '/versions/pitch-changelog' },
             { text: 'Brief Versioning Model', link: '/versions/brief-versioning' },
           ],
         },
@@ -239,6 +245,7 @@ export default withMermaid({
           items: [
             { text: 'Whitepaper Changelog', link: '/versions/whitepaper-changelog' },
             { text: 'Brief Changelog', link: '/versions/brief-changelog' },
+            { text: 'Pitch Changelog', link: '/versions/pitch-changelog' },
             { text: 'Brief Versioning Model', link: '/versions/brief-versioning' },
           ],
         },
@@ -283,6 +290,13 @@ export default withMermaid({
             { text: 'v0.2.0', link: '/versions/brief/v0-2-0' },
             { text: 'v0.1.0', link: '/versions/brief/v0-1-0' },
             { text: 'v0.0.3', link: '/versions/brief/v0-0-3' },
+          ],
+        },
+        {
+          text: 'Pitch Versions',
+          collapsed: true,
+          items: [
+            { text: 'v0.1.0 (current)', link: '/pitch/' },
           ],
         },
         {

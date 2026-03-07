@@ -1,5 +1,8 @@
 ---
 title: Pitch Deck
+version: "0.1.0"
+date: 2026-03-06
+subtitle: "Launchpad and Operating System for Agentic DAOs"
 outline: [2, 2]
 ---
 
@@ -28,6 +31,10 @@ outline: [2, 2]
 </style>
 
 # Capacitr
+
+<ExportButtons filename="Capacitr_Pitch_v0.1.0" />
+
+<PptxExport filename="Capacitr_Pitch_v0.1.0" />
 
 <div class="pitch-slide">
 
