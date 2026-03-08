@@ -1,0 +1,17 @@
+{
+  "name": "@capacitr/contract-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./abis": "./src/abis/index.ts",
+    "./addresses": "./src/addresses.ts"
+  },
+  "dependencies": {
+    "viem": "^2.31.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

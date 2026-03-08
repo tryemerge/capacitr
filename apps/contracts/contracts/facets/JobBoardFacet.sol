@@ -22,8 +22,8 @@ contract JobBoardFacet {
     ) external {
         Idea storage idea = LibIdea.store().ideas[ideaId];
         require(
-            idea.status == IdeaStatus.GRADUATED || idea.status == IdeaStatus.ACTIVE,
-            "JobBoardFacet: idea not graduated"
+            idea.status == IdeaStatus.ACTIVE,
+            "JobBoardFacet: idea not active"
         );
 
         uint256 posterStake = LibConfig.store().jobPosterStake;

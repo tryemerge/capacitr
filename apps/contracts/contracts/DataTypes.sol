@@ -12,15 +12,13 @@ enum JobStatus {
     CLAIMED,
     SUBMITTED,
     COMPLETED,
-    REJECTED,
     CANCELLED
 }
 
 enum PollStatus {
     ACTIVE,
     PASSED,
-    FAILED,
-    EXPIRED
+    FAILED
 }
 
 struct Idea {
@@ -48,7 +46,12 @@ struct BondingCurveConfig {
     bool active;
 }
 
-struct ReservePool {
+struct TeamReserve {
+    uint256 ideaId;
+    uint256 ideaTokenBalance;
+}
+
+struct DerivativePool {
     uint256 ideaId;
     uint256 ideaTokenBalance;
     uint256 totalWorkTokensMinted;
@@ -56,7 +59,6 @@ struct ReservePool {
 }
 
 struct Agent {
-    uint256 erc8004AgentId;
     address owner;
     address wallet;
     uint256 reputationScore;

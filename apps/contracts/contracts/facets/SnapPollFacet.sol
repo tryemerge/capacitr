@@ -4,16 +4,12 @@ pragma solidity ^0.8.28;
 import {SnapPoll, PollStatus, Idea, IdeaStatus, Job, JobStatus, WorkSubmission} from "../DataTypes.sol";
 import {LibSnapPoll} from "../libraries/LibSnapPoll.sol";
 import {LibIdea} from "../libraries/LibIdea.sol";
-import {LibConfig} from "../libraries/LibConfig.sol";
 import {LibJobBoard} from "../libraries/LibJobBoard.sol";
 import {LibWorkMarketplace} from "../libraries/LibWorkMarketplace.sol";
 import {LibReservePool} from "../libraries/LibReservePool.sol";
 import {LibAgent} from "../libraries/LibAgent.sol";
-import {Agent as AgentData, ReservePool as ReservePoolData} from "../DataTypes.sol";
 import {WorkToken} from "../tokens/WorkToken.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {IERC8004Reputation} from "../interfaces/IERC8004Reputation.sol";
-import {IERC8004Validation} from "../interfaces/IERC8004Validation.sol";
 
 contract SnapPollFacet {
     event PollCreated(uint256 indexed pollId, uint256 indexed submissionId, uint256 ideaId, address[] voterPool, uint256 expiresAt);
@@ -111,18 +107,6 @@ contract SnapPollFacet {
             _onPollFailed(poll.submissionId);
         }
 
-        // STUB: ERC-8004 Validation Registry
-        LibConfig.Storage storage cs = LibConfig.store();
-        if (cs.erc8004ValidationRegistry != address(0)) {
-            try IERC8004Validation(cs.erc8004ValidationRegistry).validationResponse(
-                bytes32(pollId),
-                passed ? 100 : 0,
-                "",
-                bytes32(0),
-                ""
-            ) {} catch {}
-        }
-
         emit PollResolved(pollId, poll.status, poll.yesVotes, poll.noVotes);
     }
 
@@ -158,21 +142,6 @@ contract SnapPollFacet {
         LibAgent.Storage storage as_ = LibAgent.store();
         as_.agents[submission.agent].totalJobsCompleted++;
 
-        // STUB: ERC-8004 Reputation
-        LibConfig.Storage storage cs = LibConfig.store();
-        if (cs.erc8004ReputationRegistry != address(0)) {
-            try IERC8004Reputation(cs.erc8004ReputationRegistry).giveFeedback(
-                as_.agents[submission.agent].erc8004AgentId,
-                100,
-                0,
-                "workQuality",
-                job.jobType,
-                submission.deliverableURI,
-                submission.deliverableURI,
-                submission.deliverableHash
-            ) {} catch {}
-        }
-
         // Set idea status to ACTIVE if not already
         if (idea.status == IdeaStatus.GRADUATED) {
             idea.status = IdeaStatus.ACTIVE;
@@ -200,21 +169,6 @@ contract SnapPollFacet {
         // Update agent stats
         LibAgent.Storage storage as_ = LibAgent.store();
         as_.agents[submission.agent].totalJobsFailed++;
-
-        // STUB: ERC-8004 Reputation with score 0
-        LibConfig.Storage storage cs = LibConfig.store();
-        if (cs.erc8004ReputationRegistry != address(0)) {
-            try IERC8004Reputation(cs.erc8004ReputationRegistry).giveFeedback(
-                as_.agents[submission.agent].erc8004AgentId,
-                0,
-                0,
-                "workQuality",
-                job.jobType,
-                submission.deliverableURI,
-                submission.deliverableURI,
-                submission.deliverableHash
-            ) {} catch {}
-        }
 
         emit WorkRejected(submissionId, submission.jobId, submission.agent);
     }

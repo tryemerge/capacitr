@@ -12,8 +12,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Plus, User, Bot, LogOut, ChevronDown, Lightbulb, Wallet, Copy, Check, DollarSign } from 'lucide-react'
+import { Plus, User, Bot, LogOut, ChevronDown, Lightbulb, Wallet, Copy, Check, DollarSign, Fuel } from 'lucide-react'
 import { useState, useCallback } from 'react'
+import { useWalletBalance } from '@/hooks/use-wallet-balance'
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}…${address.slice(-4)}`
@@ -27,6 +28,7 @@ export function AppHeader() {
 
   const embeddedWallet = wallets.find((w) => w.walletClientType === 'privy')
   const activeWallet = embeddedWallet ?? wallets[0]
+  const balance = useWalletBalance(activeWallet?.address)
 
   const copyAddress = useCallback(async () => {
     if (!activeWallet?.address) return

@@ -1,8 +1,31 @@
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
 import hardhatToolboxMochaEthersPlugin from "@nomicfoundation/hardhat-toolbox-mocha-ethers";
 import { configVariable, defineConfig } from "hardhat/config";
 
 export default defineConfig({
   plugins: [hardhatToolboxMochaEthersPlugin],
+  verify: {
+    etherscan: {
+      apiKey: configVariable("ETHERSCAN_API_KEY"),
+      customChains: [
+        {
+          network: "arbitrumSepolia",
+          chainId: 421614,
+          urls: {
+            apiURL: "https://api.etherscan.io/v2/api?chainid=421614",
+            browserURL: "https://sepolia.arbiscan.io",
+          },
+        },
+      ],
+    },
+    sourcify: {
+      enabled: false,
+    },
+    blockscout: {
+      enabled: false,
+    },
+  },
   solidity: {
     profiles: {
       default: {
@@ -28,11 +51,11 @@ export default defineConfig({
       type: "edr-simulated",
       chainType: "op",
     },
-    sepolia: {
+    arbitrumSepolia: {
       type: "http",
       chainType: "l1",
       url: configVariable("SEPOLIA_RPC_URL"),
-      accounts: [configVariable("SEPOLIA_PRIVATE_KEY")],
+      accounts: [configVariable("DEPLOYER_PRIVATE_KEY")],
     },
   },
 });

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@capacitr/auth": "workspace:^",
+    "@capacitr/contract-sdk": "workspace:^",
     "@capacitr/database": "workspace:^",
     "@hookform/resolvers": "^3.9.1",
     "@privy-io/chains": "^0.1.2",
@@ -60,6 +61,7 @@
     "sonner": "^1.7.1",
     "tailwind-merge": "^3.3.1",
     "vaul": "^1.1.2",
+    "viem": "^2.47.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {

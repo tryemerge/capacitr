@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.28;
 
-import {Idea, IdeaStatus, ReservePool as ReservePoolData} from "../DataTypes.sol";
+import {Idea, IdeaStatus, DerivativePool} from "../DataTypes.sol";
 import {LibReservePool} from "../libraries/LibReservePool.sol";
 import {LibIdea} from "../libraries/LibIdea.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -19,7 +19,7 @@ contract ReservePoolFacet is ReentrancyGuard {
         require(idea.workToken != address(0), "ReservePoolFacet: no work token");
 
         LibReservePool.Storage storage rs = LibReservePool.store();
-        ReservePoolData storage pool = rs.pools[ideaId];
+        DerivativePool storage pool = rs.pools[ideaId];
 
         WorkToken workToken = WorkToken(idea.workToken);
 
@@ -48,7 +48,7 @@ contract ReservePoolFacet is ReentrancyGuard {
         emit WorkTokenRedeemed(ideaId, msg.sender, workTokenAmount, ideaTokensOut);
     }
 
-    function getReservePool(uint256 ideaId) external view returns (ReservePoolData memory) {
+    function getReservePool(uint256 ideaId) external view returns (DerivativePool memory) {
         return LibReservePool.store().pools[ideaId];
     }
 
@@ -58,7 +58,7 @@ contract ReservePoolFacet is ReentrancyGuard {
         if (idea.workToken == address(0)) return 0;
 
         LibReservePool.Storage storage rs = LibReservePool.store();
-        ReservePoolData storage pool = rs.pools[ideaId];
+        DerivativePool storage pool = rs.pools[ideaId];
 
         uint256 currentSupply = IERC20(idea.workToken).totalSupply();
         if (currentSupply == 0) return 0;

@@ -6,10 +6,13 @@ import { useAuth } from '@/lib/auth-context'
 import { ProtectedRoute } from '@/components/auth-guard'
 import { AppHeader } from '@/components/app-header'
 import { IdeaCard } from '@/components/idea-card'
+import { OnChainIdeaCard } from '@/components/on-chain-idea-card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Search, Sparkles, TrendingUp, Clock, Users } from 'lucide-react'
+import { Skeleton } from '@/components/ui/skeleton'
+import { Search, Sparkles, TrendingUp, Clock, Users, Zap } from 'lucide-react'
 import Link from 'next/link'
+import { useAllIdeas } from '@/hooks/use-all-ideas'
 
 type FilterType = 'all' | 'live' | 'in-progress' | 'bonding' | 'new' | 'my-ideas'
 type SortType = 'recent' | 'trending' | 'contributors'
@@ -103,6 +106,26 @@ export default function HomePage() {
     { key: 'contributors', label: 'Most Active', icon: <Users className="h-3.5 w-3.5" /> },
   ]
 
+  // On-chain ideas
+  const { data: onChainIdeas, isLoading: isLoadingOnChain } = useAllIdeas()
+
+  const filteredOnChainIdeas = useMemo(() => {
+    if (!onChainIdeas) return []
+    let result = [...onChainIdeas]
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      result = result.filter(
+        (i) =>
+          i.name.toLowerCase().includes(query) ||
+          i.symbol.toLowerCase().includes(query) ||
+          i.launcher.toLowerCase().includes(query)
+      )
+    }
+
+    return result
+  }, [onChainIdeas, searchQuery])
+
   return (
     <ProtectedRoute>
     <div className="min-h-screen bg-brand-cream">
@@ -180,7 +203,41 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* Ideas Grid */}
+        {/* ── On-Chain Launched Ideas ────────────────────── */}
+        {(isLoadingOnChain || (filteredOnChainIdeas && filteredOnChainIdeas.length > 0)) && (
+          <div className="mb-10">
+            <div className="flex items-center gap-2 mb-4">
+              <Zap className="h-5 w-5 text-brand-orange" />
+              <h2 className="text-lg font-bold text-z900">Launched on Chain</h2>
+              <span className="text-xs font-mono text-z400 bg-z100 px-2 py-0.5 rounded">
+                Arbitrum Sepolia
+              </span>
+              {onChainIdeas && (
+                <span className="text-xs text-z500">
+                  {onChainIdeas.length} {onChainIdeas.length === 1 ? "idea" : "ideas"}
+                </span>
+              )}
+            </div>
+
+            {isLoadingOnChain ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[...Array(3)].map((_, i) => (
+                  <Skeleton key={i} className="h-64 rounded-xl" />
+                ))}
+              </div>
+            ) : filteredOnChainIdeas.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredOnChainIdeas.map((idea) => (
+                  <OnChainIdeaCard key={idea.ideaId} idea={idea} />
+                ))}
+              </div>
+            ) : searchQuery ? (
+              <p className="text-sm text-z500">No on-chain ideas match your search.</p>
+            ) : null}
+          </div>
+        )}
+
+        {/* ── Mock Ideas Grid ────────────────────────────────── */}
         {filteredIdeas.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredIdeas.map((idea) => (

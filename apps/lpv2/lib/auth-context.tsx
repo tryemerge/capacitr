@@ -91,7 +91,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isAuthenticated: privy.authenticated,
     isLoading: !privy.ready,
     login: async () => { privy.login() },
-    logout: () => { privy.logout() },
+    logout: async () => {
+      await privy.logout()
+      window.location.href = '/'
+    },
     // These are stubs — the upstream UI references them but they're
     // not wired to a backend yet. They no-op so pages don't break.
     updateProfile: () => {},
