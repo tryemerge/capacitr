@@ -18,10 +18,18 @@ function PrivyAuthBridge({ children }: { children: ReactNode }) {
   const { ready, authenticated, user, login, logout } = usePrivy();
 
   const displayName =
+    user?.twitter?.name ||
+    user?.farcaster?.displayName ||
+    user?.google?.name ||
     user?.email?.address ||
     (user?.wallet?.address
       ? user.wallet.address.slice(0, 6) + "..." + user.wallet.address.slice(-4)
       : null);
+
+  const avatar =
+    user?.twitter?.profilePictureUrl?.replace("_normal", "") ||
+    user?.farcaster?.pfp ||
+    null;
 
   const value: AuthContextValue = {
     ready,
@@ -31,6 +39,7 @@ function PrivyAuthBridge({ children }: { children: ReactNode }) {
           id: user.id,
           email: user.email?.address || null,
           displayName,
+          avatar,
         }
       : null,
     login,
@@ -81,6 +90,8 @@ export function PrivyAuthProvider({
         embeddedWallets: {
           ethereum: { createOnLogin: "users-without-wallets" },
         },
+        ...(config?.defaultChain && { defaultChain: config.defaultChain }),
+        ...(config?.supportedChains && { supportedChains: config.supportedChains }),
       }}
     >
       <PrivyAuthBridge>{children}</PrivyAuthBridge>

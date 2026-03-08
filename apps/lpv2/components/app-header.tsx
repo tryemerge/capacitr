@@ -62,30 +62,6 @@ export function AppHeader() {
             </Button>
           </Link>
 
-          {/* Wallet Chip */}
-          {activeWallet && (
-            <div className="hidden sm:flex items-center gap-1 bg-z100 rounded-full px-3 py-1.5 border border-z200">
-              <Wallet className="h-3.5 w-3.5 text-z500" />
-              <span className="text-xs font-mono text-z600">
-                {truncateAddress(activeWallet.address)}
-              </span>
-              <button
-                onClick={copyAddress}
-                className="ml-1 text-z400 hover:text-z700 transition-colors"
-                title="Copy address"
-              >
-                {copied ? <Check className="h-3 w-3 text-brand-green" /> : <Copy className="h-3 w-3" />}
-              </button>
-              <button
-                onClick={handleFund}
-                className="ml-0.5 text-z400 hover:text-brand-orange transition-colors"
-                title="Fund wallet"
-              >
-                <DollarSign className="h-3 w-3" />
-              </button>
-            </div>
-          )}
-
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -100,8 +76,15 @@ export function AppHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 bg-brand-cream border-z200">
-              <div className="px-3 py-2">
-                <p className="text-sm font-medium text-z800">{user?.displayName || 'Anonymous'}</p>
+              <div className="px-3 py-2 flex items-center gap-2">
+                <Avatar className="h-9 w-9 shrink-0">
+                  <AvatarImage src={user?.avatar} />
+                  <AvatarFallback className="bg-z200 text-z700 text-sm">
+                    {user?.displayName?.[0]?.toUpperCase() || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                <p className="text-sm font-medium text-z800 truncate">{user?.displayName || 'Anonymous'}</p>
                 {activeWallet && (
                   <div className="flex items-center gap-1 mt-0.5">
                     <p className="text-xs text-z500 font-mono truncate">{truncateAddress(activeWallet.address)}</p>
@@ -110,19 +93,12 @@ export function AppHeader() {
                     </button>
                   </div>
                 )}
+                </div>
               </div>
               {activeWallet && (
-                <div className="mx-3 my-1.5 flex items-center justify-between px-2 py-1.5 bg-z100 rounded border border-z200">
-                  <div className="flex items-center gap-1.5">
-                    <div className="w-2 h-2 rounded-full bg-brand-orange" />
-                    <span className="text-[10px] font-medium text-z500">Arb Sepolia</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Fuel className="h-3 w-3 text-z400" />
-                    <span className="text-[11px] font-mono text-z600">
-                      {balance !== null ? `${balance} ETH` : '—'}
-                    </span>
-                  </div>
+                <div className="mx-3 my-1.5 flex items-center gap-1.5 px-2 py-1 bg-z100 rounded border border-z200">
+                  <div className="w-2 h-2 rounded-full bg-brand-orange" />
+                  <span className="text-[10px] font-medium text-z500">Arb Sepolia</span>
                 </div>
               )}
               <DropdownMenuSeparator className="bg-z200" />
