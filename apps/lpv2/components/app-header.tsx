@@ -12,7 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Plus, User, Bot, LogOut, ChevronDown, Lightbulb, Wallet, Copy, Check, DollarSign, Fuel } from 'lucide-react'
+import { Plus, User, Bot, LogOut, ChevronDown, Lightbulb, Wallet, Copy, Check, DollarSign, KeyRound } from 'lucide-react'
 import { useState, useCallback } from 'react'
 import { useWalletBalance } from '@/hooks/use-wallet-balance'
 
@@ -42,6 +42,15 @@ export function AppHeader() {
     fundWallet(activeWallet.address)
   }, [activeWallet?.address, fundWallet])
 
+  const handleExportWallet = useCallback(async () => {
+    if (!embeddedWallet) return
+    try {
+      await (embeddedWallet as any).exportWallet()
+    } catch (e) {
+      console.error('Export wallet failed:', e)
+    }
+  }, [embeddedWallet])
+
   return (
     <header className="sticky top-0 z-50 w-full bg-brand-cream/95 backdrop-blur border-b border-z200">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
@@ -61,6 +70,13 @@ export function AppHeader() {
               <span className="hidden sm:inline">Submit Idea</span>
             </Button>
           </Link>
+
+          {/* ETH Balance */}
+          {balance !== null && (
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-z100 rounded-full border border-z200">
+              <span className="text-sm font-medium text-z700">{balance} ETH</span>
+            </div>
+          )}
 
           {/* User Menu */}
           <DropdownMenu>
@@ -108,6 +124,12 @@ export function AppHeader() {
                     <DollarSign className="h-4 w-4 mr-2" />
                     <span>Fund Wallet</span>
                   </DropdownMenuItem>
+                  {embeddedWallet && (
+                    <DropdownMenuItem onClick={handleExportWallet} className="cursor-pointer">
+                      <KeyRound className="h-4 w-4 mr-2" />
+                      <span>Export Wallet</span>
+                    </DropdownMenuItem>
+                  )}
                   <DropdownMenuSeparator className="bg-z200" />
                 </>
               )}

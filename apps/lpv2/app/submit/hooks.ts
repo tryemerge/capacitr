@@ -9,21 +9,71 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { parseEther } from "viem"
+import { useSendTransaction, useWallets } from "@capacitr/auth"
 import { idea, context } from "@capacitr/contract-sdk"
 import { publicClient } from "@capacitr/contract-sdk"
-import { useSendTransaction } from "@capacitr/auth"
 import { ideaKeys } from "@/lib/query-keys"
 import { ideaRepository } from "@/lib/idea-repository"
 import { saveBasics, saveContext, submitIdeaAction } from "./actions"
 import type { BasicsPayload, ContextPayload, SubmitPayload } from "./schemas"
+import { useCallback } from "react"
 
 const DEFAULT_TOTAL_SUPPLY = parseEther("1000000") // 1M tokens
+
+/**
+ * Sends a transaction using the best available wallet.
+ * - Embedded Privy wallet → Privy's useSendTransaction (built-in UI)
+ * - External EOA (MetaMask etc.) → wallet's EIP-1193 provider
+ */
+function useSendTx() {
+  const { sendTransaction } = useSendTransaction()
+  const { wallets } = useWallets()
+
+  const sendTx = useCallback(
+    async (tx: { to: string; data: string; value?: string; chainId?: number }) => {
+      const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
+      const externalWallet = wallets.find((w) => w.walletClientType !== "privy")
+
+      // Prefer external EOA, fall back to embedded
+      const wallet = externalWallet ?? embeddedWallet
+
+      if (!wallet) {
+        throw new Error("No wallet connected. Please connect a wallet first.")
+      }
+
+      if (wallet.walletClientType === "privy") {
+        // Privy embedded wallet — use Privy's built-in send UI
+        return sendTransaction(tx)
+      }
+
+      // External EOA — switch to Arbitrum Sepolia if needed, then send
+      await wallet.switchChain(421614) // Arbitrum Sepolia chainId
+
+      const provider = await wallet.getEthereumProvider()
+      const hash = await provider.request({
+        method: "eth_sendTransaction",
+        params: [
+          {
+            from: wallet.address,
+            to: tx.to,
+            data: tx.data,
+            ...(tx.value ? { value: tx.value } : {}),
+          },
+        ],
+      })
+      return { hash: hash as `0x${string}` }
+    },
+    [sendTransaction, wallets],
+  )
+
+  return { sendTx }
+}
 
 // ---- Step 1: Save Basics + launchIdea on-chain ----
 
 export function useSaveBasics() {
   const queryClient = useQueryClient()
-  const { sendTransaction } = useSendTransaction()
+  const { sendTx } = useSendTx()
 
   return useMutation({
     mutationFn: async (payload: BasicsPayload) => {
@@ -36,7 +86,7 @@ export function useSaveBasics() {
 
       let launchHash: `0x${string}`
       try {
-        const result = await sendTransaction(launchTx)
+        const result = await sendTx(launchTx)
         launchHash = result.hash
       } catch (err: any) {
         throw new Error(err?.message ?? "Transaction cancelled")
@@ -75,7 +125,7 @@ export function useSaveBasics() {
 
 export function useSaveContext() {
   const queryClient = useQueryClient()
-  const { sendTransaction } = useSendTransaction()
+  const { sendTx } = useSendTx()
 
   return useMutation({
     mutationFn: async (payload: ContextPayload & { onChainIdeaId?: string }) => {
@@ -96,8 +146,8 @@ export function useSaveContext() {
 
         if (contextTx) {
           try {
-            const { hash } = await sendTransaction(contextTx)
-            contextHash = hash
+            const result = await sendTx(contextTx)
+            contextHash = result.hash
           } catch {
             // Non-fatal — idea is already on-chain
             console.warn("Context tx skipped by user")

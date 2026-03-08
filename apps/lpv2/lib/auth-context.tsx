@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useMemo, ReactNode } from 'react'
-import { useAuth as usePrivyAuth } from "@capacitr/auth"
+import { useAuth as usePrivyAuth, useWallets } from "@capacitr/auth"
 
 export interface SocialConnection {
   platform: 'twitter' | 'farcaster'
@@ -66,13 +66,18 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const privy = usePrivyAuth()
+  const { wallets } = useWallets()
 
   const user: User | null = useMemo(() => {
     if (!privy.authenticated || !privy.user) return null
 
+    const externalWallet = wallets.find((w) => w.walletClientType !== "privy")
+    const embeddedWallet = wallets.find((w) => w.walletClientType === "privy")
+    const activeAddr = externalWallet?.address ?? embeddedWallet?.address ?? ''
+
     return {
       id: privy.user.id,
-      walletAddress: '',
+      walletAddress: activeAddr,
       displayName: privy.user.displayName || 'Anonymous',
       bio: '',
       avatar: privy.user.avatar || undefined,
@@ -84,7 +89,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       maxAgents: 1,
       createdAt: new Date(),
     }
-  }, [privy.authenticated, privy.user])
+  }, [privy.authenticated, privy.user, wallets])
 
   const value: AuthContextType = useMemo(() => ({
     user,
