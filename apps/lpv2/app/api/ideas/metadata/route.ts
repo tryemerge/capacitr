@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import { getDb } from "@capacitr/database/client"
+import { getDb } from "@/lib/db"
 import { ideaMetadata } from "@capacitr/database/schema"
 
 /**

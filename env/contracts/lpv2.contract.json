@@ -2,8 +2,8 @@
   "name": "lpv2",
   "location": "apps/lpv2",
   "vars": {
-    "DATABASE_URL": "${secrets.LPV2_DATABASE_URL}",
-    "DIRECT_URL": "${secrets.LPV2_DIRECT_URL}",
+    "LPV2_DATABASE_URL": "${secrets.LPV2_DATABASE_URL}",
+    "LPV2_DIRECT_URL": "${secrets.LPV2_DIRECT_URL}",
     "NEXT_PUBLIC_PRIVY_APP_ID": "${privy.APP_ID}",
     "PRIVY_APP_SECRET": "${privy.APP_SECRET}",
     "BASE_URL": "${launchpad.V2_BASE_URL}",

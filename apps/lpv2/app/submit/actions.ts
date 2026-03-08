@@ -8,7 +8,7 @@ import {
   type ContextPayload,
   type SubmitPayload,
 } from "./schemas"
-import { getDb } from "@capacitr/database/client"
+import { getDb } from "@/lib/db"
 import { ideaMetadata } from "@capacitr/database/schema"
 
 // ---- Step 1: Save Basics ----
