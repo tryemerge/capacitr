@@ -69,6 +69,7 @@ export const submitSchema = z.object({
   coverImageUrl: contextSchema.shape.coverImageUrl,
   // On-chain reference (set after launchIdea tx)
   txHash: z.string().optional(),
+  onChainIdeaId: z.string().optional(),
 })
 
 export type SubmitPayload = z.infer<typeof submitSchema>

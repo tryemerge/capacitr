@@ -11,6 +11,7 @@ function cleanUrl(url: string): string {
   const u = new URL(url);
   u.searchParams.delete("pgbouncer");
   u.searchParams.delete("statement_cache_size");
+  u.searchParams.delete("channel_binding");
   return u.toString();
 }
 

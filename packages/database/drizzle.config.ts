@@ -14,6 +14,7 @@ export default defineConfig({
     "session",
     "account",
     "verification",
+    "idea_metadata",
     "projects",
     "agents",
     "work_submissions",

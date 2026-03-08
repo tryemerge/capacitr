@@ -1,82 +1,77 @@
 "use client"
 
 import { useState, useMemo } from 'react'
-import { useIdeas } from '@/lib/ideas-context'
 import { useAuth } from '@/lib/auth-context'
 import { ProtectedRoute } from '@/components/auth-guard'
 import { AppHeader } from '@/components/app-header'
 import { IdeaCard } from '@/components/idea-card'
-import { fromMockIdea, fromOnChainIdea } from '@/lib/normalized-idea'
+import { fromOnChainIdea } from '@/lib/normalized-idea'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
-import { Search, Sparkles, TrendingUp, Clock, Users, Zap } from 'lucide-react'
+import { Search, Sparkles, TrendingUp, Clock, Users } from 'lucide-react'
 import Link from 'next/link'
 import { useAllIdeas } from '@/hooks/use-all-ideas'
+import { useIdeaMetadata } from '@/hooks/use-idea-metadata'
 
-type FilterType = 'all' | 'live' | 'in-progress' | 'bonding' | 'new' | 'my-ideas'
+type FilterType = 'all' | 'live' | 'bonding' | 'new' | 'my-ideas'
 type SortType = 'recent' | 'trending' | 'contributors'
 
 export default function HomePage() {
-  const { ideas } = useIdeas()
   const { user } = useAuth()
   const [searchQuery, setSearchQuery] = useState('')
   const [activeFilter, setActiveFilter] = useState<FilterType>('all')
   const [activeSort, setActiveSort] = useState<SortType>('recent')
 
-  // Mock: add some ideas as "owned" by the current user for demo
-  const userOwnedIdeaIds = ['idea_1', 'idea_6'] // Maya Chen's ideas
+  const { data: onChainIdeas, isLoading: isLoadingOnChain } = useAllIdeas()
+  const { data: metadataMap } = useIdeaMetadata()
 
   const filteredIdeas = useMemo(() => {
-    let result = [...ideas]
+    if (!onChainIdeas) return []
+    let result = onChainIdeas.map((i) => fromOnChainIdea(i, metadataMap?.[i.ideaId]))
 
-    // Filter by status/type
+    // Filter by status
     switch (activeFilter) {
       case 'live':
-        // Graduated/active projects
-        result = result.filter(idea => idea.status === 'active')
-        break
-      case 'in-progress':
-        // Pre-bonded, published but not yet bonding
-        result = result.filter(idea => idea.status === 'published')
+        result = result.filter(i => i.status === 'Graduated' || i.status === 'Active')
         break
       case 'bonding':
-        // Active bonding phase
-        result = result.filter(idea => idea.status === 'bonding')
+        result = result.filter(i => i.status === 'Seeding')
         break
-      case 'new':
-        // Recently created (within last 7 days)
+      case 'new': {
         const weekAgo = new Date()
         weekAgo.setDate(weekAgo.getDate() - 7)
-        result = result.filter(idea => idea.createdAt > weekAgo)
+        result = result.filter(i => i.createdAt > weekAgo)
         break
+      }
       case 'my-ideas':
-        result = result.filter(idea => userOwnedIdeaIds.includes(idea.id))
+        result = result.filter(i => 
+          user?.walletAddress && i.creatorName.toLowerCase().includes(user.walletAddress.slice(0, 6).toLowerCase())
+        )
         break
       case 'all':
       default:
-        // Show all except drafts
-        result = result.filter(idea => idea.status !== 'draft')
         break
     }
 
-    // Filter by search query
+    // Search
     if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(idea =>
-        idea.title.toLowerCase().includes(query) ||
-        idea.pitch.toLowerCase().includes(query) ||
-        idea.tags.some(tag => tag.toLowerCase().includes(query))
+      const q = searchQuery.toLowerCase()
+      result = result.filter(i =>
+        i.title.toLowerCase().includes(q) ||
+        i.tokenSymbol.toLowerCase().includes(q) ||
+        (i.pitch?.toLowerCase().includes(q)) ||
+        i.tags.some(t => t.toLowerCase().includes(q))
       )
     }
 
     // Sort
     switch (activeSort) {
       case 'trending':
-        result.sort((a, b) => b.investorCount - a.investorCount)
+        result.sort((a, b) => (b.marketCap ?? 0) - (a.marketCap ?? 0))
         break
       case 'contributors':
-        result.sort((a, b) => b.contributorCount - a.contributorCount)
+        result.sort((a, b) => b.bondingProgress - a.bondingProgress)
         break
       case 'recent':
       default:
@@ -85,19 +80,24 @@ export default function HomePage() {
     }
 
     return result
-  }, [ideas, searchQuery, activeFilter, activeSort, userOwnedIdeaIds])
+  }, [onChainIdeas, metadataMap, searchQuery, activeFilter, activeSort, user?.walletAddress])
+
+  const allNormalized = useMemo(() => 
+    (onChainIdeas ?? []).map((i) => fromOnChainIdea(i, metadataMap?.[i.ideaId])), [onChainIdeas, metadataMap]
+  )
 
   const filters: { key: FilterType; label: string; count: number }[] = [
-    { key: 'all', label: 'All Ideas', count: ideas.filter(i => i.status !== 'draft').length },
-    { key: 'live', label: 'Live', count: ideas.filter(i => i.status === 'active').length },
-    { key: 'in-progress', label: 'In Progress', count: ideas.filter(i => i.status === 'published').length },
-    { key: 'bonding', label: 'Active Bonding', count: ideas.filter(i => i.status === 'bonding').length },
-    { key: 'new', label: 'New', count: ideas.filter(i => {
+    { key: 'all', label: 'All Ideas', count: allNormalized.length },
+    { key: 'live', label: 'Live', count: allNormalized.filter(i => i.status === 'Graduated' || i.status === 'Active').length },
+    { key: 'bonding', label: 'Seeding', count: allNormalized.filter(i => i.status === 'Seeding').length },
+    { key: 'new', label: 'New', count: allNormalized.filter(i => {
       const weekAgo = new Date()
       weekAgo.setDate(weekAgo.getDate() - 7)
       return i.createdAt > weekAgo
     }).length },
-    { key: 'my-ideas', label: 'My Ideas', count: ideas.filter(i => userOwnedIdeaIds.includes(i.id)).length },
+    { key: 'my-ideas', label: 'My Ideas', count: allNormalized.filter(i => 
+      user?.walletAddress && i.creatorName.toLowerCase().includes(user.walletAddress.slice(0, 6).toLowerCase())
+    ).length },
   ]
 
   const sorts: { key: SortType; label: string; icon: React.ReactNode }[] = [
@@ -105,26 +105,6 @@ export default function HomePage() {
     { key: 'trending', label: 'Trending', icon: <TrendingUp className="h-3.5 w-3.5" /> },
     { key: 'contributors', label: 'Most Active', icon: <Users className="h-3.5 w-3.5" /> },
   ]
-
-  // On-chain ideas
-  const { data: onChainIdeas, isLoading: isLoadingOnChain } = useAllIdeas()
-
-  const filteredOnChainIdeas = useMemo(() => {
-    if (!onChainIdeas) return []
-    let result = [...onChainIdeas]
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(
-        (i) =>
-          i.name.toLowerCase().includes(query) ||
-          i.symbol.toLowerCase().includes(query) ||
-          i.launcher.toLowerCase().includes(query)
-      )
-    }
-
-    return result
-  }, [onChainIdeas, searchQuery])
 
   return (
     <ProtectedRoute>
@@ -203,48 +183,19 @@ export default function HomePage() {
           ))}
         </div>
 
-        {/* ── On-Chain Launched Ideas ────────────────────── */}
-        {(isLoadingOnChain || (filteredOnChainIdeas && filteredOnChainIdeas.length > 0)) && (
-          <div className="mb-10">
-            <div className="flex items-center gap-2 mb-4">
-              <Zap className="h-5 w-5 text-brand-orange" />
-              <h2 className="text-lg font-bold text-z900">Launched on Chain</h2>
-              <span className="text-xs font-mono text-z400 bg-z100 px-2 py-0.5 rounded">
-                Arbitrum Sepolia
-              </span>
-              {onChainIdeas && (
-                <span className="text-xs text-z500">
-                  {onChainIdeas.length} {onChainIdeas.length === 1 ? "idea" : "ideas"}
-                </span>
-              )}
-            </div>
-
-            {isLoadingOnChain ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[...Array(3)].map((_, i) => (
-                  <Skeleton key={i} className="h-64 rounded-xl" />
-                ))}
-              </div>
-            ) : filteredOnChainIdeas.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredOnChainIdeas.map((idea) => (
-                  <IdeaCard key={idea.ideaId} idea={fromOnChainIdea(idea)} />
-                ))}
-              </div>
-            ) : searchQuery ? (
-              <p className="text-sm text-z500">No on-chain ideas match your search.</p>
-            ) : null}
+        {/* ── Ideas Grid (on-chain + mock combined) ──────── */}
+        {isLoadingOnChain ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...Array(6)].map((_, i) => (
+              <Skeleton key={i} className="h-64 rounded-xl" />
+            ))}
           </div>
-        )}
-
-        {/* ── Mock Ideas Grid ────────────────────────────────── */}
-        {filteredIdeas.length > 0 ? (
+        ) : filteredIdeas.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredIdeas.map((idea) => (
               <IdeaCard 
-                key={idea.id} 
-                idea={fromMockIdea(idea)} 
-                isOwned={userOwnedIdeaIds.includes(idea.id)}
+                key={`oc-${idea.id}`}
+                idea={idea} 
               />
             ))}
           </div>

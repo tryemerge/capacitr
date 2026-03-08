@@ -64,6 +64,31 @@ export const verification = pgTable("verification", {
   updatedAt: timestamp("updated_at"),
 });
 
+// ── Launchpad: On-Chain Idea Metadata (off-chain enrichment) ─────────
+
+export const ideaMetadata = pgTable("idea_metadata", {
+  /** Matches the on-chain ideaId (uint256 → string) */
+  ideaId: text("idea_id").primaryKey(),
+  /** Image URL or path (e.g. /ideas/openclaw.png or https://...) */
+  imageUrl: text("image_url"),
+  /** Short pitch / tagline */
+  pitch: text("pitch"),
+  /** Full problem statement */
+  problemStatement: text("problem_statement"),
+  /** JSON array of tag strings */
+  tags: jsonb("tags").$type<string[]>().default([]),
+  /** Target customers description */
+  targetCustomers: text("target_customers"),
+  /** Comparable projects description */
+  comparables: text("comparables"),
+  /** Creator display name (fallback when wallet address is all we have) */
+  creatorName: text("creator_name"),
+  /** Creator avatar URL */
+  creatorAvatar: text("creator_avatar"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 // ── Launchpad: Projects ──────────────────────────────────────────────
 
 export const projects = pgTable("projects", {

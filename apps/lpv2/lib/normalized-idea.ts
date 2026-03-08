@@ -1,5 +1,5 @@
-import type { Idea } from "@/lib/ideas-context"
 import type { OnChainIdeaSummary } from "@/hooks/use-all-ideas"
+import type { IdeaMetadataRow } from "@/hooks/use-idea-metadata"
 
 export interface NormalizedIdea {
   id: string
@@ -21,10 +21,10 @@ export interface NormalizedIdea {
   createdAt: Date
   isOnChain: boolean
   arbiscanUrl?: string
-  workTasks?: Idea["workTasks"]
 }
 
-const PLACEHOLDER_IMAGES = [
+// Fallback images when DB has no imageUrl
+const FALLBACK_IMAGES = [
   "/ideas/openclaw_opensource.png",
   "/ideas/indie-video-game.png",
   "/ideas/image.png",
@@ -35,10 +35,10 @@ const PLACEHOLDER_IMAGES = [
   "/ideas/creative-agency.png",
 ]
 
-function getPlaceholderImage(id: string) {
+function fallbackImage(id: string) {
   const n = parseInt(id, 10)
-  const idx = (isNaN(n) ? 0 : n - 1) % PLACEHOLDER_IMAGES.length
-  return PLACEHOLDER_IMAGES[idx >= 0 ? idx : 0]
+  const idx = (isNaN(n) ? 0 : n - 1) % FALLBACK_IMAGES.length
+  return FALLBACK_IMAGES[idx >= 0 ? idx : 0]
 }
 
 function shortenAddress(addr: string) {
@@ -47,33 +47,13 @@ function shortenAddress(addr: string) {
 
 const ARBISCAN = "https://sepolia.arbiscan.io"
 
-export function fromMockIdea(idea: Idea): NormalizedIdea {
-  const ethRaised = idea.ethRaised ?? 0
-  const bondingTarget = idea.bondingTarget ?? 20
-  return {
-    id: idea.id,
-    title: idea.title,
-    pitch: idea.pitch,
-    image: idea.image,
-    status: idea.status === "active" ? "Live" : idea.status,
-    tokenSymbol: idea.tokenSymbol || "TOKEN",
-    tags: idea.tags,
-    creatorName: idea.creatorName,
-    creatorAvatar: idea.creatorAvatar,
-    marketCap: idea.marketCap,
-    ethRaised,
-    bondingTarget,
-    bondingProgress: idea.bondingProgress ?? Math.round((ethRaised / bondingTarget) * 100),
-    investorCount: idea.investorCount,
-    contributorCount: idea.contributorCount,
-    opportunityScore: idea.opportunityScore ?? 50,
-    createdAt: idea.createdAt,
-    isOnChain: false,
-    workTasks: idea.workTasks,
-  }
-}
-
-export function fromOnChainIdea(idea: OnChainIdeaSummary): NormalizedIdea {
+/**
+ * Convert an on-chain idea + optional DB metadata into a NormalizedIdea.
+ */
+export function fromOnChainIdea(
+  idea: OnChainIdeaSummary,
+  meta?: IdeaMetadataRow | null,
+): NormalizedIdea {
   const price = parseFloat(idea.price)
   const totalSupply = parseFloat(idea.totalSupply)
   const marketCap = price * totalSupply
@@ -81,11 +61,13 @@ export function fromOnChainIdea(idea: OnChainIdeaSummary): NormalizedIdea {
   return {
     id: idea.ideaId,
     title: idea.name,
-    image: getPlaceholderImage(idea.ideaId),
+    image: meta?.imageUrl || fallbackImage(idea.ideaId),
+    pitch: meta?.pitch ?? undefined,
     status: idea.statusLabel,
     tokenSymbol: idea.symbol,
-    tags: [],
-    creatorName: shortenAddress(idea.launcher),
+    tags: meta?.tags ?? [],
+    creatorName: meta?.creatorName || shortenAddress(idea.launcher),
+    creatorAvatar: meta?.creatorAvatar ?? undefined,
     marketCap: marketCap > 0 ? marketCap : undefined,
     ethRaised: parseFloat(idea.ethRaised),
     bondingTarget: parseFloat(idea.graduationThreshold),

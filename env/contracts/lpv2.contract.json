@@ -2,12 +2,13 @@
   "name": "lpv2",
   "location": "apps/lpv2",
   "vars": {
-    "DATABASE_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_POOL_PORT}/${database.GCP_NAME}?${database.GCP_POOL_CONNECTION_URL_PARAMS}",
-    "DIRECT_URL": "postgresql://${database.GCP_USER}:${database.GCP_PASSWORD}@${database.GCP_HOST}:${database.GCP_PORT}/${database.GCP_NAME}?${database.GCP_CONNECTION_URL_PARAMS}",
+    "DATABASE_URL": "${secrets.LPV2_DATABASE_URL}",
+    "DIRECT_URL": "${secrets.LPV2_DIRECT_URL}",
     "NEXT_PUBLIC_PRIVY_APP_ID": "${privy.APP_ID}",
     "PRIVY_APP_SECRET": "${privy.APP_SECRET}",
     "BASE_URL": "${launchpad.V2_BASE_URL}",
     "GOOGLE_API_KEY": "${secrets.GOOGLE_API_KEY}",
+    "BLOB_READ_WRITE_TOKEN": "${secrets.BLOB_READ_WRITE_TOKEN}",
     "PORT": "${LPV2_PORT}",
     "LOG_LEVEL": "${LOG_LEVEL}"
   },

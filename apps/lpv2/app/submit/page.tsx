@@ -512,6 +512,7 @@ export default function SubmitIdeaPage() {
         briefsAndMemos: values.briefsAndMemos,
         coverImageUrl,
         txHash: launchTxHash ?? undefined,
+        onChainIdeaId: onChainIdeaId ?? undefined,
       },
       {
         onSuccess: (result) => {
