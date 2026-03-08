@@ -57,6 +57,11 @@ export function useOnChainIdea(ideaId: string | undefined) {
           ? Number((ethRaised * 10000n) / ideaData.graduationThreshold) / 100
           : 0
 
+      // Market cap = price * totalSupply (in ETH), rough USD estimate at ~$2000/ETH
+      const marketCapEth = (price * ideaData.totalSupply) / 10n ** 18n
+      const marketCapUsd = Number(formatEther(marketCapEth)) * 2000
+      const marketCapFormatted = marketCapUsd > 0 ? marketCapUsd.toString() : ""
+
       return {
         idea: ideaData,
         curve: curveData,
@@ -70,6 +75,7 @@ export function useOnChainIdea(ideaId: string | undefined) {
           priceFormatted: formatEther(price),
           graduationThresholdFormatted: formatEther(ideaData.graduationThreshold),
           progressPercent: Math.min(progressPercent, 100),
+          marketCapFormatted,
           createdAt: new Date(Number(ideaData.createdAt) * 1000),
           curveActive: curveData.active,
           ethFeePercent: Number(curveData.ethFeePercent) / 100,

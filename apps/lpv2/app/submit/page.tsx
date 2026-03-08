@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { useForm, useWatch } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -51,9 +51,9 @@ import Link from "next/link"
 
 import {
   comparableSchema,
-  uploadedFileSchema,
 } from "./schemas"
 import { useSaveBasics, useSaveContext, useSubmitIdea } from "./hooks"
+import { setCoverImage } from "@/lib/cover-image-store"
 import { useGenerateAllContext, useGenerateField } from "@/hooks/use-generate-context"
 import { useMutation } from "@tanstack/react-query"
 
@@ -88,7 +88,7 @@ const submitIdeaSchema = z.object({
   businessModel: z.string().optional().default(""),
   marketSize: z.string().max(2000).optional().default(""),
   briefsAndMemos: z.string().optional().default(""),
-  uploadedFiles: z.array(uploadedFileSchema).max(10).optional().default([]),
+  coverImageUrl: z.string().url().optional().or(z.literal("")),
 })
 
 type SubmitIdeaFormValues = z.infer<typeof submitIdeaSchema>
@@ -169,6 +169,9 @@ export default function SubmitIdeaPage() {
   const [onChainIdeaId, setOnChainIdeaId] = useState<string | null>(null)
   const [launchTxHash, setLaunchTxHash] = useState<string | null>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [isUploading, setIsUploading] = useState(false)
+  const [pendingFiles, setPendingFiles] = useState<File[]>([])
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // AI generation hooks
   const generateAllContext = useGenerateAllContext()
@@ -200,7 +203,7 @@ export default function SubmitIdeaPage() {
       businessModel: "",
       marketSize: "",
       briefsAndMemos: "",
-      uploadedFiles: [],
+      coverImageUrl: "",
     },
     mode: "onTouched",
   })
@@ -213,7 +216,7 @@ export default function SubmitIdeaPage() {
   const tokenTicker = useWatch({ control, name: "tokenTicker" })
   const tags = useWatch({ control, name: "tags" })
   const comparables = useWatch({ control, name: "comparables" })
-  const uploadedFiles = useWatch({ control, name: "uploadedFiles" })
+
   const problemStatement = useWatch({ control, name: "problemStatement" })
   const targetCustomers = useWatch({ control, name: "targetCustomers" })
   const businessModel = useWatch({ control, name: "businessModel" })
@@ -259,30 +262,56 @@ export default function SubmitIdeaPage() {
     )
   }
 
-  // ---- File upload ----
+  // ---- File staging (single image, uploaded to Vercel Blob on final submit) ----
   const handleFiles = useCallback(
     (files: FileList | null) => {
-      if (!files) return
+      if (!files || files.length === 0) return
 
-      const parsed = Array.from(files).reduce<z.infer<typeof uploadedFileSchema>[]>(
-        (acc, file) => {
-          const ext = "." + (file.name.split(".").pop()?.toLowerCase() ?? "")
-          if (
-            ALLOWED_FILE_TYPES.includes(file.type) ||
-            ALLOWED_FILE_EXTENSIONS.includes(ext)
-          ) {
-            acc.push({ name: file.name, size: file.size, type: file.type || ext })
-          }
-          return acc
-        },
-        [],
-      )
+      const file = files[0]
+      if (!file.type.startsWith("image/")) return
 
-      const current = getValues("uploadedFiles") ?? []
-      setValue("uploadedFiles", [...current, ...parsed].slice(0, 10))
+      setPendingFiles([file])
     },
-    [getValues, setValue],
+    [],
   )
+
+  // Upload all pending files to Vercel Blob and return metadata with URLs
+  const uploadPendingFiles = useCallback(async (): Promise<
+    { name: string; size: number; type: string; url: string }[]
+  > => {
+    if (pendingFiles.length === 0) return []
+
+    setIsUploading(true)
+    try {
+      const results = await Promise.all(
+        pendingFiles.map(async (file) => {
+          const formData = new FormData()
+          formData.append("file", file)
+
+          const res = await fetch("/api/upload", {
+            method: "POST",
+            body: formData,
+          })
+
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}))
+            throw new Error(err.error ?? `Failed to upload ${file.name}`)
+          }
+
+          const data = await res.json()
+          return {
+            name: data.name as string,
+            size: data.size as number,
+            type: data.type as string,
+            url: data.url as string,
+          }
+        }),
+      )
+      return results
+    } finally {
+      setIsUploading(false)
+    }
+  }, [pendingFiles])
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -304,11 +333,7 @@ export default function SubmitIdeaPage() {
   )
 
   const removeFile = (index: number) => {
-    const current = getValues("uploadedFiles") ?? []
-    setValue(
-      "uploadedFiles",
-      current.filter((_, i) => i !== index),
-    )
+    setPendingFiles((prev) => prev.filter((_, i) => i !== index))
   }
 
   // ---- AI analysis (Gemini) ----
@@ -443,7 +468,7 @@ export default function SubmitIdeaPage() {
         businessModel: values.businessModel,
         marketSize: values.marketSize,
         briefsAndMemos: values.briefsAndMemos,
-        uploadedFiles: values.uploadedFiles,
+        coverImageUrl: values.coverImageUrl,
       },
       {
         onSuccess: () => {
@@ -453,10 +478,24 @@ export default function SubmitIdeaPage() {
     )
   }
 
-  const handleFinalSubmit = () => {
+  const handleFinalSubmit = async () => {
     if (!user || !draftId) return
 
     const values = getValues()
+
+    // Upload pending cover image to Vercel Blob
+    let coverImageUrl = values.coverImageUrl ?? ""
+    if (pendingFiles.length > 0) {
+      try {
+        const results = await uploadPendingFiles()
+        if (results.length > 0) {
+          coverImageUrl = results[0].url
+        }
+      } catch (err) {
+        console.error("Image upload failed:", err)
+        return // Don't submit if upload fails
+      }
+    }
 
     submitIdeaMutation.mutate(
       {
@@ -471,7 +510,7 @@ export default function SubmitIdeaPage() {
         businessModel: values.businessModel,
         marketSize: values.marketSize,
         briefsAndMemos: values.briefsAndMemos,
-        uploadedFiles: values.uploadedFiles,
+        coverImageUrl,
         txHash: launchTxHash ?? undefined,
       },
       {
@@ -499,7 +538,14 @@ export default function SubmitIdeaPage() {
             tags: values.tags,
           })
 
-          router.push(`/ideas/${onChainIdeaId ?? result.ideaId}`)
+          // Store cover image URL keyed by on-chain idea ID
+          const finalIdeaId = onChainIdeaId ?? result.ideaId
+          if (coverImageUrl) {
+            setCoverImage(finalIdeaId, coverImageUrl)
+          }
+
+          setPendingFiles([])
+          router.push(`/ideas/${finalIdeaId}`)
         },
       },
     )
@@ -863,65 +909,76 @@ export default function SubmitIdeaPage() {
                     <div className="space-y-2">
                       <FormLabel className="text-z700 flex items-center gap-2">
                         <FileText className="h-4 w-4 text-z500" />
-                        Supporting Context Documents (optional)
+                        Cover Image (optional)
                       </FormLabel>
-                      <div
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onDrop={handleDrop}
-                        className={`relative border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                          isDragging
-                            ? "border-brand-green bg-brand-green/5"
-                            : "border-z300 hover:border-z400"
-                        }`}
-                      >
-                        <Upload
-                          className={`h-8 w-8 mx-auto mb-3 ${isDragging ? "text-brand-green" : "text-z400"}`}
-                        />
-                        <p className="text-sm text-z600 mb-1">
-                          Drag and drop files here, or{" "}
-                          <label className="text-brand-green cursor-pointer hover:underline">
-                            browse
-                            <input
-                              type="file"
-                              multiple
-                              accept=".md,.txt,.pdf,.csv,.json,.doc,.docx,.png,.jpg,.jpeg,.gif,.webp,.svg"
-                              onChange={(e) => handleFiles(e.target.files)}
-                              className="hidden"
-                            />
-                          </label>
-                        </p>
-                        <p className="text-xs text-z400">
-                          Supports documents (.md, .txt, .pdf, .doc) and images
-                          (.png, .jpg, .gif, .webp) – max 10 files
-                        </p>
-                      </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml"
+                        onChange={(e) => {
+                          handleFiles(e.target.files)
+                          e.target.value = ""
+                        }}
+                        className="hidden"
+                      />
 
-                      {(uploadedFiles?.length ?? 0) > 0 && (
-                        <div className="space-y-2 mt-3">
-                          {uploadedFiles?.map((file, i) => (
-                            <div
-                              key={i}
-                              className="flex items-center gap-3 p-3 bg-brand-cream rounded-lg border border-z200"
-                            >
-                              <File className="h-4 w-4 text-z500 shrink-0" />
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-z700 truncate">
-                                  {file.name}
-                                </p>
-                                <p className="text-xs text-z400">
-                                  {formatFileSize(file.size)}
-                                </p>
-                              </div>
+                      {pendingFiles.length === 0 ? (
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onDrop={handleDrop}
+                          className={`w-full border-2 border-dashed rounded-lg p-8 text-center transition-colors cursor-pointer ${
+                            isDragging
+                              ? "border-brand-green bg-brand-green/5"
+                              : "border-z300 hover:border-brand-green/50 hover:bg-brand-green/5"
+                          }`}
+                        >
+                          <Upload
+                            className={`h-8 w-8 mx-auto mb-3 ${isDragging ? "text-brand-green" : "text-z400"}`}
+                          />
+                          <p className="text-sm text-z600 mb-1">
+                            Drag and drop an image here, or{" "}
+                            <span className="text-brand-green font-medium hover:underline">
+                              browse
+                            </span>
+                          </p>
+                          <p className="text-xs text-z400">
+                            Supports .png, .jpg, .gif, .webp, .svg
+                          </p>
+                        </button>
+                      ) : (
+                        <div className="relative border-2 border-dashed border-z200 rounded-lg p-3">
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={URL.createObjectURL(pendingFiles[0])}
+                              alt={pendingFiles[0].name}
+                              className="h-16 w-16 rounded-lg object-cover shrink-0"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-z700 truncate">
+                                {pendingFiles[0].name}
+                              </p>
+                              <p className="text-xs text-z400">
+                                {formatFileSize(pendingFiles[0].size)}
+                              </p>
                               <button
                                 type="button"
-                                onClick={() => removeFile(i)}
-                                className="text-z400 hover:text-destructive p-1"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="text-xs text-brand-green hover:underline mt-1"
                               >
-                                <X className="h-4 w-4" />
+                                Replace image
                               </button>
                             </div>
-                          ))}
+                            <button
+                              type="button"
+                              onClick={() => removeFile(0)}
+                              className="text-z400 hover:text-destructive p-1"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -1291,22 +1348,16 @@ export default function SubmitIdeaPage() {
                         </div>
                       )}
 
-                      {(uploadedFiles?.length ?? 0) > 0 && (
+                      {pendingFiles.length > 0 && (
                         <div className="mt-4 pt-4 border-t border-z200">
                           <p className="text-xs font-medium text-z500 uppercase tracking-wider mb-2">
-                            Attached Files ({uploadedFiles?.length})
+                            Cover Image
                           </p>
-                          <div className="flex flex-wrap gap-2">
-                            {uploadedFiles?.map((file, i) => (
-                              <span
-                                key={i}
-                                className="inline-flex items-center gap-1 text-xs bg-z100 text-z600 px-2 py-1 rounded"
-                              >
-                                <File className="h-3 w-3" />
-                                {file.name}
-                              </span>
-                            ))}
-                          </div>
+                          <img
+                            src={URL.createObjectURL(pendingFiles[0])}
+                            alt={pendingFiles[0].name}
+                            className="h-20 w-20 rounded-lg object-cover border border-z200"
+                          />
                         </div>
                       )}
                     </div>
@@ -1392,11 +1443,16 @@ export default function SubmitIdeaPage() {
                         type="button"
                         onClick={handleFinalSubmit}
                         disabled={
-                          submitIdeaMutation.isPending || !isBasicsComplete
+                          submitIdeaMutation.isPending || isUploading || !isBasicsComplete
                         }
                         className="bg-brand-green hover:bg-brand-green/90 text-white gap-2"
                       >
-                        {submitIdeaMutation.isPending ? (
+                        {isUploading ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Uploading files…
+                          </>
+                        ) : submitIdeaMutation.isPending ? (
                           <>
                             <Loader2 className="h-4 w-4 animate-spin" />
                             Submitting…

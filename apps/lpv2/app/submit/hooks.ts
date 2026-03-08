@@ -2,9 +2,9 @@
  * Custom mutation hooks for the submit wizard.
  *
  * Flow:
- *  Step 1 (Basics)  → launchIdea on-chain + save basics to server
- *  Step 2 (Context) → setModuleContext on-chain + save context to server
- *  Step 3 (Review)  → final server persist only (no on-chain call)
+ *  Step 1 (Basics)  → launchIdea on-chain + save basics to server + persist to repository
+ *  Step 2 (Context) → setModuleContext on-chain + save context to server + persist to repository
+ *  Step 3 (Review)  → final server persist + persist to repository (no on-chain call)
  */
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -13,6 +13,7 @@ import { idea, context } from "@capacitr/contract-sdk"
 import { publicClient } from "@capacitr/contract-sdk"
 import { useSendTransaction } from "@capacitr/auth"
 import { ideaKeys } from "@/lib/query-keys"
+import { ideaRepository } from "@/lib/idea-repository"
 import { saveBasics, saveContext, submitIdeaAction } from "./actions"
 import type { BasicsPayload, ContextPayload, SubmitPayload } from "./schemas"
 
@@ -50,8 +51,11 @@ export function useSaveBasics() {
         throw new Error("Failed to parse IdeaLaunched event from receipt")
       }
 
-      // 3. Save basics to server (with on-chain references)
+      // 3. Validate via server action
       const serverResult = await saveBasics(payload)
+
+      // 4. Persist to local repository (localStorage) — use the server-generated draftId
+      await ideaRepository.saveBasics({ ...payload, draftId: serverResult.draftId })
 
       return {
         ...serverResult,
@@ -101,8 +105,11 @@ export function useSaveContext() {
         }
       }
 
-      // 2. Save context to server
+      // 2. Validate via server action
       const serverResult = await saveContext(payload)
+
+      // 3. Persist to local repository (localStorage)
+      await ideaRepository.saveContext(payload)
 
       return {
         ...serverResult,
@@ -116,14 +123,20 @@ export function useSaveContext() {
   })
 }
 
-// ---- Step 3: Final Submit (server only — no on-chain call) ----
+// ---- Step 3: Final Submit (server + repository — no on-chain call) ----
 
 export function useSubmitIdea() {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (payload: SubmitPayload) => {
-      return submitIdeaAction(payload)
+      // 1. Validate via server action
+      const serverResult = await submitIdeaAction(payload)
+
+      // 2. Persist final state to local repository (localStorage)
+      await ideaRepository.submit(payload)
+
+      return serverResult
     },
 
     onSuccess: async () => {

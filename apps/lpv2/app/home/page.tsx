@@ -6,7 +6,7 @@ import { useAuth } from '@/lib/auth-context'
 import { ProtectedRoute } from '@/components/auth-guard'
 import { AppHeader } from '@/components/app-header'
 import { IdeaCard } from '@/components/idea-card'
-import { OnChainIdeaCard } from '@/components/on-chain-idea-card'
+import { fromMockIdea, fromOnChainIdea } from '@/lib/normalized-idea'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -228,7 +228,7 @@ export default function HomePage() {
             ) : filteredOnChainIdeas.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredOnChainIdeas.map((idea) => (
-                  <OnChainIdeaCard key={idea.ideaId} idea={idea} />
+                  <IdeaCard key={idea.ideaId} idea={fromOnChainIdea(idea)} />
                 ))}
               </div>
             ) : searchQuery ? (
@@ -243,7 +243,7 @@ export default function HomePage() {
             {filteredIdeas.map((idea) => (
               <IdeaCard 
                 key={idea.id} 
-                idea={idea} 
+                idea={fromMockIdea(idea)} 
                 isOwned={userOwnedIdeaIds.includes(idea.id)}
               />
             ))}
@@ -283,7 +283,7 @@ export default function HomePage() {
             <span className="px-2 py-1 bg-brand-green/5 text-brand-green font-mono rounded">Arbitrum</span>
           </div>
           <div className="flex items-center gap-6 text-z500 text-xs">
-            <a href="#" className="hover:text-z700">Docs</a>
+            <a href="https://docs.capacitr.xyz/" target="_blank" rel="noopener noreferrer" className="hover:text-z700">Docs</a>
             <a href="#" className="hover:text-z700">Terms</a>
             <a href="#" className="hover:text-z700">Privacy</a>
           </div>

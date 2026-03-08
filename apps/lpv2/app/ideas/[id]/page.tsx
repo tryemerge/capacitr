@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState } from "react"
+import { use, useState, useEffect } from "react"
 import { AppHeader } from "@/components/app-header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -24,6 +24,25 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useOnChainIdea } from "@/hooks/use-on-chain-idea"
+import { getCoverImage } from "@/lib/cover-image-store"
+import Image from "next/image"
+
+const PLACEHOLDER_IMAGES = [
+  "/ideas/openclaw_opensource.png",
+  "/ideas/indie-video-game.png",
+  "/ideas/image.png",
+  "/ideas/3d-printed-camera-box.png",
+  "/ideas/event-space.png",
+  "/ideas/smart-stove-knobs.png",
+  "/ideas/table-top-game.png",
+  "/ideas/creative-agency.png",
+]
+
+function getPlaceholderImage(id: string) {
+  const n = parseInt(id, 10)
+  const idx = (isNaN(n) ? 0 : n - 1) % PLACEHOLDER_IMAGES.length
+  return PLACEHOLDER_IMAGES[idx >= 0 ? idx : 0]
+}
 
 interface IdeaDetailPageProps {
   params: Promise<{ id: string }>
@@ -127,6 +146,12 @@ export default function IdeaDetailPage({ params }: IdeaDetailPageProps) {
   const { id } = use(params)
   const { data, isLoading, isError } = useOnChainIdea(id)
   const [copiedLink, setCopiedLink] = useState(false)
+  const [coverImage, setCoverImageState] = useState<string | null>(null)
+
+  useEffect(() => {
+    const stored = getCoverImage(id)
+    if (stored) setCoverImageState(stored)
+  }, [id])
 
   if (isLoading) return <IdeaSkeleton />
   if (isError || !data) return <IdeaNotFound id={id} />
@@ -176,60 +201,85 @@ export default function IdeaDetailPage({ params }: IdeaDetailPageProps) {
           Back to Ideas
         </Link>
 
-        {/* ── Header ─────────────────────────────────────────── */}
-        <div className="mb-8">
-          <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-            <div className="flex items-center gap-3">
-              <Badge
-                variant="outline"
-                className={`text-[10px] uppercase tracking-wider font-mono ${statusColors[derived.statusLabel] ?? ""}`}
-              >
-                {derived.statusLabel}
-              </Badge>
-              <span className="text-sm font-mono text-brand-orange bg-brand-orange/10 px-2 py-1 rounded">
-                ${ticker}
-              </span>
-              <span className="text-xs font-mono text-z400">
-                Idea #{ideaData.ideaId.toString()}
-              </span>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="gap-2 border-z300 text-z600 hover:text-z800"
-              onClick={copyShareLink}
-            >
-              {copiedLink ? (
-                <Check className="h-4 w-4 text-brand-green" />
+        {/* ── Header with Image ────────────────────────────── */}
+        <div className="mb-8 flex gap-6">
+          {/* Idea Image — fixed size thumbnail */}
+          <div className="shrink-0 h-32 w-32 md:h-40 md:w-40 rounded-xl overflow-hidden border border-z200 bg-z100">
+            <div className="relative h-full w-full">
+              {coverImage ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={coverImage}
+                  alt={ideaData.name}
+                  className="h-full w-full object-cover"
+                />
               ) : (
-                <Share2 className="h-4 w-4" />
+                <Image
+                  src={getPlaceholderImage(id)}
+                  alt={ideaData.name}
+                  fill
+                  className="object-cover"
+                  priority
+                />
               )}
-              {copiedLink ? "Copied!" : "Share"}
-            </Button>
+            </div>
           </div>
 
-          <h1 className="text-2xl md:text-3xl font-bold text-z900 mb-3 normal-case text-balance">
-            {ideaData.name}
-          </h1>
-
-          {/* Creator & Timestamp */}
-          <div className="flex flex-wrap items-center gap-6 text-sm">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-z200 text-z600 text-sm">
-                  {ideaData.launcher.slice(2, 4).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div>
-                <p className="text-z700 font-medium font-mono text-xs">
-                  {shortenAddress(ideaData.launcher)}
-                </p>
-                <p className="text-xs text-z500">Launcher</p>
+          {/* Header content */}
+          <div className="flex-1 min-w-0">
+            <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <Badge
+                  variant="outline"
+                  className={`text-[10px] uppercase tracking-wider font-mono ${statusColors[derived.statusLabel] ?? ""}`}
+                >
+                  {derived.statusLabel}
+                </Badge>
+                <span className="text-sm font-mono text-brand-orange bg-brand-orange/10 px-2 py-1 rounded">
+                  ${ticker}
+                </span>
+                <span className="text-xs font-mono text-z400">
+                  Idea #{ideaData.ideaId.toString()}
+                </span>
               </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="gap-2 border-z300 text-z600 hover:text-z800"
+                onClick={copyShareLink}
+              >
+                {copiedLink ? (
+                  <Check className="h-4 w-4 text-brand-green" />
+                ) : (
+                  <Share2 className="h-4 w-4" />
+                )}
+                {copiedLink ? "Copied!" : "Share"}
+              </Button>
             </div>
-            <div className="flex items-center gap-1 text-z500">
-              <Clock className="h-4 w-4" />
-              <span>{formatDate(derived.createdAt)}</span>
+
+            <h1 className="text-2xl md:text-3xl font-bold text-z900 mb-3 normal-case text-balance">
+              {ideaData.name}
+            </h1>
+
+            {/* Creator & Timestamp */}
+            <div className="flex flex-wrap items-center gap-6 text-sm">
+              <div className="flex items-center gap-2">
+                <Avatar className="h-8 w-8">
+                  <AvatarFallback className="bg-z200 text-z600 text-sm">
+                    {ideaData.launcher.slice(2, 4).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="text-z700 font-medium font-mono text-xs">
+                    {shortenAddress(ideaData.launcher)}
+                  </p>
+                  <p className="text-xs text-z500">Launcher</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-z500">
+                <Clock className="h-4 w-4" />
+                <span>{formatDate(derived.createdAt)}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -293,34 +343,51 @@ export default function IdeaDetailPage({ params }: IdeaDetailPageProps) {
           </Card>
         </div>
 
-        {/* ── Bonding Progress ───────────────────────────────── */}
-        {ideaData.status === 0 && (
-          <Card className="bg-brand-canvas border-z200 mb-8">
-            <CardContent className="pt-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Wallet className="h-5 w-5 text-brand-orange" />
-                  <span className="font-medium text-z800">Bonding Progress</span>
-                </div>
-                <span className="text-2xl font-bold font-mono text-brand-orange">
-                  {formatNumber(derived.ethRaisedFormatted)} / {formatNumber(derived.graduationThresholdFormatted)} ETH
+        {/* ── Market Cap & Bonding Progress ────────────────────── */}
+        <Card className="bg-brand-canvas border-z200 mb-8">
+          <CardContent className="pt-6">
+            {/* Market Cap */}
+            <div className="flex items-center justify-between mb-4 pb-4 border-b border-z200">
+              <span className="text-sm font-medium text-z700">Market Cap</span>
+              <span className={`text-2xl font-bold font-mono ${derived.progressPercent >= 100 ? 'text-brand-green' : 'text-z800'}`}>
+                {derived.marketCapFormatted
+                  ? `$${formatNumber(derived.marketCapFormatted)}`
+                  : '--'}
+              </span>
+            </div>
+
+            {/* Bonding Progress */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Wallet className="h-5 w-5 text-brand-orange" />
+                <span className="font-medium text-z800">
+                  {derived.progressPercent >= 100 ? 'Graduated' : 'Bonding Progress'}
                 </span>
               </div>
-              <div className="h-4 bg-z200 rounded-full overflow-hidden mb-4">
-                <div
-                  className="h-full bg-brand-orange rounded-full transition-all"
-                  style={{ width: `${derived.progressPercent}%` }}
-                />
-              </div>
-              <div className="flex items-center justify-between text-sm text-z500">
-                <span>{derived.progressPercent.toFixed(1)}% complete</span>
-                <span>
-                  Fee: {derived.ethFeePercent}% ETH / {derived.tokenFeePercent}% token
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+              <span className={`text-xl font-bold font-mono ${derived.progressPercent >= 100 ? 'text-brand-green' : 'text-brand-orange'}`}>
+                {formatNumber(derived.ethRaisedFormatted)} / {formatNumber(derived.graduationThresholdFormatted)} ETH
+              </span>
+            </div>
+            <div className="h-4 bg-z200 rounded-full overflow-hidden mb-4">
+              <div
+                className={`h-full rounded-full transition-all ${derived.progressPercent >= 100 ? 'bg-brand-green' : 'bg-brand-orange'}`}
+                style={{ width: `${Math.min(derived.progressPercent, 100)}%` }}
+              />
+            </div>
+            <div className="flex items-center justify-between text-sm text-z500">
+              <span>
+                {derived.progressPercent >= 100 ? (
+                  <span className="text-brand-green font-medium">Goal Reached - Project Funded</span>
+                ) : (
+                  `${derived.progressPercent.toFixed(1)}% complete`
+                )}
+              </span>
+              <span>
+                Fee: {derived.ethFeePercent}% ETH / {derived.tokenFeePercent}% token
+              </span>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* ── Tabs ───────────────────────────────────────────── */}
         <Tabs defaultValue="contracts" className="w-full">

@@ -10,13 +10,6 @@ export const comparableSchema = z.object({
   description: z.string(),
 })
 
-export const uploadedFileSchema = z.object({
-  name: z.string(),
-  size: z.number(),
-  type: z.string(),
-  content: z.string().optional(),
-})
-
 // ---- Step 1: Basics ----
 
 export const basicsSchema = z.object({
@@ -52,7 +45,7 @@ export const contextSchema = z.object({
   businessModel: z.string().optional().default(""),
   marketSize: z.string().max(2000).optional().default(""),
   briefsAndMemos: z.string().optional().default(""),
-  uploadedFiles: z.array(uploadedFileSchema).max(10).optional().default([]),
+  coverImageUrl: z.string().url().optional().or(z.literal("")),
 })
 
 export type ContextPayload = z.infer<typeof contextSchema>
@@ -73,7 +66,7 @@ export const submitSchema = z.object({
   businessModel: contextSchema.shape.businessModel,
   marketSize: contextSchema.shape.marketSize,
   briefsAndMemos: contextSchema.shape.briefsAndMemos,
-  uploadedFiles: contextSchema.shape.uploadedFiles,
+  coverImageUrl: contextSchema.shape.coverImageUrl,
   // On-chain reference (set after launchIdea tx)
   txHash: z.string().optional(),
 })
