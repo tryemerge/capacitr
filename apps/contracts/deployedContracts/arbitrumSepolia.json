@@ -2,15 +2,25 @@
   "network": "arbitrumSepolia",
   "chainId": 421614,
   "deployer": "0x55E98b4dfE179dC5E483b73aB65704b729b112B7",
-  "diamond": "0xc57fD8464eaC5D7bd93923F9764C98C9862a5a9e",
-  "facets": {
-    "IdeaFacet": "0x65641A49f7fe55E03f46ed93BD9704CA95966174",
-    "BondingCurveFacet": "0x3C788365Da747640a270f18bF5AfBDDEA4B05146",
-    "ReservePoolFacet": "0xDaaa61f46E7A5a911D11D2Dc029588Dd8F620a79",
-    "AgentFacet": "0x319e77F2AaEa447F7d94d0713690A9f77F879040",
-    "JobBoardFacet": "0xfFE796Da94B522CA1fc83918c7172705F73Fdd3E",
-    "WorkMarketplaceFacet": "0x9e880EAe1cF62660fFf3c3507233CeB6F8631F99",
-    "SnapPollFacet": "0xe8385323890b1cC3B2B35E7217D5EeC0e6D02d85"
+  "diamond": "0x98033F10c00306a6a4D64Af84Fb6fAabCA420967",
+  "coreFacets": {
+    "IdeaFacet": "0xa6c000aE607C85A7C888F092eB5ACf551Db86005",
+    "BondingCurveFacet": "0x55252f0b292096df644A352BA3d17b46E9aa4C25",
+    "ContextFacet": "0x33E1DA6419A088bdd1cc08c017ef9eA08F6C16E5",
+    "ModuleRegistryFacet": "0x7167c79234425Eecc170bA6e04F46dD37C6C4417"
+  },
+  "moduleFacets": {
+    "AgentFacet": "0x495b386c29146Bc43DF6d2505DC0887a0e64B569",
+    "ReservePoolFacet": "0x803f98ee6bA9B8BD8eB90094143e7D6D75A43837",
+    "JobBoardFacet": "0xc2D5598bbfe7ad2f81d076b82Efc42EE5A070018",
+    "WorkMarketplaceFacet": "0x2dfab6D30706E0A252F75b420738ABDD0888F675",
+    "SnapPollFacet": "0x27dcfB1E835fc3C34E433007DB06C1A05fb9Ea49"
+  },
+  "moduleInstallers": {
+    "AgentModule": "0x4ABd7BCfA0A9300c5f38d2aC7357f36255a63a35",
+    "ReservePoolModule": "0x26eE03028AC31D4071e91FaBB634E08a79DA2dd5",
+    "JobBoardModule": "0x758A00A3601CA81Cfeef1645E15B82b21Db8aA9d",
+    "WorkMarketplaceModule": "0x627e9391b57259EA98061d61B0D087A970197658"
   },
   "config": {
     "treasury": "0x55E98b4dfE179dC5E483b73aB65704b729b112B7",
@@ -23,5 +33,5 @@
     "passThreshold": 6000,
     "jobPosterStake": "100000000000000000000"
   },
-  "deployedAt": "2026-03-07T01:11:50.239Z"
+  "deployedAt": "2026-03-07T23:04:46.204Z"
 }

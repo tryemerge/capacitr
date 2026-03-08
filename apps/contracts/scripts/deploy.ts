@@ -28,7 +28,8 @@ const JOB_POSTER_STAKE = ethers.parseUnits("100", 18);
 // --- Helper ---
 async function deploy(name: string, args: any[] = []) {
   console.log(`Deploying ${name}...`);
-  const contract = await ethers.deployContract(name, args);
+  const factory = await ethers.getContractFactory(name);
+  const contract = await factory.deploy(...args);
   await contract.waitForDeployment();
   const addr = await contract.getAddress();
   console.log(`  ${name} → ${addr}`);

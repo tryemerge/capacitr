@@ -12,8 +12,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Plus, User, Bot, LogOut, ChevronDown, Lightbulb, Wallet, Copy, Check, DollarSign } from 'lucide-react'
+import { Plus, User, Bot, LogOut, ChevronDown, Lightbulb, Wallet, Copy, Check, DollarSign, Fuel } from 'lucide-react'
 import { useState, useCallback } from 'react'
+import { useWalletBalance } from '@/hooks/use-wallet-balance'
 
 function truncateAddress(address: string) {
   return `${address.slice(0, 6)}…${address.slice(-4)}`
@@ -27,6 +28,7 @@ export function AppHeader() {
 
   const embeddedWallet = wallets.find((w) => w.walletClientType === 'privy')
   const activeWallet = embeddedWallet ?? wallets[0]
+  const balance = useWalletBalance(activeWallet?.address)
 
   const copyAddress = useCallback(async () => {
     if (!activeWallet?.address) return
@@ -109,6 +111,20 @@ export function AppHeader() {
                   </div>
                 )}
               </div>
+              {activeWallet && (
+                <div className="mx-3 my-1.5 flex items-center justify-between px-2 py-1.5 bg-z100 rounded border border-z200">
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-2 h-2 rounded-full bg-brand-orange" />
+                    <span className="text-[10px] font-medium text-z500">Arb Sepolia</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Fuel className="h-3 w-3 text-z400" />
+                    <span className="text-[11px] font-mono text-z600">
+                      {balance !== null ? `${balance} ETH` : '—'}
+                    </span>
+                  </div>
+                </div>
+              )}
               <DropdownMenuSeparator className="bg-z200" />
               {activeWallet && (
                 <>

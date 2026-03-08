@@ -8,6 +8,16 @@ export default defineConfig({
   verify: {
     etherscan: {
       apiKey: configVariable("ETHERSCAN_API_KEY"),
+      customChains: [
+        {
+          network: "arbitrumSepolia",
+          chainId: 421614,
+          urls: {
+            apiURL: "https://api.etherscan.io/v2/api?chainid=421614",
+            browserURL: "https://sepolia.arbiscan.io",
+          },
+        },
+      ],
     },
     sourcify: {
       enabled: false,
