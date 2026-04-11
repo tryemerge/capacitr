@@ -28,6 +28,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { TradingStyleCard } from '@/components/trading-style-card'
 import {
   User,
   Bot,
@@ -427,6 +428,9 @@ function ProfileContent() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Trading Style Card */}
+                <TradingStyleCard />
 
                 {/* Operator Verification Card */}
                 <Card className="bg-brand-canvas border-z200">

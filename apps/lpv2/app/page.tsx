@@ -11,7 +11,10 @@ export default function LoginPage() {
   const router = useRouter()
 
   useEffect(() => {
-    if (isAuthenticated) router.push('/home')
+    if (isAuthenticated) {
+      const hasProfile = localStorage.getItem('capacitr_risk_profile')
+      router.push(hasProfile ? '/home' : '/onboarding/risk-profile')
+    }
   }, [isAuthenticated, router])
 
   return (
