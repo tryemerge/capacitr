@@ -12,8 +12,16 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isAuthenticated) {
+      const hasInterests = localStorage.getItem('capacitr_interests')
       const hasProfile = localStorage.getItem('capacitr_risk_profile')
-      router.push(hasProfile ? '/home' : '/onboarding/risk-profile')
+
+      if (!hasInterests) {
+        router.push('/onboarding/interests')
+      } else if (!hasProfile) {
+        router.push('/onboarding/risk-profile')
+      } else {
+        router.push('/home')
+      }
     }
   }, [isAuthenticated, router])
 

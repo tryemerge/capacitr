@@ -12,6 +12,12 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog'
 import { RefreshCw } from 'lucide-react'
+import { useAuth } from '@/lib/auth-context'
+import {
+  ensureSupabaseUser,
+  getUserRiskProfile,
+  saveUserRiskProfile,
+} from '@/lib/supabase-user'
 
 // ─── Shared risk-profile types & data ───────────────────────────────────────
 
@@ -113,10 +119,13 @@ function loadProfile(): RiskProfile | null {
 
 // ─── Retake Modal (inline quiz) ─────────────────────────────────────────────
 
-function RetakeQuiz({ open, onClose, onComplete }: {
+function RetakeQuiz({ open, onClose, onComplete, privyUserId, loginMethod, displayName }: {
   open: boolean
   onClose: () => void
   onComplete: (profile: RiskProfile) => void
+  privyUserId?: string
+  loginMethod?: string
+  displayName?: string
 }) {
   const [step, setStep] = useState(0)
   const [scores, setScores] = useState<number[]>([])
@@ -161,13 +170,22 @@ function RetakeQuiz({ open, onClose, onComplete }: {
     }, 300)
   }, [animating, scores])
 
-  const handleSave = useCallback(() => {
+  const handleSave = useCallback(async () => {
     if (tier) {
       const profile = saveProfile(tier, scores)
+      // Also save to Supabase
+      try {
+        if (privyUserId) {
+          const supabaseUserId = await ensureSupabaseUser(privyUserId, loginMethod, displayName)
+          await saveUserRiskProfile(supabaseUserId, tier, scores)
+        }
+      } catch (err) {
+        console.error('Error saving risk profile to Supabase:', err)
+      }
       onComplete(profile)
       onClose()
     }
-  }, [tier, scores, onComplete, onClose])
+  }, [tier, scores, onComplete, onClose, privyUserId, loginMethod, displayName])
 
   const contentClass = direction === 'out'
     ? 'opacity-0 -translate-x-3 transition-all duration-200 ease-in'
@@ -264,14 +282,39 @@ function RetakeQuiz({ open, onClose, onComplete }: {
 // ─── Main Card Component ────────────────────────────────────────────────────
 
 export function TradingStyleCard() {
+  const { user } = useAuth()
   const [profile, setProfile] = useState<RiskProfile | null>(null)
   const [retakeOpen, setRetakeOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    // Start with localStorage for instant display
     setProfile(loadProfile())
     setMounted(true)
-  }, [])
+
+    // Then try to load from Supabase for the source of truth
+    async function loadFromSupabase() {
+      if (!user?.id) return
+      try {
+        const supabaseUserId = await ensureSupabaseUser(user.id, user.loginMethod, user.displayName)
+        const remote = await getUserRiskProfile(supabaseUserId)
+        if (remote) {
+          const remoteProfile: RiskProfile = {
+            tier: remote.tier as Tier,
+            scores: remote.scores,
+            completedAt: remote.completed_at,
+          }
+          setProfile(remoteProfile)
+          // Sync to localStorage
+          localStorage.setItem('capacitr_risk_profile', JSON.stringify(remoteProfile))
+        }
+      } catch (err) {
+        console.error('Error loading risk profile from Supabase:', err)
+      }
+    }
+
+    loadFromSupabase()
+  }, [user])
 
   if (!mounted) return null
 
@@ -334,6 +377,9 @@ export function TradingStyleCard() {
         open={retakeOpen}
         onClose={() => setRetakeOpen(false)}
         onComplete={(p) => setProfile(p)}
+        privyUserId={user?.id}
+        loginMethod={user?.loginMethod}
+        displayName={user?.displayName}
       />
     </>
   )

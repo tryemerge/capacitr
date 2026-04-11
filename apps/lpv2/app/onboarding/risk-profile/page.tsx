@@ -2,6 +2,8 @@
 
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/lib/auth-context'
+import { ensureSupabaseUser, saveUserRiskProfile } from '@/lib/supabase-user'
 import { Button } from '@/components/ui/button'
 
 const QUESTIONS = [
@@ -81,6 +83,7 @@ function saveProfile(tier: Tier, scores: number[]) {
 
 export default function RiskProfileOnboarding() {
   const router = useRouter()
+  const { user } = useAuth()
   const [step, setStep] = useState(0) // 0,1,2 = questions; 3 = result
   const [scores, setScores] = useState<number[]>([])
   const [selected, setSelected] = useState<number | null>(null)
@@ -91,10 +94,18 @@ export default function RiskProfileOnboarding() {
   const question = step < 3 ? QUESTIONS[step] : null
   const tier = isResult ? computeTier(scores) : null
 
-  const handleSkip = useCallback(() => {
+  const handleSkip = useCallback(async () => {
     saveProfile('balanced', [2, 2, 2])
+    try {
+      if (user?.id) {
+        const supabaseUserId = await ensureSupabaseUser(user.id, user.loginMethod, user.displayName)
+        await saveUserRiskProfile(supabaseUserId, 'balanced', [2, 2, 2])
+      }
+    } catch (err) {
+      console.error('Error saving risk profile to Supabase:', err)
+    }
     router.push('/home')
-  }, [router])
+  }, [router, user])
 
   const handleSelect = useCallback((score: number) => {
     if (animating) return
@@ -119,12 +130,20 @@ export default function RiskProfileOnboarding() {
     }, 300)
   }, [animating, scores])
 
-  const handleContinue = useCallback(() => {
+  const handleContinue = useCallback(async () => {
     if (tier) {
       saveProfile(tier, scores)
+      try {
+        if (user?.id) {
+          const supabaseUserId = await ensureSupabaseUser(user.id, user.loginMethod, user.displayName)
+          await saveUserRiskProfile(supabaseUserId, tier, scores)
+        }
+      } catch (err) {
+        console.error('Error saving risk profile to Supabase:', err)
+      }
     }
     router.push('/home')
-  }, [tier, scores, router])
+  }, [tier, scores, router, user])
 
   // Animation classes
   const contentClass = direction === 'out'
