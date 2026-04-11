@@ -10,7 +10,17 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isLoading && isAuthenticated) {
-      router.replace('/home')
+      // Check onboarding status before deciding where to send them
+      const hasInterests = localStorage.getItem('capacitr_interests')
+      const hasProfile = localStorage.getItem('capacitr_risk_profile')
+
+      if (!hasInterests) {
+        router.replace('/onboarding/interests')
+      } else if (!hasProfile) {
+        router.replace('/onboarding/risk-profile')
+      } else {
+        router.replace('/home')
+      }
     }
   }, [isAuthenticated, isLoading, router])
 
